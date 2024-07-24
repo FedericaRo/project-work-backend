@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class UserEntity {
-
+public class UserEntity 
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
