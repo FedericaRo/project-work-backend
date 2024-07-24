@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class GlobalConfig implements WebMvcConfigurer
 {
-    @Value("${urlprefix}")
+    @Value("${urlprefix}") //mette /api in automatico--> in application properties
     private String prefix;
 
     @Override
