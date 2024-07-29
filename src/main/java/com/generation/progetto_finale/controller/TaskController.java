@@ -1,18 +1,24 @@
 package com.generation.progetto_finale.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.progetto_finale.dto.TaskDTO;
+import com.generation.progetto_finale.dto.mappers.CompletionTaskDTO;
 import com.generation.progetto_finale.dto.mappers.TaskService;
 import com.generation.progetto_finale.modelEntity.Task;
+import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.TaskRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -50,5 +56,25 @@ public class TaskController
          */
         return tServ.toDTO(t);
     }
+
+    @PutMapping("/{id}")
+    public TaskDTO updateTask(@PathVariable Integer id, @RequestBody CompletionTaskDTO dto) 
+    {
+        Task task = tRepo.findById(id).get();
+        task.setName(task.getName());
+        task.setDescription(task.getDescription());
+        task.setFrequency(task.getFrequency());
+        
+        task.setSignature(dto.getSignature());
+        task.setStatus(dto.getStatus());
+
+        
+        task.onUpdate();
+        tRepo.save(task);
+
+        return tServ.toDTO(task);
+    }
+
+    
 
 }

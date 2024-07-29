@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -61,13 +60,18 @@ public class Task
     /**
      * Metodo chiamato prima di aggiornare una entità nel database
      */
-    @PreUpdate
+    
     public void onUpdate() 
     {
+        if (getStatus().equals(TaskStatus.PENDING))
+        {
+            setCompletionDate(null);
+        }
         /**
-         * controllo se lo stato cambia da unchecked a checked
+         * controllo se lo stato cambia da pending a completed
          */
-        if (status == TaskStatus.COMPLETED && completionDate == null) {
+        if (status == TaskStatus.COMPLETED && completionDate == null) 
+        {
             completionDate = LocalDate.now();
         }
     }
