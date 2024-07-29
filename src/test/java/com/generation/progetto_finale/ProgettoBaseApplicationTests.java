@@ -1,7 +1,10 @@
 package com.generation.progetto_finale;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.progetto_finale.auth.model.Role;
 import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
@@ -28,7 +32,14 @@ class ProgettoBaseApplicationTests
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private SupplierRepository supplierRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private SupplierRepository supplierRepository;
     @Autowired
