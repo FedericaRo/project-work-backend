@@ -38,8 +38,10 @@ public class SecurityConfig {
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
             .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask").permitAll()
             .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(withDefaults());

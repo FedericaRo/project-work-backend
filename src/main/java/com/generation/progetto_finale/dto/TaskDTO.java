@@ -20,5 +20,4 @@ public class TaskDTO
     private String completionDate;
     private TaskStatus status;
     private String signature;
-    
 }

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.progetto_finale.dto.TaskDTO;
 import com.generation.progetto_finale.dto.mappers.CompletionTaskDTO;
 import com.generation.progetto_finale.dto.mappers.TaskService;
+import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
+import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 
 
@@ -28,6 +30,8 @@ public class TaskController
 {
     @Autowired
     TaskRepository tRepo;
+    @Autowired
+    StoredTaskRepository stRepo;
     @Autowired
     TaskService tServ;
 
@@ -74,7 +78,4 @@ public class TaskController
 
         return tServ.toDTO(task);
     }
-
-    
-
 }

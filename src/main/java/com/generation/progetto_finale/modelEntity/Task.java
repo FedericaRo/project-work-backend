@@ -63,14 +63,14 @@ public class Task
     
     public void onUpdate() 
     {
-        if (getStatus().equals(TaskStatus.PENDING))
+        if (getStatus().equals(TaskStatus.DAFARSI))
         {
             setCompletionDate(null);
         }
         /**
          * controllo se lo stato cambia da pending a completed
          */
-        if (status == TaskStatus.COMPLETED && completionDate == null) 
+        if (status == TaskStatus.COMPLETATO && completionDate == null) 
         {
             completionDate = LocalDate.now();
         }
@@ -81,14 +81,16 @@ public class Task
      */
     public enum TaskStatus 
     {
-        PENDING,
-        COMPLETED
+        DAFARSI,
+        COMPLETATO,
+        INCOMPIUTO
     }
     
-    public enum Frequency {
-        WEEKLY,
-        BIWEEKLY,
-        MONTHLY
+    public enum Frequency 
+    {
+        SETTIMANALE,
+        BISETTIMANALE,
+        MENSILE
     }
 
 

@@ -32,7 +32,6 @@ class ProgettoBaseApplicationTests
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SupplierRepository supplierRepository;
@@ -40,12 +39,9 @@ class ProgettoBaseApplicationTests
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private SupplierRepository supplierRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private ProductRepository productRepository;
+    
+   
+   
 	
 	@Test
 	void addUser() 
