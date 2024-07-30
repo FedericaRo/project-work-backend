@@ -7,18 +7,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductDTO 
+public class ProductDTO
 {
-    private Integer id, category_id, supplier_id;
-    private String productName;
-    private Double unitPrice;
-    private String unitType;
-    private Integer unitTypeQuantity;
-    private String packagingType;
-    private Integer packagingTypeQuantity;
-    private Integer unitsPerPackaging;
-    private String categoryName;
-    private String supplierName, supplierCode;
-
-
+    protected Integer id, category_id, supplier_id;
+    protected String productName;
+    protected Double unitPrice;
+    protected String unitType;
+    protected Integer unitTypeQuantity;
+    protected String packagingType;
+    protected Integer packagingTypeQuantity;
+    protected Integer unitsPerPackaging;
+    protected String categoryName;
+    protected String supplierName, supplierCode;
 }
