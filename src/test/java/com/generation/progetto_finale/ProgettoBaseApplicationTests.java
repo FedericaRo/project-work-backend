@@ -348,54 +348,6 @@ class ProgettoBaseApplicationTests
         }
 	}
 
-    }
-
-    @Test
-    void addMoreProducts()
-    {
-        Random random = new Random();
-        List<Supplier> suppliers = new ArrayList<>();
-        List<Category> categories = new ArrayList<>();
-
-        // Creare fornitori e categorie iniziali
-        for (int i = 1; i <= 5; i++) {
-            Supplier supplier = new Supplier();
-            supplier.setName("Supplier " + i);
-            supplier.setCode("SUP" + String.format("%03d", i * 100));
-            supplierRepository.save(supplier);
-            suppliers.add(supplier);
-
-            Category category = new Category();
-            category.setName("Category " + i);
-            categoryRepository.save(category);
-            categories.add(category);
-        }
-
-        // Creare 30 prodotti casuali
-        for (int i = 1; i <= 98; i++) {
-            Product product = new Product();
-            product.setProductName("Product " + i);
-            product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
-            product.setUnitType(randomUnitType());
-            product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
-            product.setPackagingType(randomPackagingType());
-            product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
-            product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
-            product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
-            product.setCategory(categories.get(random.nextInt(categories.size())));
-            productRepository.save(product);
-        }
-    }
-
-    private String randomUnitType() {
-        String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
-        return unitTypes[new Random().nextInt(unitTypes.length)];
-    }
-
-    private String randomPackagingType() {
-        String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
-        return packagingTypes[new Random().nextInt(packagingTypes.length)];
-    }
 
 
     @Test
