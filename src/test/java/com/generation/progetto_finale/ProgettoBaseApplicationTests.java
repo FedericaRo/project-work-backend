@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,19 @@ import com.generation.progetto_finale.modelEntity.Category;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationType;
+import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Product;
+import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Supplier;
+import com.generation.progetto_finale.modelEntity.Task;
+import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
+
 import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
+import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
+import com.generation.progetto_finale.repositories.TaskRepository;
 
 @SpringBootTest
 class ProgettoBaseApplicationTests 
@@ -41,6 +49,7 @@ class ProgettoBaseApplicationTests
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+
     private CommunicationRepository communicationRepository;
 
 
@@ -157,6 +166,14 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
+
+    StoredTaskRepository stRepo;
+    @Autowired
+    TaskRepository tRepo;
+    
+   
+   
+
 	
 	@Test
 	void addUser() 
@@ -229,7 +246,7 @@ class ProgettoBaseApplicationTests
         productRepository.save(productB);
     }
 
-	@Test
+    @Test
     void addMoreProducts()
     {
         Random random = new Random();
@@ -277,4 +294,24 @@ class ProgettoBaseApplicationTests
     }
 
 
+    @Test
+    public void provaAutomazioneTask()
+    {
+        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+        List<Task> realTasks = new ArrayList<>();
+
+        for (StoredTask st : tasks) 
+        {
+            Task task = new Task();
+
+            task.setName(st.getName());
+            task.setDescription(st.getDescription());
+            task.setFrequency(st.getFrequency());
+            task.setStatus(TaskStatus.DAFARSI);
+
+            realTasks.add(task);
+        }
+
+        tRepo.saveAll(realTasks);
+    }
 }
