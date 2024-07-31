@@ -40,6 +40,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
+            .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
             .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()
             .anyRequest().authenticated()
