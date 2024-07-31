@@ -39,6 +39,8 @@ public class SecurityConfig {
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
             .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
+            .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(withDefaults());
