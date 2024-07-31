@@ -21,6 +21,8 @@ import com.generation.progetto_finale.dto.mappers.OrderService;
 import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.repositories.OrderRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController 
@@ -39,84 +41,61 @@ public class OrderController
     }
 
     @PutMapping("{orderId}/changeArrivedStatus")
-    public ResponseEntity<Map<String, Object>> changeArrivedStatus(@PathVariable Integer orderId, @RequestBody Map<String, Boolean> requestBody) 
+    public void changeArrivedStatus(@PathVariable Integer orderId, boolean arrivedStatus) 
     {
-        boolean arrivedStatus = requestBody.get("arrivedStatus");
         System.out.println(arrivedStatus);
         Optional<Order> orderToChange = orRepo.findById(orderId);
-        if (orderToChange.isEmpty()) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "L'ordine non esiste");
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+        if (orderToChange.isEmpty())
+            throw new EntityNotFoundException("L'ordine non esiste");
 
         Order order = orderToChange.get();
         System.out.println(order);
         order.setHasArrived(!arrivedStatus);
         orRepo.save(order);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", "Order status updated successfully");
-        response.put("arrivedStatus", !arrivedStatus);
-
-        return ResponseEntity.ok(response);
-        // return new ResponseEntity<>("{\"success\": \"Order status updated successfully\"}", HttpStatus.OK);
     }
 
 
     @PutMapping("{orderId}/editPackagingQuantity")
-    public ResponseEntity<String> editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
+    public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
         Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
         System.out.println(packagingOrderedQuantity);
         Optional<Order> orderToChange = orRepo.findById(orderId);
         if (orderToChange.isEmpty())
-            return new ResponseEntity<>("{\"error\": \"L'ordine non esiste\"}", HttpStatus.BAD_REQUEST);
+            throw new EntityNotFoundException("L'ordine non esiste");
 
-            Order order = orderToChange.get();
-            System.out.println(order.getProduct().getProductName());
+        Order order = orderToChange.get();
+        System.out.println(order.getProduct().getProductName());
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
         orRepo.save(order);
-
-        return new ResponseEntity<>("{\"success\": \"Order packaging quantity updated successfully\"}", HttpStatus.OK);
     }
 
     @PutMapping("{orderId}/editUnitQuantity")
-    public ResponseEntity<String> editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
+    public void editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
     {
+
         Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
-        System.out.println(unitOrderedQuantity);
         Optional<Order> orderToChange = orRepo.findById(orderId);
         if (orderToChange.isEmpty()) 
-            return new ResponseEntity<>("{\"error\": \"L'ordine non esiste\"}", HttpStatus.BAD_REQUEST);
+            throw new EntityNotFoundException("L'ordine non esiste");
 
         Order order = orderToChange.get();
         System.out.println(order.getProduct().getProductName());
         order.setUnitOrderedQuantity(unitOrderedQuantity);
         orRepo.save(order);
 
-        return new ResponseEntity<>("{\"success\": \"Order unit quantity updated successfully\"}", HttpStatus.OK);
     }
 
     @DeleteMapping("{orderId}")
-    public ResponseEntity<Map<String, Object>> deleteOrder(@PathVariable Integer orderId)
+    public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
         Optional<Order> orderToDelete = orRepo.findById(orderId);
         if (orderToDelete.isEmpty()) 
-        {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "L'ordine non esiste");
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
+            throw new EntityNotFoundException("L'ordine non esiste");
 
         orRepo.delete(orderToDelete.get());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", "Order status updated successfully");
-        response.put("order", orServ.toDTO(orderToDelete.get()));
-
-        return ResponseEntity.ok(response);
-
+        return orServ.toDTO(orderToDelete.get());
     }
 
 
