@@ -29,9 +29,15 @@ public class Order
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Integer orderedQuantity;
+    private Integer unitOrderedQuantity;
 
-    private Integer deliveredQuantity;
+    private Integer unitDeliveredQuantity;
+
+    private Integer packagingOrderedQuantity;
+
+    private Integer packagingDeliveredQuantity;
+
+    private boolean hasArrived;
 
     @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDate orderDate;
@@ -41,7 +47,7 @@ public class Order
     public void onCreate()
     {
         orderDate         = LocalDate.now();
-        
+        hasArrived        = false;
     }
     
     // @PreUpdate

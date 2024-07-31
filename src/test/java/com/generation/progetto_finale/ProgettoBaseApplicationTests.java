@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,15 @@ import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
 import com.generation.progetto_finale.auth.repository.UserRepository;
 import com.generation.progetto_finale.modelEntity.Category;
+
+import com.generation.progetto_finale.modelEntity.Order;
+import com.generation.progetto_finale.modelEntity.Product;
+import com.generation.progetto_finale.modelEntity.Supplier;
+import com.generation.progetto_finale.repositories.CategoryRepository;
+import com.generation.progetto_finale.repositories.OrderRepository;
+import com.generation.progetto_finale.repositories.ProductRepository;
+import com.generation.progetto_finale.repositories.SupplierRepository;
+
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationType;
@@ -42,6 +50,10 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+	@Autowired
+	private OrderRepository orderRepository;
     @Autowired
     private SupplierRepository supplierRepository;
     @Autowired
@@ -197,6 +209,7 @@ class ProgettoBaseApplicationTests
 	}
 
 	@Test
+
     void addProduct()
     {
         Supplier supplierA = new Supplier();
@@ -204,11 +217,15 @@ class ProgettoBaseApplicationTests
         supplierA.setCode("SUP123");
         supplierRepository.save(supplierA);
 
+
+
+		// Creare il primo prodotto
         Category categoryA = new Category();
         categoryA.setName("Category A");
         categoryRepository.save(categoryA);
 
         // Creare il primo prodotto
+
         Product productA = new Product();
         productA.setProductName("Product A");
         productA.setUnitPrice(10.0);
@@ -244,6 +261,93 @@ class ProgettoBaseApplicationTests
         productB.setSupplier(supplierB);
         productB.setCategory(categoryB);
         productRepository.save(productB);
+
+	}
+
+
+
+	@Test
+	void addMoreProducts()
+	{
+		Random random = new Random();
+		List<Supplier> suppliers = new ArrayList<>();
+		List<Category> categories = new ArrayList<>();
+	
+		// Creare fornitori e categorie iniziali
+		for (int i = 1; i <= 5; i++) {
+			Supplier supplier = new Supplier();
+			supplier.setName("Supplier " + i);
+			supplier.setCode("SUP" + String.format("%03d", i * 100));
+			supplierRepository.save(supplier);
+			suppliers.add(supplier);
+	
+			Category category = new Category();
+			category.setName("Category " + i);
+			categoryRepository.save(category);
+			categories.add(category);
+		}
+	
+		// Creare 30 prodotti casuali
+		for (int i = 1; i <= 98; i++) {
+			Product product = new Product();
+			product.setProductName("Product " + i);
+			product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
+			product.setUnitType(randomUnitType());
+			product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
+			product.setPackagingType(randomPackagingType());
+			product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
+			product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
+			product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
+			product.setCategory(categories.get(random.nextInt(categories.size())));
+			productRepository.save(product);
+		}
+	}
+	
+	private String randomUnitType() {
+		String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
+		return unitTypes[new Random().nextInt(unitTypes.length)];
+	}
+	
+	private String randomPackagingType() {
+		String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
+		return packagingTypes[new Random().nextInt(packagingTypes.length)];
+	}
+
+
+
+	@Test
+	void loadOrders()
+	{
+		Supplier supplier = supplierRepository.findById(1).orElse(null);
+        Category category = categoryRepository.findById(1).orElse(null);
+
+        // Crea un prodotto
+        Product product = new Product();
+        product.setProductName("Product A");
+        product.setUnitPrice(10.0);
+        product.setUnitType("PZ");
+        product.setUnitTypeQuantity(100);
+        product.setPackagingType("CT");
+        product.setPackagingTypeQuantity(10);
+        product.setUnitsPerPackaging(10);
+        product.setCategory(category);
+        product.setSupplier(supplier);
+        productRepository.save(product);
+
+        // Crea e salva 10 ordini
+        for (int i = 1; i <= 10; i++) {
+            Order order = new Order();
+            order.setProduct(product);
+            order.setUnitOrderedQuantity(50 + i);
+            order.setUnitDeliveredQuantity(45 + i);
+            order.setPackagingOrderedQuantity(5 + i);
+            order.setPackagingDeliveredQuantity(4 + i);
+            order.setOrderDate(LocalDate.now());
+            order.setDeliverDate(LocalDate.now().plusDays(i));
+            orderRepository.save(order);
+        }
+	}
+
     }
 
     @Test
@@ -314,4 +418,7 @@ class ProgettoBaseApplicationTests
 
         tRepo.saveAll(realTasks);
     }
+
 }
+
+
