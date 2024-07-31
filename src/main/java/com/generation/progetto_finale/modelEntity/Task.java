@@ -86,12 +86,7 @@ public class Task
         INCOMPIUTO
     }
     
-    public enum Frequency 
-    {
-        SETTIMANALE,
-        BISETTIMANALE,
-        MENSILE
-    }
+    
 
 
 

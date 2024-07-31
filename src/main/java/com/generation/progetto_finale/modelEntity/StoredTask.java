@@ -1,7 +1,5 @@
 package com.generation.progetto_finale.modelEntity;
 
-import com.generation.progetto_finale.modelEntity.Task.Frequency;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,12 +30,7 @@ public class StoredTask
     private Frequency frequency;
 
 
-    public enum Frequency 
-    {
-        SETTIMANALE,
-        BISETTIMANALE,
-        MENSILE
-    }
+   
 
 }
 

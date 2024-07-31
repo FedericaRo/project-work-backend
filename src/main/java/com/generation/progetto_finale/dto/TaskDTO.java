@@ -1,6 +1,6 @@
 package com.generation.progetto_finale.dto;
 
-import com.generation.progetto_finale.modelEntity.Task.Frequency;
+import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 
 import lombok.Getter;

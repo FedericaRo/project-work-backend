@@ -18,11 +18,17 @@ import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
 import com.generation.progetto_finale.auth.repository.UserRepository;
 import com.generation.progetto_finale.modelEntity.Category;
+import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Product;
+import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Supplier;
+import com.generation.progetto_finale.modelEntity.Task;
+import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
+import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
+import com.generation.progetto_finale.repositories.TaskRepository;
 
 @SpringBootTest
 class ProgettoBaseApplicationTests 
@@ -39,6 +45,10 @@ class ProgettoBaseApplicationTests
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    StoredTaskRepository stRepo;
+    @Autowired
+    TaskRepository tRepo;
     
    
    
@@ -159,5 +169,27 @@ class ProgettoBaseApplicationTests
     private String randomPackagingType() {
         String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
         return packagingTypes[new Random().nextInt(packagingTypes.length)];
+    }
+
+
+    @Test
+    public void provaAutomazioneTask()
+    {
+        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+        List<Task> realTasks = new ArrayList<>();
+
+        for (StoredTask st : tasks) 
+        {
+            Task task = new Task();
+
+            task.setName(st.getName());
+            task.setDescription(st.getDescription());
+            task.setFrequency(st.getFrequency());
+            task.setStatus(TaskStatus.DAFARSI);
+
+            realTasks.add(task);
+        }
+
+        tRepo.saveAll(realTasks);
     }
 }
