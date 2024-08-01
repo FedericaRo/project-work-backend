@@ -2,7 +2,9 @@ package com.generation.progetto_finale;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,6 @@ import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
-import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.OrderRepository;
@@ -33,6 +34,9 @@ import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
+import com.generation.progetto_finale.services.MailService;
+
+import jakarta.mail.MessagingException;
 
 @SpringBootTest
 class ProgettoBaseApplicationTests 
@@ -482,6 +486,19 @@ void loadRandomOrders() {
         task.setStatus(status);
         task.setCreationDate(LocalDate.now());
         return task;
+    }
+
+    @Autowired
+    MailService mailService;
+
+    @Test
+    public void mandaMail() throws MessagingException
+    {
+        Map<String,Object> model = new HashMap<>();
+        model.put("campo1", "ciaoo");
+        model.put("campo2", "byee");
+
+        mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
     }
 }
 
