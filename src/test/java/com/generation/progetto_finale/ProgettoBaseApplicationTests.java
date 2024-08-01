@@ -296,6 +296,7 @@ class ProgettoBaseApplicationTests
 			product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
 			product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
 			product.setCategory(categories.get(random.nextInt(categories.size())));
+            product.setReorderPoint(2 + random.nextInt(10));
 			productRepository.save(product);
 		}
 	}
@@ -317,7 +318,8 @@ class ProgettoBaseApplicationTests
         
         // Create and save 10 orders for the selected product
         Random random = new Random();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) 
+        {
             int productId = random.nextInt(100) + 1; // Generates a random number between 1 and 100
         
             // Fetch the product with the randomly selected ID
@@ -339,39 +341,6 @@ class ProgettoBaseApplicationTests
             order.setDeliverDate(LocalDate.now().plusDays(i));
             orderRepository.save(order);
         }
-	}
-
-    @Test
-void loadRandomOrders() {
-    
-    // Create and save 10 orders for the selected product
-    Random random = new Random();
-    for (int i = 1; i <= 10; i++) {
-        int productId = random.nextInt(100) + 1; // Generates a random number between 1 and 100
-    
-        // Fetch the product with the randomly selected ID
-        Product product = productRepository.findById(productId).orElse(null);
-        
-        if (product == null) {
-            throw new RuntimeException("Product with ID " + productId + " not found");
-        }
-        Order order = new Order();
-        order.setProduct(product);
-
-        // Generate random quantities
-        int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
-        int unitDeliveredQuantity = random.nextInt(unitOrderedQuantity) + 1; // Random quantity between 1 and unitOrderedQuantity
-        int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
-        int packagingDeliveredQuantity = random.nextInt(packagingOrderedQuantity) + 1; // Random quantity between 1 and packagingOrderedQuantity
-
-        order.setUnitOrderedQuantity(unitOrderedQuantity);
-        order.setUnitDeliveredQuantity(unitDeliveredQuantity);
-        order.setPackagingOrderedQuantity(packagingOrderedQuantity);
-        order.setPackagingDeliveredQuantity(packagingDeliveredQuantity);
-        order.setOrderDate(LocalDate.now());
-        order.setDeliverDate(LocalDate.now().plusDays(i));
-        orderRepository.save(order);
-    }
 }
 
 

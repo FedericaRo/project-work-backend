@@ -72,7 +72,7 @@ public class OrderController
             throw new IllegalArgumentException("Order id not valid");
         
 
-        System.out.println("STATUS ARRIVATO DA CAMBIARE " + orderDTO.isHasArrived());
+        System.out.println("STATUS ARRIVATO DA CAMBIARE " + orderDTO.isArrived());
         Optional<Order> orderToChange = orRepo.findById(orderId);
         if (orderToChange.isEmpty())
             throw new EntityNotFoundException("L'ordine non esiste");
@@ -104,8 +104,8 @@ public class OrderController
      */
     private Order updateOrderArrivalStatus(Order order) 
     {
-        boolean newArrivalStatus = !order.isHasArrived();
-        order.setHasArrived(newArrivalStatus);
+        boolean newArrivalStatus = !order.isArrived();
+        order.setArrived(newArrivalStatus);
     
         System.out.println("CURRENT ORDER STATUS: " + !newArrivalStatus);
         System.out.println("NEW ORDER STATUS: " + newArrivalStatus);
@@ -124,8 +124,8 @@ public class OrderController
      */
     private Product updateProductQuantities(Product product, Order order) 
     {
-        int packagingChange = order.isHasArrived() ? order.getPackagingOrderedQuantity() : -order.getPackagingOrderedQuantity();
-        int unitChange = order.isHasArrived() ? order.getUnitOrderedQuantity() : -order.getUnitOrderedQuantity();
+        int packagingChange = order.isArrived() ? order.getPackagingOrderedQuantity() : -order.getPackagingOrderedQuantity();
+        int unitChange = order.isArrived() ? order.getUnitOrderedQuantity() : -order.getUnitOrderedQuantity();
     
         if (packagingChange != 0) {
             product.setPackagingTypeQuantity(product.getPackagingTypeQuantity() + packagingChange);

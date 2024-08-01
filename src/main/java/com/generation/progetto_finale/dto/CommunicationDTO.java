@@ -20,7 +20,6 @@ public class CommunicationDTO
     private String fromPerson; 
     private String toPerson;
     private String description;
-    private LocalDate creationDate;
     private CommunicationImportance importance;
     private CommunicationType type;
 }
