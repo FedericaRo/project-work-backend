@@ -19,4 +19,5 @@ public class ProductDTO
     protected Integer unitsPerPackaging;
     protected String categoryName;
     protected String supplierName, supplierCode;
+    protected Integer reorderPoint;
 }

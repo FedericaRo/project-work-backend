@@ -40,6 +40,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/orders").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
 

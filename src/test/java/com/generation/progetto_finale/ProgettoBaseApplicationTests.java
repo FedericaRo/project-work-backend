@@ -205,61 +205,61 @@ class ProgettoBaseApplicationTests
 		// francesca.setRoles();
 	}
 
-	@Test
+	// @Test
 
-    void addProduct()
-    {
-        Supplier supplierA = new Supplier();
-        supplierA.setName("Supplier A");
-        supplierA.setCode("SUP123");
-        supplierRepository.save(supplierA);
+    // void addProduct()
+    // {
+    //     Supplier supplierA = new Supplier();
+    //     supplierA.setName("Supplier A");
+    //     supplierA.setCode("SUP123");
+    //     supplierRepository.save(supplierA);
 
 
 
-		// Creare il primo prodotto
-        Category categoryA = new Category();
-        categoryA.setName("Category A");
-        categoryRepository.save(categoryA);
+	// 	// Creare il primo prodotto
+    //     Category categoryA = new Category();
+    //     categoryA.setName("Category A");
+    //     categoryRepository.save(categoryA);
 
-        // Creare il primo prodotto
+    //     // Creare il primo prodotto
 
-        Product productA = new Product();
-        productA.setProductName("Product A");
-        productA.setUnitPrice(10.0);
-        productA.setUnitType("PZ");
-        productA.setUnitTypeQuantity(100);
-        productA.setPackagingType("CT");
-        productA.setPackagingTypeQuantity(10);
-        productA.setUnitsPerPackaging(10);
-        productA.setSupplier(supplierA);
-        productA.setCategory(categoryA);
-        productRepository.save(productA);
+    //     Product productA = new Product();
+    //     productA.setProductName("Product A");
+    //     productA.setUnitPrice(10.0);
+    //     productA.setUnitType("PZ");
+    //     productA.setUnitTypeQuantity(100);
+    //     productA.setPackagingType("CT");
+    //     productA.setPackagingTypeQuantity(10);
+    //     productA.setUnitsPerPackaging(10);
+    //     productA.setSupplier(supplierA);
+    //     productA.setCategory(categoryA);
+    //     productRepository.save(productA);
 
-        // Creare il secondo supplier
-        Supplier supplierB = new Supplier();
-        supplierB.setName("Supplier B");
-        supplierB.setCode("SUP456");
-        supplierRepository.save(supplierB);
+    //     // Creare il secondo supplier
+    //     Supplier supplierB = new Supplier();
+    //     supplierB.setName("Supplier B");
+    //     supplierB.setCode("SUP456");
+    //     supplierRepository.save(supplierB);
 
-        // Creare la seconda categoria
-        Category categoryB = new Category();
-        categoryB.setName("Category B");
-        categoryRepository.save(categoryB);
+    //     // Creare la seconda categoria
+    //     Category categoryB = new Category();
+    //     categoryB.setName("Category B");
+    //     categoryRepository.save(categoryB);
 
-        // Creare il secondo prodotto
-        Product productB = new Product();
-        productB.setProductName("Product B");
-        productB.setUnitPrice(20.0);
-        productB.setUnitType("KG");
-        productB.setUnitTypeQuantity(200);
-        productB.setPackagingType("CON");
-        productB.setPackagingTypeQuantity(20);
-        productB.setUnitsPerPackaging(5);
-        productB.setSupplier(supplierB);
-        productB.setCategory(categoryB);
-        productRepository.save(productB);
+    //     // Creare il secondo prodotto
+    //     Product productB = new Product();
+    //     productB.setProductName("Product B");
+    //     productB.setUnitPrice(20.0);
+    //     productB.setUnitType("KG");
+    //     productB.setUnitTypeQuantity(200);
+    //     productB.setPackagingType("CON");
+    //     productB.setPackagingTypeQuantity(20);
+    //     productB.setUnitsPerPackaging(5);
+    //     productB.setSupplier(supplierB);
+    //     productB.setCategory(categoryB);
+    //     productRepository.save(productB);
 
-	}
+	// }
 
 
 
@@ -284,8 +284,8 @@ class ProgettoBaseApplicationTests
 			categories.add(category);
 		}
 	
-		// Creare 30 prodotti casuali
-		for (int i = 1; i <= 98; i++) {
+		// Creare 100 prodotti casuali
+		for (int i = 1; i <= 100; i++) {
 			Product product = new Product();
 			product.setProductName("Product " + i);
 			product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
@@ -294,6 +294,7 @@ class ProgettoBaseApplicationTests
 			product.setPackagingType(randomPackagingType());
 			product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
 			product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
+            product.setReorderPoint(2 + random.nextInt(10));
 			product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
 			product.setCategory(categories.get(random.nextInt(categories.size())));
 			productRepository.save(product);
@@ -312,42 +313,39 @@ class ProgettoBaseApplicationTests
 
 
 
-	@Test
-	void loadOrders()
-	{
-		Supplier supplier = supplierRepository.findById(1).orElse(null);
-        Category category = categoryRepository.findById(1).orElse(null);
+	// @Test
+	// void loadOrders()
+	// {
+	// 	Supplier supplier = supplierRepository.findById(1).orElse(null);
+    //     Category category = categoryRepository.findById(1).orElse(null);
 
-        // Crea un prodotto
-        Product product = new Product();
-        product.setProductName("Product A");
-        product.setUnitPrice(10.0);
-        product.setUnitType("PZ");
-        product.setUnitTypeQuantity(100);
-        product.setPackagingType("CT");
-        product.setPackagingTypeQuantity(10);
-        product.setUnitsPerPackaging(10);
-        product.setCategory(category);
-        product.setSupplier(supplier);
-        productRepository.save(product);
+    //     // Crea un prodotto
+    //     Product product = new Product();
+    //     product.setProductName("Product A");
+    //     product.setUnitPrice(10.0);
+    //     product.setUnitType("PZ");
+    //     product.setUnitTypeQuantity(100);
+    //     product.setPackagingType("CT");
+    //     product.setPackagingTypeQuantity(10);
+    //     product.setUnitsPerPackaging(10);
+    //     product.setCategory(category);
+    //     product.setSupplier(supplier);
+    //     productRepository.save(product);
 
-        // Crea e salva 10 ordini
-        for (int i = 1; i <= 10; i++) {
-            Order order = new Order();
-            order.setProduct(product);
-            order.setUnitOrderedQuantity(50 + i);
-            order.setUnitDeliveredQuantity(45 + i);
-            order.setPackagingOrderedQuantity(5 + i);
-            order.setPackagingDeliveredQuantity(4 + i);
-            order.setOrderDate(LocalDate.now());
-            order.setDeliverDate(LocalDate.now().plusDays(i));
-            orderRepository.save(order);
-        }
-	}
+    //     // Crea e salva 10 ordini
+    //     for (int i = 1; i <= 10; i++) {
+    //         Order order = new Order();
+    //         order.setProduct(product);
+    //         order.setUnitOrderedQuantity(50 + i);
+    //         order.setPackagingOrderedQuantity(5 + i);
+    //         order.setOrderDate(LocalDate.now());
+    //         order.setDeliverDate(LocalDate.now().plusDays(i));
+    //         orderRepository.save(order);
+    //     }
+	// }
 
     @Test
-void loadRandomOrders() {
-    
+    void loadRandomOrders() {
     // Create and save 10 orders for the selected product
     Random random = new Random();
     for (int i = 1; i <= 10; i++) {
@@ -364,16 +362,12 @@ void loadRandomOrders() {
 
         // Generate random quantities
         int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
-        int unitDeliveredQuantity = random.nextInt(unitOrderedQuantity) + 1; // Random quantity between 1 and unitOrderedQuantity
         int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
-        int packagingDeliveredQuantity = random.nextInt(packagingOrderedQuantity) + 1; // Random quantity between 1 and packagingOrderedQuantity
 
         order.setUnitOrderedQuantity(unitOrderedQuantity);
-        order.setUnitDeliveredQuantity(unitDeliveredQuantity);
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
-        order.setPackagingDeliveredQuantity(packagingDeliveredQuantity);
         order.setOrderDate(LocalDate.now());
-        order.setDeliverDate(LocalDate.now().plusDays(i));
+        // order.setDeliverDate(LocalDate.now().plusDays(i));
         orderRepository.save(order);
     }
 }

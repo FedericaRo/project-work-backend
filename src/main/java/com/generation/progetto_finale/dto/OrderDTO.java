@@ -20,13 +20,14 @@ public class OrderDTO
     private String productName;
 
     private LocalDate orderDate;
+    private LocalDate deliverDate;
 
     private Integer unitOrderedQuantity;
     private String unitType;
     
     private Integer packagingOrderedQuantity;
     private String packagingType;
-    private boolean hasArrived;
+    private boolean arrived;
 
 
     // private Integer unitDeliveredQuantity;

@@ -56,6 +56,12 @@ public class Product
      */
     private Integer unitsPerPackaging;
 
+    /**
+    * Livello di livello di riordino di un prodotto 
+    * Indica la soglia alla quale un prodotto deve essere riordinato per evitare che le scorte si esauriscano
+    */
+    private Integer reorderPoint;
+
     // /**
     //  * Disponibilità in magazzino
     //  */

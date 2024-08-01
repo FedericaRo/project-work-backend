@@ -31,13 +31,9 @@ public class Order
 
     private Integer unitOrderedQuantity;
 
-    private Integer unitDeliveredQuantity;
-
     private Integer packagingOrderedQuantity;
 
-    private Integer packagingDeliveredQuantity;
-
-    private boolean hasArrived;
+    private boolean arrived;
 
     @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDate orderDate;
@@ -47,7 +43,7 @@ public class Order
     public void onCreate()
     {
         orderDate         = LocalDate.now();
-        hasArrived        = false;
+        arrived           = false;
     }
     
     // @PreUpdate

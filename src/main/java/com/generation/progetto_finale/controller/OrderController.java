@@ -1,10 +1,13 @@
 package com.generation.progetto_finale.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,8 @@ import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 /**
  * REST controller for managing orders.
@@ -30,14 +35,16 @@ import jakarta.persistence.EntityNotFoundException;
 @RequestMapping("/orders")
 public class OrderController 
 {
-    @Autowired
-    OrderRepository orRepo;
+    
 
     @Autowired
-    ProductRepository prRepo;
+    ProductRepository productRepo;
+
+    @Autowired
+    OrderRepository orderRepo;
 
     @Autowired 
-    OrderService orServ;
+    OrderService orderServ;
 
 
     /**
@@ -48,8 +55,44 @@ public class OrderController
     @GetMapping
     public List<OrderDTO> getAll()
     {
-        return orServ.toDTO(orRepo.findAll());
+        return orderServ.toDTO(orderRepo.findAll());
     }
+
+
+     @PostMapping("{productId}/addOrder")
+     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody) 
+     {         
+    
+        Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+        System.out.println(packagingOrderedQuantity);
+
+        Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
+        System.out.println(unitOrderedQuantity);
+
+        Optional<Product> productOptional = productRepo.findById(productId);
+        if (productOptional.isEmpty())
+            throw new EntityNotFoundException("Il prodotto non esiste");
+
+        Product product = productOptional.get();
+        Order newOrder = new Order();
+
+        newOrder.setProduct(product);
+        newOrder.setUnitOrderedQuantity(unitOrderedQuantity);
+        newOrder.setPackagingOrderedQuantity(packagingOrderedQuantity);
+
+        orderRepo.save(newOrder);
+
+        System.out.println("----------");
+        System.out.println(newOrder.getId());
+        System.out.println(newOrder.getUnitOrderedQuantity());
+        System.out.println(newOrder.getPackagingOrderedQuantity());
+        System.out.println(newOrder.getOrderDate());
+        
+        return orderServ.toDTO(newOrder); 
+     }
+     
+
+
 
     /**
      * Updates the details of an existing order when the order arrived status changes. 
@@ -61,7 +104,7 @@ public class OrderController
      * @throws EntityNotFoundException if the order with the specified ID does not exist.
      */
     @PutMapping("{orderId}/updateOrderArrivalDetails")
-    public void updateOrderArrivalDetails(@PathVariable Integer orderId, @RequestBody OrderDTO orderDTO) 
+    public OrderDTO updateOrderArrivalDetails(@PathVariable Integer orderId, @RequestBody OrderDTO orderDTO) 
     {
         
         if (orderDTO == null) 
@@ -72,12 +115,12 @@ public class OrderController
             throw new IllegalArgumentException("Order id not valid");
         
 
-        System.out.println("STATUS ARRIVATO DA CAMBIARE " + orderDTO.isHasArrived());
-        Optional<Order> orderToChange = orRepo.findById(orderId);
+        System.out.println("---- STATUS ARRIVATO DA CAMBIARE " + orderDTO.isArrived());
+        Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
             throw new EntityNotFoundException("L'ordine non esiste");
             
-            Order order = orderToChange.get();
+        Order order = orderToChange.get();
             
         // Update the arrival status of the order and obtain the updated order
         Order updatedOrder = updateOrderArrivalStatus(order);
@@ -92,8 +135,12 @@ public class OrderController
         System.out.println("OLD PRODUCT UNIT QUANTITY " +product.getUnitTypeQuantity()); 
         System.out.println("OLD PRODUCT PACKAGING QUANTITY " +product.getPackagingTypeQuantity()); 
 
-        prRepo.save(updatedProduct);
-        orRepo.save(updatedOrder);
+        productRepo.save(updatedProduct);
+        orderRepo.save(updatedOrder);
+
+        return orderServ.toDTO(updatedOrder);
+
+
     }
 
     /**
@@ -104,9 +151,13 @@ public class OrderController
      */
     private Order updateOrderArrivalStatus(Order order) 
     {
-        boolean newArrivalStatus = !order.isHasArrived();
-        order.setHasArrived(newArrivalStatus);
-    
+        boolean newArrivalStatus = !order.isArrived();
+        order.setArrived(newArrivalStatus);
+        if (newArrivalStatus)
+            order.setDeliverDate(LocalDate.now());
+        else
+            order.setDeliverDate(null);
+
         System.out.println("CURRENT ORDER STATUS: " + !newArrivalStatus);
         System.out.println("NEW ORDER STATUS: " + newArrivalStatus);
 
@@ -124,8 +175,8 @@ public class OrderController
      */
     private Product updateProductQuantities(Product product, Order order) 
     {
-        int packagingChange = order.isHasArrived() ? order.getPackagingOrderedQuantity() : -order.getPackagingOrderedQuantity();
-        int unitChange = order.isHasArrived() ? order.getUnitOrderedQuantity() : -order.getUnitOrderedQuantity();
+        int packagingChange = order.isArrived() ? order.getPackagingOrderedQuantity() : -order.getPackagingOrderedQuantity();
+        int unitChange = order.isArrived() ? order.getUnitOrderedQuantity() : -order.getUnitOrderedQuantity();
     
         if (packagingChange != 0) {
             product.setPackagingTypeQuantity(product.getPackagingTypeQuantity() + packagingChange);
@@ -146,14 +197,14 @@ public class OrderController
     {
         Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
         System.out.println(packagingOrderedQuantity);
-        Optional<Order> orderToChange = orRepo.findById(orderId);
+        Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
             throw new EntityNotFoundException("L'ordine non esiste");
     
         Order order = orderToChange.get();
         System.out.println(order.getProduct().getProductName());
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
-        orRepo.save(order);
+        orderRepo.save(order);
     }
 
     // TODO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
@@ -167,14 +218,14 @@ public class OrderController
         //     throw new DataNotVa
         // }
         
-        Optional<Order> orderToChange = orRepo.findById(orderId);
+        Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty()) 
             throw new EntityNotFoundException("L'ordine non esiste");
 
         Order order = orderToChange.get();
         System.out.println(order.getProduct().getProductName());
         order.setUnitOrderedQuantity(unitOrderedQuantity);
-        orRepo.save(order);
+        orderRepo.save(order);
 
     }
 
@@ -182,13 +233,13 @@ public class OrderController
     @DeleteMapping("{orderId}")
     public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
-        Optional<Order> orderToDelete = orRepo.findById(orderId);
+        Optional<Order> orderToDelete = orderRepo.findById(orderId);
         if (orderToDelete.isEmpty()) 
             throw new EntityNotFoundException("L'ordine non esiste");
 
-        orRepo.delete(orderToDelete.get());
+        orderRepo.delete(orderToDelete.get());
 
-        return orServ.toDTO(orderToDelete.get());
+        return orderServ.toDTO(orderToDelete.get());
     }
 
 
