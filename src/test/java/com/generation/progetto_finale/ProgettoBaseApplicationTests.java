@@ -2,7 +2,9 @@ package com.generation.progetto_finale;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
@@ -15,31 +17,26 @@ import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
 import com.generation.progetto_finale.auth.repository.UserRepository;
 import com.generation.progetto_finale.modelEntity.Category;
-
-import com.generation.progetto_finale.modelEntity.Order;
-import com.generation.progetto_finale.modelEntity.Product;
-import com.generation.progetto_finale.modelEntity.Supplier;
-import com.generation.progetto_finale.repositories.CategoryRepository;
-import com.generation.progetto_finale.repositories.OrderRepository;
-import com.generation.progetto_finale.repositories.ProductRepository;
-import com.generation.progetto_finale.repositories.SupplierRepository;
-
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationType;
 import com.generation.progetto_finale.modelEntity.Frequency;
+import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
-
 import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
+import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
+import com.generation.progetto_finale.services.MailService;
+
+import jakarta.mail.MessagingException;
 
 @SpringBootTest
 class ProgettoBaseApplicationTests 
@@ -181,7 +178,7 @@ class ProgettoBaseApplicationTests
 
     StoredTaskRepository stRepo;
     @Autowired
-    TaskRepository tRepo;
+    TaskRepository taskRepo;
     
    
    
@@ -342,7 +339,40 @@ class ProgettoBaseApplicationTests
             order.setDeliverDate(LocalDate.now().plusDays(i));
             orderRepository.save(order);
         }
+	}
+
+    @Test
+void loadRandomOrders() {
+    
+    // Create and save 10 orders for the selected product
+    Random random = new Random();
+    for (int i = 1; i <= 10; i++) {
+        int productId = random.nextInt(100) + 1; // Generates a random number between 1 and 100
+    
+        // Fetch the product with the randomly selected ID
+        Product product = productRepository.findById(productId).orElse(null);
+        
+        if (product == null) {
+            throw new RuntimeException("Product with ID " + productId + " not found");
+        }
+        Order order = new Order();
+        order.setProduct(product);
+
+        // Generate random quantities
+        int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
+        int unitDeliveredQuantity = random.nextInt(unitOrderedQuantity) + 1; // Random quantity between 1 and unitOrderedQuantity
+        int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
+        int packagingDeliveredQuantity = random.nextInt(packagingOrderedQuantity) + 1; // Random quantity between 1 and packagingOrderedQuantity
+
+        order.setUnitOrderedQuantity(unitOrderedQuantity);
+        order.setUnitDeliveredQuantity(unitDeliveredQuantity);
+        order.setPackagingOrderedQuantity(packagingOrderedQuantity);
+        order.setPackagingDeliveredQuantity(packagingDeliveredQuantity);
+        order.setOrderDate(LocalDate.now());
+        order.setDeliverDate(LocalDate.now().plusDays(i));
+        orderRepository.save(order);
     }
+}
 
 
 
@@ -364,9 +394,109 @@ class ProgettoBaseApplicationTests
             realTasks.add(task);
         }
 
-        tRepo.saveAll(realTasks);
+        taskRepo.saveAll(realTasks);
     }
 
+
+    @Test
+    public void addTasks()
+    {
+        List<Task> tasks = new ArrayList<>();
+        
+        tasks.add(createTask(
+                "Verifica Sistema Settimanale",
+                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Documentazione Mensile",
+                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Controllo Backup Bisettimanale",
+                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Pulizia Server Settimanale",
+                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Rivedere Politiche di Sicurezza Mensile",
+                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Verifica Licenze Software Bisettimanale",
+                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Preparazione Report Settimanale",
+                "Preparare il report settimanale con le metriche e i risultati delle attività.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Elenco Contatti Mensile",
+                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+
+        taskRepo.saveAll(tasks);
+        
+        // Printing tasks to verify creation
+        // tasks.forEach(task -> {
+        //     System.out.println("Name: " + task.getName());
+        //     System.out.println("Description: " + task.getDescription());
+        //     System.out.println("Frequency: " + task.getFrequency());
+        //     System.out.println("Status: " + task.getStatus());
+        //     System.out.println("Creation Date: " + task.getCreationDate());
+        //     System.out.println("Completion Date: " + task.getCompletionDate());
+        //     System.out.println("----------------------------");
+        // });
+    }
+
+    private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
+    {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setFrequency(frequency);
+        task.setStatus(status);
+        task.setCreationDate(LocalDate.now());
+        return task;
+    }
+
+    @Autowired
+    MailService mailService;
+
+    @Test
+    public void mandaMail() throws MessagingException
+    {
+        Map<String,Object> model = new HashMap<>();
+        model.put("campo1", "ciaoo");
+        model.put("campo2", "byee");
+
+        mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
+    }
 }
+
 
 

@@ -38,7 +38,7 @@ public class SecurityConfig {
                     // .requestMatchers(HttpMethod.GET, "/api/products").hasRole("DIPENDENTE")
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.GET,"/api/orders").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/changeArrivedStatus").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}").hasAnyRole("ADMIN", "DIPENDENTE")
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
