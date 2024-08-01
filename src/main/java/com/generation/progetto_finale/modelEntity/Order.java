@@ -31,13 +31,9 @@ public class Order
 
     private Integer unitOrderedQuantity;
 
-    private Integer unitDeliveredQuantity;
-
     private Integer packagingOrderedQuantity;
 
-    private Integer packagingDeliveredQuantity;
-
-    private boolean hasArrived;
+    private boolean arrived;
 
     @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDate orderDate;
@@ -46,8 +42,8 @@ public class Order
     @PrePersist   //questo metodo verrà richiamato in automatico quando salvo per la prima volta una entità
     public void onCreate()
     {
-        orderDate         = LocalDate.now();
-        hasArrived        = false;
+        orderDate      = LocalDate.now();
+        arrived        = false;
     }
     
     // @PreUpdate

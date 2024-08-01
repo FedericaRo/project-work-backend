@@ -56,6 +56,11 @@ public class Product
      */
     private Integer unitsPerPackaging;
 
+    /**
+     * Livello minimo sotto cui le scorte devo essere riordinate
+     */
+    private Integer reorderPoint;
+
     // /**
     //  * Disponibilità in magazzino
     //  */
@@ -71,5 +76,4 @@ public class Product
 
     @OneToMany(mappedBy= "product")
     private List<Order> orders;
-
 }

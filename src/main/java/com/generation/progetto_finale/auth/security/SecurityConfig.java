@@ -36,10 +36,12 @@ public class SecurityConfig {
             authorize
             .requestMatchers("/api/auth/**","/swagger-ui/**","/api/v3/api-docs/**").permitAll()
                     // .requestMatchers(HttpMethod.GET, "/api/products").hasRole("DIPENDENTE")
+            .requestMatchers(HttpMethod.POST,"/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.GET,"/api/orders").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/changeArrivedStatus").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}").hasAnyRole("ADMIN", "DIPENDENTE")
+
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
 
@@ -47,6 +49,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/communications/newCommunication").permitAll()
             .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
             .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()

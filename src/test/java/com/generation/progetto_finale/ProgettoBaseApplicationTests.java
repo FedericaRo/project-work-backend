@@ -278,14 +278,10 @@ class ProgettoBaseApplicationTests
 
         // Generate random quantities
         int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
-        int unitDeliveredQuantity = random.nextInt(unitOrderedQuantity) + 1; // Random quantity between 1 and unitOrderedQuantity
         int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
-        int packagingDeliveredQuantity = random.nextInt(packagingOrderedQuantity) + 1; // Random quantity between 1 and packagingOrderedQuantity
 
         order.setUnitOrderedQuantity(unitOrderedQuantity);
-        order.setUnitDeliveredQuantity(unitDeliveredQuantity);
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
-        order.setPackagingDeliveredQuantity(packagingDeliveredQuantity);
         order.setOrderDate(LocalDate.now());
         order.setDeliverDate(LocalDate.now().plusDays(i));
         orderRepository.save(order);
@@ -326,6 +322,7 @@ class ProgettoBaseApplicationTests
             product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
             product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
             product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
+            product.setReorderPoint(2 + random.nextInt(10));
             product.setCategory(categories.get(random.nextInt(categories.size())));
             productRepository.save(product);
         }

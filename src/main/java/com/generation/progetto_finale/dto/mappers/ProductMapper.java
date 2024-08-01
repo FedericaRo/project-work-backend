@@ -13,8 +13,8 @@ public interface ProductMapper
     public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     //qui mettiamo tutto quello che di base non c'è nel Product
-    @Mapping(source = "category.id",target = "category_id")
-    @Mapping(source = "supplier.id",target = "supplier_id")
+    // @Mapping(source = "category.id",target = "category_id")
+    // @Mapping(source = "supplier.id",target = "supplier_id")
     @Mapping(source = "category.name",target = "categoryName")
     @Mapping(source = "supplier.name",target = "supplierName")
     @Mapping(source = "supplier.code",target = "supplierCode")

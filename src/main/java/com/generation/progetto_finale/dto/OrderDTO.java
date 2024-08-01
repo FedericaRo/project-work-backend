@@ -26,7 +26,7 @@ public class OrderDTO
     
     private Integer packagingOrderedQuantity;
     private String packagingType;
-    private boolean hasArrived;
+    private boolean arrived;
 
 
     // private Integer unitDeliveredQuantity;
