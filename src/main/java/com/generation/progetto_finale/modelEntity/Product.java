@@ -56,6 +56,8 @@ public class Product
      */
     private Integer unitsPerPackaging;
 
+    private Integer reorderPoint;
+
     // /**
     //  * Disponibilità in magazzino
     //  */

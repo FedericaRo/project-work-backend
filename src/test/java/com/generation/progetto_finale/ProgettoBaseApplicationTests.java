@@ -315,87 +315,35 @@ class ProgettoBaseApplicationTests
 
 
 
-	@Test
-	void loadOrders()
-	{
-		Supplier supplier = supplierRepository.findById(1).orElse(null);
-        Category category = categoryRepository.findById(1).orElse(null);
-
-        // Crea un prodotto
-        Product product = new Product();
-        product.setProductName("Product A");
-        product.setUnitPrice(10.0);
-        product.setUnitType("PZ");
-        product.setUnitTypeQuantity(100);
-        product.setPackagingType("CT");
-        product.setPackagingTypeQuantity(10);
-        product.setUnitsPerPackaging(10);
-        product.setCategory(category);
-        product.setSupplier(supplier);
-        productRepository.save(product);
-
-        // Crea e salva 10 ordini
+    @Test
+    void loadRandomOrders() {
+        
+        // Create and save 10 orders for the selected product
+        Random random = new Random();
         for (int i = 1; i <= 10; i++) {
+            int productId = random.nextInt(100) + 1; // Generates a random number between 1 and 100
+        
+            // Fetch the product with the randomly selected ID
+            Product product = productRepository.findById(productId).orElse(null);
+            
+            if (product == null) {
+                throw new RuntimeException("Product with ID " + productId + " not found");
+            }
             Order order = new Order();
             order.setProduct(product);
-            order.setUnitOrderedQuantity(50 + i);
-            order.setUnitDeliveredQuantity(45 + i);
-            order.setPackagingOrderedQuantity(5 + i);
-            order.setPackagingDeliveredQuantity(4 + i);
+    
+            // Generate random quantities
+            int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
+            int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
+            
+            order.setUnitOrderedQuantity(unitOrderedQuantity);
+            order.setPackagingOrderedQuantity(packagingOrderedQuantity);
             order.setOrderDate(LocalDate.now());
             order.setDeliverDate(LocalDate.now().plusDays(i));
             orderRepository.save(order);
         }
-	}
-
     }
 
-    @Test
-    void addMoreProducts()
-    {
-        Random random = new Random();
-        List<Supplier> suppliers = new ArrayList<>();
-        List<Category> categories = new ArrayList<>();
-
-        // Creare fornitori e categorie iniziali
-        for (int i = 1; i <= 5; i++) {
-            Supplier supplier = new Supplier();
-            supplier.setName("Supplier " + i);
-            supplier.setCode("SUP" + String.format("%03d", i * 100));
-            supplierRepository.save(supplier);
-            suppliers.add(supplier);
-
-            Category category = new Category();
-            category.setName("Category " + i);
-            categoryRepository.save(category);
-            categories.add(category);
-        }
-
-        // Creare 30 prodotti casuali
-        for (int i = 1; i <= 98; i++) {
-            Product product = new Product();
-            product.setProductName("Product " + i);
-            product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
-            product.setUnitType(randomUnitType());
-            product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
-            product.setPackagingType(randomPackagingType());
-            product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
-            product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
-            product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
-            product.setCategory(categories.get(random.nextInt(categories.size())));
-            productRepository.save(product);
-        }
-    }
-
-    private String randomUnitType() {
-        String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
-        return unitTypes[new Random().nextInt(unitTypes.length)];
-    }
-
-    private String randomPackagingType() {
-        String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
-        return packagingTypes[new Random().nextInt(packagingTypes.length)];
-    }
 
 
     @Test

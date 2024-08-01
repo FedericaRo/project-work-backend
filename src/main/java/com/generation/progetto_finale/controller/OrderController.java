@@ -50,7 +50,7 @@ public class OrderController
 
         Order order = orderToChange.get();
         System.out.println(order);
-        order.setHasArrived(!arrivedStatus);
+        order.setArrived(!arrivedStatus);
         orRepo.save(order);
     }
 
