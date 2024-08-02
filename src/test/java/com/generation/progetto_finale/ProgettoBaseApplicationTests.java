@@ -50,7 +50,8 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    StoredTaskRepository stRepo;
+    @Autowired
+    private StoredTaskRepository stRepo;
     @Autowired
     private TaskRepository tRepo;
 	@Autowired
