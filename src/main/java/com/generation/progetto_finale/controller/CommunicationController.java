@@ -38,6 +38,7 @@ public class CommunicationController
     @PostMapping("/newCommunication")
     public CommunicationDTO addNewCommunication(@RequestBody CommunicationDTO dto)
     {
+        System.out.println(dto);
         /**
          * Da ReqBody ottengo un DTO e tramite il service lo trasformo in entità
          */

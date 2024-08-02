@@ -42,7 +42,8 @@ public class Order
     @PrePersist   //questo metodo verrà richiamato in automatico quando salvo per la prima volta una entità
     public void onCreate()
     {
-        orderDate         = LocalDate.now();
+        orderDate      = LocalDate.now();
+
         arrived        = false;
     }
     
