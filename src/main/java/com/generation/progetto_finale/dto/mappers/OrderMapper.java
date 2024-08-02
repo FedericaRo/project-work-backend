@@ -27,6 +27,7 @@ public interface OrderMapper
     // @Mapping(source = "product.unitPrice", target = "unitPrice")
     // @Mapping(source = "product.unitsPerPackaging", target = "unitsPerPackaging")
     @Mapping(source = "product.packagingType", target = "packagingType")
+    @Mapping(source = "product.code", target = "productCode")
     // @Mapping(target = "packagingType", ignore = true)
     // @Mapping(target = "packagingTypeQuantity", ignore = true)
     // @Mapping(target = "unitPrice", ignore = true)
