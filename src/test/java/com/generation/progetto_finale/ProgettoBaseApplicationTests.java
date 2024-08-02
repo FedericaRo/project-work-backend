@@ -24,6 +24,7 @@ import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
+import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.CategoryRepository;
@@ -31,6 +32,7 @@ import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
+import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 import com.generation.progetto_finale.services.MailService;
 
@@ -47,8 +49,6 @@ class ProgettoBaseApplicationTests
     private PasswordEncoder passwordEncoder;
     @Autowired
     private StoredTaskRepository stRepo;
-    @Autowired
-    private TaskRepository tRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -58,8 +58,9 @@ class ProgettoBaseApplicationTests
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-
     private CommunicationRepository communicationRepository;
+    @Autowired
+    TaskRepository taskRepo;
 
 
     @Test
@@ -175,10 +176,8 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
-    @Autowired
-    StoredTaskRepository stRepo;
-    @Autowired
-    TaskRepository taskRepo;
+    
+    
     
    
  
@@ -257,107 +256,60 @@ void addUniqueProductsWithUniqueSuppliers() {
         categoryRepository.save(category);
         categories.add(category);
     }
+
+    // Creare 30 prodotti unici con codici e fornitori distinti
+    for (int i = 1; i <= 30; i++) {
+        Product product = new Product();
+        product.setProductName("Product " + i);
+        product.setCode("PROD" + String.format("%03d", i)); // Codice univoco per ogni prodotto
+        product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
+        product.setUnitType(randomUnitType());
+        product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
+        product.setPackagingType(randomPackagingType());
+        product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
+        product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
+        product.setReorderPoint(2 + random.nextInt(10));
+        product.setSupplier(suppliers.get(i - 1)); // Fornitore distinto per ogni prodotto
+        product.setCategory(categories.get(random.nextInt(categories.size())));
+        productRepository.save(product);
+    }
+}
+
+private String randomUnitType() {
+    String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
+    return unitTypes[new Random().nextInt(unitTypes.length)];
+}
+
+private String randomPackagingType() {
+    String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
+    return packagingTypes[new Random().nextInt(packagingTypes.length)];
 }
 
 
 
 
-    @Test
-    public void provaAutomazioneTask()
-    {
-        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
-        List<Task> realTasks = new ArrayList<>();
 
-        for (StoredTask st : tasks) 
-        {
-            Task task = new Task();
+    // @Test
+    // public void provaAutomazioneTask()
+    // {
+    //     List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+    //     List<Task> realTasks = new ArrayList<>();
 
-            task.setName(st.getName());
-            task.setDescription(st.getDescription());
-            task.setFrequency(st.getFrequency());
-            task.setStatus(TaskStatus.DAFARSI);
+    //     for (StoredTask st : tasks) 
+    //     {
+    //         Task task = new Task();
 
-            realTasks.add(task);
-        }
+    //         task.setName(st.getName());
+    //         task.setDescription(st.getDescription());
+    //         task.setFrequency(st.getFrequency());
+    //         task.setStatus(TaskStatus.DAFARSI);
 
-        taskRepo.saveAll(realTasks);
-    }
+    //         realTasks.add(task);
+    //     }
 
+    //     taskRepo.saveAll(realTasks);
+    // }
 
-    @Test
-    public void addTasks()
-    {
-        List<Task> tasks = new ArrayList<>();
-        
-        tasks.add(createTask(
-                "Verifica Sistema Settimanale",
-                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Aggiornamento Documentazione Mensile",
-                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Controllo Backup Bisettimanale",
-                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
-                Frequency.BISETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Pulizia Server Settimanale",
-                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Rivedere Politiche di Sicurezza Mensile",
-                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Verifica Licenze Software Bisettimanale",
-                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
-                Frequency.BISETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Preparazione Report Settimanale",
-                "Preparare il report settimanale con le metriche e i risultati delle attività.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Aggiornamento Elenco Contatti Mensile",
-                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-
-        taskRepo.saveAll(tasks);
-        
-        // Printing tasks to verify creation
-        // tasks.forEach(task -> {
-        //     System.out.println("Name: " + task.getName());
-        //     System.out.println("Description: " + task.getDescription());
-        //     System.out.println("Frequency: " + task.getFrequency());
-        //     System.out.println("Status: " + task.getStatus());
-        //     System.out.println("Creation Date: " + task.getCreationDate());
-        //     System.out.println("Completion Date: " + task.getCompletionDate());
-        //     System.out.println("----------------------------");
-        // });
-    }
 
     @Test
     public void addTasks()
@@ -433,6 +385,8 @@ void addUniqueProductsWithUniqueSuppliers() {
         //     System.out.println("----------------------------");
         // });
     }
+
+    
 
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
     {
