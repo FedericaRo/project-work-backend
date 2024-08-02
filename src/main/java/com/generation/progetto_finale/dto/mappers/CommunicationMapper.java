@@ -15,11 +15,13 @@ public interface CommunicationMapper
     @Mapping(source = "importance", target= "importance")
     @Mapping(source = "type", target = "type")
     // @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd")
+
     CommunicationDTO toDTO(Communication c);
 
     @Mapping(target = "importance")
     @Mapping(target = "type")
     // @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd")
+
     Communication toEntity(CommunicationDTO dto);
     
 }

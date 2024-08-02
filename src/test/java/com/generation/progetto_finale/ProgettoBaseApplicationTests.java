@@ -28,17 +28,12 @@ import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationType;
 import com.generation.progetto_finale.modelEntity.Frequency;
-import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
-import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 
-import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
-import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
-import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 
 @SpringBootTest
@@ -179,8 +174,12 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
+    @Autowired
+    StoredTaskRepository stRepo;
+    @Autowired
+    TaskRepository tRepo;
 
-	
+
 	@Test
 	void addUser() 
 	{
@@ -202,60 +201,8 @@ class ProgettoBaseApplicationTests
 		// francesca.setRoles();
 	}
 
-	// @Test
-    // void addProduct()
-    // {
-    //     Supplier supplierA = new Supplier();
-    //     supplierA.setName("Supplier A");
-    //     supplierA.setCode("SUP123");
-    //     supplierRepository.save(supplierA);
 
-
-
-	// 	// Creare il primo prodotto
-    //     Category categoryA = new Category();
-    //     categoryA.setName("Category A");
-    //     categoryRepository.save(categoryA);
-
-    //     // Creare il primo prodotto
-
-    //     Product productA = new Product();
-    //     productA.setProductName("Product A");
-    //     productA.setUnitPrice(10.0);
-    //     productA.setUnitType("PZ");
-    //     productA.setUnitTypeQuantity(100);
-    //     productA.setPackagingType("CT");
-    //     productA.setPackagingTypeQuantity(10);
-    //     productA.setUnitsPerPackaging(10);
-    //     productA.setSupplier(supplierA);
-    //     productA.setCategory(categoryA);
-    //     productRepository.save(productA);
-
-    //     // Creare il secondo supplier
-    //     Supplier supplierB = new Supplier();
-    //     supplierB.setName("Supplier B");
-    //     supplierB.setCode("SUP456");
-    //     supplierRepository.save(supplierB);
-
-    //     // Creare la seconda categoria
-    //     Category categoryB = new Category();
-    //     categoryB.setName("Category B");
-    //     categoryRepository.save(categoryB);
-
-    //     // Creare il secondo prodotto
-    //     Product productB = new Product();
-    //     productB.setProductName("Product B");
-    //     productB.setUnitPrice(20.0);
-    //     productB.setUnitType("KG");
-    //     productB.setUnitTypeQuantity(200);
-    //     productB.setPackagingType("CON");
-    //     productB.setPackagingTypeQuantity(20);
-    //     productB.setUnitsPerPackaging(5);
-    //     productB.setSupplier(supplierB);
-    //     productB.setCategory(categoryB);
-    //     productRepository.save(productB);
-
-	// }
+	
 
 
 	@Test
@@ -337,6 +284,7 @@ private String randomPackagingType() {
 }
 
 
+
     @Test
     public void provaAutomazioneTask()
     {
@@ -358,6 +306,91 @@ private String randomPackagingType() {
         tRepo.saveAll(realTasks);
     }
 
+    @Test
+    public void addTasks()
+    {
+        List<Task> tasks = new ArrayList<>();
+        
+        tasks.add(createTask(
+                "Verifica Sistema Settimanale",
+                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Documentazione Mensile",
+                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Controllo Backup Bisettimanale",
+                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Pulizia Server Settimanale",
+                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Rivedere Politiche di Sicurezza Mensile",
+                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Verifica Licenze Software Bisettimanale",
+                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Preparazione Report Settimanale",
+                "Preparare il report settimanale con le metriche e i risultati delle attività.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Elenco Contatti Mensile",
+                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+
+        tRepo.saveAll(tasks);
+        
+        // Printing tasks to verify creation
+        // tasks.forEach(task -> {
+        //     System.out.println("Name: " + task.getName());
+        //     System.out.println("Description: " + task.getDescription());
+        //     System.out.println("Frequency: " + task.getFrequency());
+        //     System.out.println("Status: " + task.getStatus());
+        //     System.out.println("Creation Date: " + task.getCreationDate());
+        //     System.out.println("Completion Date: " + task.getCompletionDate());
+        //     System.out.println("----------------------------");
+        // });
+    }
+
+    private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
+    {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setFrequency(frequency);
+        task.setStatus(status);
+        task.setCreationDate(LocalDate.now());
+        return task;
+    }
 }
 
 

@@ -17,6 +17,7 @@ import com.generation.progetto_finale.dto.mappers.CommunicationService;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
 
+
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
@@ -41,6 +42,7 @@ public class CommunicationController
         /**
          * Da ReqBody ottengo un DTO e tramite il service lo trasformo in entità
          */
+        System.out.println(dto);
         Communication c = cServ.toEntity(dto);
 
         /**
