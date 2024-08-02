@@ -6,5 +6,5 @@ import com.generation.progetto_finale.modelEntity.Supplier;
 
 public interface SupplierRepository extends JpaRepository<Supplier,Integer> 
 {
-    public Supplier findByNameAndCode(String name, String code);
+    public Supplier findByName(String name);
 }

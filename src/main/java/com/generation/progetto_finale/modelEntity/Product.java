@@ -42,6 +42,11 @@ public class Product
     private Integer unitTypeQuantity;
 
     /**
+     * Identificativo di comunicazione tra azienda e e fornitore
+     */
+    private String code;
+
+    /**
      * Tipologia packaging (CT,CON,MACCHINA,CAR)
      */
     private String packagingType;
@@ -56,6 +61,9 @@ public class Product
      */
     private Integer unitsPerPackaging;
 
+    /**
+     * Livello minimo sotto cui le scorte devo essere riordinate
+     */
     private Integer reorderPoint;
 
     // /**
@@ -73,5 +81,4 @@ public class Product
 
     @OneToMany(mappedBy= "product")
     private List<Order> orders;
-
 }

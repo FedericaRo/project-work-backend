@@ -24,7 +24,6 @@ import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
-import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.CategoryRepository;
@@ -32,7 +31,6 @@ import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
-import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 import com.generation.progetto_finale.services.MailService;
 
@@ -47,8 +45,9 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
+    StoredTaskRepository stRepo;
+    @Autowired
+    private TaskRepository tRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -175,15 +174,15 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
-
+    @Autowired
     StoredTaskRepository stRepo;
     @Autowired
     TaskRepository taskRepo;
     
    
-   
+ 
 
-	
+
 	@Test
 	void addUser() 
 	{
@@ -205,143 +204,60 @@ class ProgettoBaseApplicationTests
 		// francesca.setRoles();
 	}
 
-	@Test
-
-    void addProduct()
-    {
-        Supplier supplierA = new Supplier();
-        supplierA.setName("Supplier A");
-        supplierA.setCode("SUP123");
-        supplierRepository.save(supplierA);
-
-
-
-		// Creare il primo prodotto
-        Category categoryA = new Category();
-        categoryA.setName("Category A");
-        categoryRepository.save(categoryA);
-
-        // Creare il primo prodotto
-
-        Product productA = new Product();
-        productA.setProductName("Product A");
-        productA.setUnitPrice(10.0);
-        productA.setUnitType("PZ");
-        productA.setUnitTypeQuantity(100);
-        productA.setPackagingType("CT");
-        productA.setPackagingTypeQuantity(10);
-        productA.setUnitsPerPackaging(10);
-        productA.setSupplier(supplierA);
-        productA.setCategory(categoryA);
-        productRepository.save(productA);
-
-        // Creare il secondo supplier
-        Supplier supplierB = new Supplier();
-        supplierB.setName("Supplier B");
-        supplierB.setCode("SUP456");
-        supplierRepository.save(supplierB);
-
-        // Creare la seconda categoria
-        Category categoryB = new Category();
-        categoryB.setName("Category B");
-        categoryRepository.save(categoryB);
-
-        // Creare il secondo prodotto
-        Product productB = new Product();
-        productB.setProductName("Product B");
-        productB.setUnitPrice(20.0);
-        productB.setUnitType("KG");
-        productB.setUnitTypeQuantity(200);
-        productB.setPackagingType("CON");
-        productB.setPackagingTypeQuantity(20);
-        productB.setUnitsPerPackaging(5);
-        productB.setSupplier(supplierB);
-        productB.setCategory(categoryB);
-        productRepository.save(productB);
-
-	}
-
+	
 
 
 	@Test
-	void addMoreProducts()
-	{
-		Random random = new Random();
-		List<Supplier> suppliers = new ArrayList<>();
-		List<Category> categories = new ArrayList<>();
-	
-		// Creare fornitori e categorie iniziali
-		for (int i = 1; i <= 5; i++) {
-			Supplier supplier = new Supplier();
-			supplier.setName("Supplier " + i);
-			supplier.setCode("SUP" + String.format("%03d", i * 100));
-			supplierRepository.save(supplier);
-			suppliers.add(supplier);
-	
-			Category category = new Category();
-			category.setName("Category " + i);
-			categoryRepository.save(category);
-			categories.add(category);
-		}
-	
-		// Creare 30 prodotti casuali
-		for (int i = 1; i <= 98; i++) {
-			Product product = new Product();
-			product.setProductName("Product " + i);
-			product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
-			product.setUnitType(randomUnitType());
-			product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
-			product.setPackagingType(randomPackagingType());
-			product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
-			product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
-			product.setSupplier(suppliers.get(random.nextInt(suppliers.size())));
-			product.setCategory(categories.get(random.nextInt(categories.size())));
-            product.setReorderPoint(2 + random.nextInt(10));
-			productRepository.save(product);
-		}
-	}
-	
-	private String randomUnitType() {
-		String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
-		return unitTypes[new Random().nextInt(unitTypes.length)];
-	}
-	
-	private String randomPackagingType() {
-		String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
-		return packagingTypes[new Random().nextInt(packagingTypes.length)];
-	}
-
-
-
-    @Test
     void loadRandomOrders() {
-        
-        // Create and save 10 orders for the selected product
-        Random random = new Random();
-        for (int i = 1; i <= 10; i++) 
-        {
-            int productId = random.nextInt(100) + 1; // Generates a random number between 1 and 100
-        
-            // Fetch the product with the randomly selected ID
-            Product product = productRepository.findById(productId).orElse(null);
-            
-            if (product == null) {
-                throw new RuntimeException("Product with ID " + productId + " not found");
-            }
-            Order order = new Order();
-            order.setProduct(product);
     
-            // Generate random quantities
-            int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
-            int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
-            
-            order.setUnitOrderedQuantity(unitOrderedQuantity);
-            order.setPackagingOrderedQuantity(packagingOrderedQuantity);
-            order.setOrderDate(LocalDate.now());
-            order.setDeliverDate(LocalDate.now().plusDays(i));
-            orderRepository.save(order);
+    // Create and save 10 orders for the selected product
+    Random random = new Random();
+    for (int i = 1; i <= 10; i++) {
+        int productId = random.nextInt(29) + 1; // Generates a random number between 1 and 100
+    
+        // Fetch the product with the randomly selected ID
+        Product product = productRepository.findById(productId).orElse(null);
+        
+        if (product == null) {
+            throw new RuntimeException("Product with ID " + productId + " not found");
         }
+        Order order = new Order();
+        order.setProduct(product);
+
+        // Generate random quantities
+        int unitOrderedQuantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
+        int packagingOrderedQuantity = random.nextInt(20) + 1; // Random quantity between 1 and 20
+
+        order.setUnitOrderedQuantity(unitOrderedQuantity);
+        order.setPackagingOrderedQuantity(packagingOrderedQuantity);
+        order.setOrderDate(LocalDate.now());
+        order.setDeliverDate(LocalDate.now().plusDays(i));
+        orderRepository.save(order);
+    }
 }
+
+    
+
+@Test
+void addUniqueProductsWithUniqueSuppliers() {
+    Random random = new Random();
+    List<Supplier> suppliers = new ArrayList<>();
+    List<Category> categories = new ArrayList<>();
+
+    // Creare fornitori e categorie iniziali
+    for (int i = 1; i <= 30; i++) {
+        Supplier supplier = new Supplier();
+        supplier.setName("Supplier " + i);
+        supplierRepository.save(supplier);
+        suppliers.add(supplier);
+
+        Category category = new Category();
+        category.setName("Category " + (i % 5 + 1)); // Ciclo tra 5 categorie
+        categoryRepository.save(category);
+        categories.add(category);
+    }
+}
+
 
 
 
@@ -442,6 +358,81 @@ class ProgettoBaseApplicationTests
         // });
     }
 
+    @Test
+    public void addTasks()
+    {
+        List<Task> tasks = new ArrayList<>();
+        
+        tasks.add(createTask(
+                "Verifica Sistema Settimanale",
+                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Documentazione Mensile",
+                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Controllo Backup Bisettimanale",
+                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Pulizia Server Settimanale",
+                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Rivedere Politiche di Sicurezza Mensile",
+                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Verifica Licenze Software Bisettimanale",
+                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Preparazione Report Settimanale",
+                "Preparare il report settimanale con le metriche e i risultati delle attività.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI
+        ));
+        
+        tasks.add(createTask(
+                "Aggiornamento Elenco Contatti Mensile",
+                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI
+        ));
+
+        taskRepo.saveAll(tasks);
+        
+        // Printing tasks to verify creation
+        // tasks.forEach(task -> {
+        //     System.out.println("Name: " + task.getName());
+        //     System.out.println("Description: " + task.getDescription());
+        //     System.out.println("Frequency: " + task.getFrequency());
+        //     System.out.println("Status: " + task.getStatus());
+        //     System.out.println("Creation Date: " + task.getCreationDate());
+        //     System.out.println("Completion Date: " + task.getCompletionDate());
+        //     System.out.println("----------------------------");
+        // });
+    }
+
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
     {
         Task task = new Task();
@@ -452,6 +443,7 @@ class ProgettoBaseApplicationTests
         task.setCreationDate(LocalDate.now());
         return task;
     }
+
 
     @Autowired
     MailService mailService;
@@ -465,6 +457,8 @@ class ProgettoBaseApplicationTests
 
         mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
     }
+
+
 }
 
 

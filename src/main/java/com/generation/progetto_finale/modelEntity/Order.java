@@ -43,7 +43,8 @@ public class Order
     public void onCreate()
     {
         orderDate         = LocalDate.now();
-        arrived        = false;
+        arrived           = false;
+
     }
     
     // @PreUpdate

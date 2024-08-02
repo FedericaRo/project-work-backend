@@ -29,6 +29,7 @@ public class ScheduledJobs
     @Scheduled(cron = "0 0 1 ? * MON")
     public void newWeeklyTasks() 
     {
+        setFinalStatusForWeeklyTaks();
         List<StoredTask> stt = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
 
         createTasks(stt);
@@ -37,6 +38,7 @@ public class ScheduledJobs
     @Scheduled(cron = "0 0 1 ? * MON")
     public void newBiweeklyTasks() 
     {
+        setFinalStatusForBiweeklyTaks();
         LocalDate currentDate = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault()); // Prendi banalmente il campo della settimana
         int weekNumber = currentDate.get(weekFields.weekOfWeekBasedYear()); // maniera terribile per prendere il numero della settimana 
@@ -51,6 +53,7 @@ public class ScheduledJobs
     @Scheduled(cron = "0 0 1 1 * ?")
     public void newMonthlyTasks() 
     {
+        setFinalStatusForMonthlyTaks();
         List<StoredTask> stt = stRepo.findAllByFrequency(Frequency.MENSILE);
 
         createTasks(stt);
@@ -82,6 +85,63 @@ public class ScheduledJobs
         }
 
         tRepo.saveAll(realTasks);
+    }
+
+    private void setFinalStatusForWeeklyTaks()
+    {
+        List<Task> tasks = tRepo.findAll()
+                            .stream()
+                            .filter(t->t.getFrequency() == Frequency.SETTIMANALE)
+                            .filter(t->t.getStatus() == TaskStatus.DAFARSI)
+                            .toList();
+
+        List<Task> taskForce = new ArrayList<>();
+
+        for (Task t : tasks) 
+        {
+            t.setStatus(TaskStatus.INCOMPIUTO);
+            taskForce.add(t);
+        }
+
+        tRepo.saveAll(taskForce);
+    }
+
+    private void setFinalStatusForBiweeklyTaks()
+    {
+        List<Task> tasks = tRepo.findAll()
+                            .stream()
+                            .filter(t->t.getFrequency() == Frequency.BISETTIMANALE)
+                            .filter(t->t.getStatus() == TaskStatus.DAFARSI)
+                            .toList();
+
+        List<Task> taskForce = new ArrayList<>();
+
+        for (Task t : tasks) 
+        {
+            t.setStatus(TaskStatus.INCOMPIUTO);
+            taskForce.add(t);
+        }
+
+        tRepo.saveAll(taskForce);
+    }
+
+    private void setFinalStatusForMonthlyTaks()
+    {
+        List<Task> tasks = tRepo.findAll()
+                            .stream()
+                            .filter(t->t.getFrequency() == Frequency.MENSILE)
+                            .filter(t->t.getStatus() == TaskStatus.DAFARSI)
+                            .toList();
+
+        List<Task> taskForce = new ArrayList<>();
+
+        for (Task t : tasks) 
+        {
+            t.setStatus(TaskStatus.INCOMPIUTO);
+            taskForce.add(t);
+        }
+
+        tRepo.saveAll(taskForce);
     }
 
 }
