@@ -44,6 +44,7 @@ public class Order
     {
         orderDate         = LocalDate.now();
         arrived           = false;
+
     }
     
     // @PreUpdate

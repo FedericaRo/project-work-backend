@@ -20,9 +20,6 @@ public class Supplier
 
     private String name;
 
-    //identificativo fornitore che parla con l'azienda
-    private String code;
-
     @OneToMany(mappedBy= "supplier")
     private List<Product> products;
 }

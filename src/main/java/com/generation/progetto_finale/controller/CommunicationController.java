@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ import com.generation.progetto_finale.dto.mappers.CommunicationService;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
@@ -37,9 +38,11 @@ public class CommunicationController
     @PostMapping("/newCommunication")
     public CommunicationDTO addNewCommunication(@RequestBody CommunicationDTO dto)
     {
+        System.out.println(dto);
         /**
          * Da ReqBody ottengo un DTO e tramite il service lo trasformo in entità
          */
+        System.out.println(dto);
         Communication c = cServ.toEntity(dto);
 
         /**
