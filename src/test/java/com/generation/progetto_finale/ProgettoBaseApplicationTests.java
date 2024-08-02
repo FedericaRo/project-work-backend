@@ -24,6 +24,7 @@ import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
+import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.CategoryRepository;
@@ -31,6 +32,7 @@ import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
+import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 import com.generation.progetto_finale.services.MailService;
 
@@ -45,7 +47,6 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    StoredTaskRepository stRepo;
     @Autowired
     private TaskRepository tRepo;
 	@Autowired
@@ -358,80 +359,6 @@ void addUniqueProductsWithUniqueSuppliers() {
         // });
     }
 
-    @Test
-    public void addTasks()
-    {
-        List<Task> tasks = new ArrayList<>();
-        
-        tasks.add(createTask(
-                "Verifica Sistema Settimanale",
-                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Aggiornamento Documentazione Mensile",
-                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Controllo Backup Bisettimanale",
-                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
-                Frequency.BISETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Pulizia Server Settimanale",
-                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Rivedere Politiche di Sicurezza Mensile",
-                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Verifica Licenze Software Bisettimanale",
-                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
-                Frequency.BISETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Preparazione Report Settimanale",
-                "Preparare il report settimanale con le metriche e i risultati delle attività.",
-                Frequency.SETTIMANALE,
-                Task.TaskStatus.DAFARSI
-        ));
-        
-        tasks.add(createTask(
-                "Aggiornamento Elenco Contatti Mensile",
-                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
-                Frequency.MENSILE,
-                Task.TaskStatus.DAFARSI
-        ));
-
-        taskRepo.saveAll(tasks);
-        
-        // Printing tasks to verify creation
-        // tasks.forEach(task -> {
-        //     System.out.println("Name: " + task.getName());
-        //     System.out.println("Description: " + task.getDescription());
-        //     System.out.println("Frequency: " + task.getFrequency());
-        //     System.out.println("Status: " + task.getStatus());
-        //     System.out.println("Creation Date: " + task.getCreationDate());
-        //     System.out.println("Completion Date: " + task.getCompletionDate());
-        //     System.out.println("----------------------------");
-        // });
-    }
 
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
     {
