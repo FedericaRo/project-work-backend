@@ -20,6 +20,7 @@ public class OrderDTO
     private String productName;
 
     private LocalDate orderDate;
+    private LocalDate deliverDate;
 
     private Integer unitOrderedQuantity;
     private String unitType;

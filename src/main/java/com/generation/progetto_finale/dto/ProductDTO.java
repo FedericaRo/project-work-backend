@@ -23,4 +23,5 @@ public class ProductDTO
     protected String supplierName, supplierCode;
     protected Integer reorderPoint;
     protected String code;
+
 }

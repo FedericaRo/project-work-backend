@@ -21,6 +21,7 @@ import io.jsonwebtoken.security.Keys;
 public class JWTGenerator 
 {
 	// private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
 	private static final Key key = Keys.hmacShaKeyFor("stringalunghissimaacasononimportabenpiulungaqustringalunghissimaacasononimportabenpiulungaqustringalunghissimaacasononimportabenpiulungaqustringalunghissimaacasononimportabenpiulungaqu".getBytes());
 	
 	@Value("${jwtduration}")
