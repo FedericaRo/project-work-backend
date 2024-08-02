@@ -1,7 +1,6 @@
 package com.generation.progetto_finale.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.progetto_finale.dto.TaskDTO;
 import com.generation.progetto_finale.dto.mappers.CompletionTaskDTO;
 import com.generation.progetto_finale.dto.mappers.TaskService;
-import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Task;
-import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 
