@@ -17,7 +17,7 @@ public interface ProductMapper
     // @Mapping(source = "supplier.id",target = "supplier_id")
     @Mapping(source = "category.name",target = "categoryName")
     @Mapping(source = "supplier.name",target = "supplierName")
-    @Mapping(source = "supplier.code",target = "supplierCode")
+    // @Mapping(source = "supplier.code",target = "supplierCode")
     ProductDTO toDTO(Product p);
 
     //qui trasformiamo da DTO a Product, ignorando category e supplier che

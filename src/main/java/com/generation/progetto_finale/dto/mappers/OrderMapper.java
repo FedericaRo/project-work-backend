@@ -20,7 +20,7 @@ public interface OrderMapper
     // @Mapping(source = "product.category.name", target = "categoryName")
     // @Mapping(source = "product.supplier.id", target = "supplier_id")
     @Mapping(source = "product.supplier.name", target = "supplierName")
-    @Mapping(source = "product.supplier.code", target = "supplierCode")
+    // @Mapping(source = "product.supplier.code", target = "supplierCode")
     // @Mapping(source = "product.packagingTypeQuantity", target = "packagingTypeQuantity")
     // @Mapping(source = "product.unitTypeQuantity", target = "unitTypeQuantity")
     @Mapping(source = "product.unitType", target = "unitType ")

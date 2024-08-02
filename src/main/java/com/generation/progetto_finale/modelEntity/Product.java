@@ -42,6 +42,11 @@ public class Product
     private Integer unitTypeQuantity;
 
     /**
+     * Identificativo di comunicazione tra azienda e e fornitore
+     */
+    private String code;
+
+    /**
      * Tipologia packaging (CT,CON,MACCHINA,CAR)
      */
     private String packagingType;

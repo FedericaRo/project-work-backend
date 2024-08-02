@@ -14,7 +14,7 @@ public class OrderDTO
     private Integer id;
     // private Integer supplier_id;
     private String supplierName;
-    private String supplierCode;
+    private String productCode;
     
     // private Integer product_id;
     private String productName;

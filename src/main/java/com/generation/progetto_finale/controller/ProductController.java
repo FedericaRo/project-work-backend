@@ -46,7 +46,7 @@ public class ProductController
         System.out.println(dto);
         Product product = pServ.toEntity(dto);
         
-        Supplier supplier = sRepo.findByNameAndCode(dto.getSupplierName(), dto.getSupplierCode());
+        Supplier supplier = sRepo.findByName(dto.getSupplierName());
         Category category = cRepo.findByName(dto.getCategoryName());
         double roundedValue = Math.round(dto.getUnitPrice() * 100.0) / 100.0;
 
