@@ -25,7 +25,6 @@ import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Supplier;
-import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
 import com.generation.progetto_finale.repositories.CategoryRepository;
@@ -33,7 +32,6 @@ import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
-import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
 import com.generation.progetto_finale.services.MailService;
@@ -49,8 +47,6 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private StoredTaskRepository stRepo;
     @Autowired
     private TaskRepository taskRepo;
 	@Autowired
@@ -389,7 +385,6 @@ private String randomPackagingType() {
         // });
     }
 
-    
 
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
     {
