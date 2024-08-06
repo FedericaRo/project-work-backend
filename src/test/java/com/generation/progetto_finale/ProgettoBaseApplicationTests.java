@@ -53,8 +53,6 @@ class ProgettoBaseApplicationTests
     private StoredTaskRepository stRepo;
     @Autowired
     private TaskRepository taskRepo;
-    @Autowired
-    private StoredTaskRepository stRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -65,8 +63,7 @@ class ProgettoBaseApplicationTests
     private ProductRepository productRepository;
     @Autowired
     private CommunicationRepository communicationRepository;
-    @Autowired
-    TaskRepository taskRepo;
+    
 
 
     @Test

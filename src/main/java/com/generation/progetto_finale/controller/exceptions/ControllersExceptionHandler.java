@@ -16,4 +16,11 @@ public class ControllersExceptionHandler
     {
         return e.getMessage();
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public String illegalArgument(IllegalArgumentException e)
+    {
+        return e.getMessage();
+    }
 }
