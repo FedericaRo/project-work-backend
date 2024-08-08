@@ -42,6 +42,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/products/newProduct").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
 
 
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
