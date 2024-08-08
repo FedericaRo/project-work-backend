@@ -47,7 +47,7 @@ public class SecurityConfig {
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
 
-            .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks", "/api/categories", "/api/suppliers", "/api/prova").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask", "/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
@@ -55,6 +55,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
             .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()
+            .requestMatchers( "/websocket/**").permitAll()
+
 
             .anyRequest().authenticated()
         )

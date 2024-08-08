@@ -47,9 +47,8 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    StoredTaskRepository stRepo;
     @Autowired
-    private TaskRepository tRepo;
+    private StoredTaskRepository stRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -59,8 +58,9 @@ class ProgettoBaseApplicationTests
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-
     private CommunicationRepository communicationRepository;
+    @Autowired
+    TaskRepository taskRepo;
 
 
     @Test
@@ -176,8 +176,8 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
-    @Autowired
-    TaskRepository taskRepo;
+    
+    
     
    
  
@@ -284,29 +284,40 @@ void addUniqueProductsWithUniqueSuppliers() {
     }
 }
 
+private String randomUnitType() {
+    String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
+    return unitTypes[new Random().nextInt(unitTypes.length)];
+}
+
+private String randomPackagingType() {
+    String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
+    return packagingTypes[new Random().nextInt(packagingTypes.length)];
+}
 
 
 
-    @Test
-    public void provaAutomazioneTask()
-    {
-        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
-        List<Task> realTasks = new ArrayList<>();
 
-        for (StoredTask st : tasks) 
-        {
-            Task task = new Task();
 
-            task.setName(st.getName());
-            task.setDescription(st.getDescription());
-            task.setFrequency(st.getFrequency());
-            task.setStatus(TaskStatus.DAFARSI);
+    // @Test
+    // public void provaAutomazioneTask()
+    // {
+    //     List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+    //     List<Task> realTasks = new ArrayList<>();
 
-            realTasks.add(task);
-        }
+    //     for (StoredTask st : tasks) 
+    //     {
+    //         Task task = new Task();
 
-        taskRepo.saveAll(realTasks);
-    }
+    //         task.setName(st.getName());
+    //         task.setDescription(st.getDescription());
+    //         task.setFrequency(st.getFrequency());
+    //         task.setStatus(TaskStatus.DAFARSI);
+
+    //         realTasks.add(task);
+    //     }
+
+    //     taskRepo.saveAll(realTasks);
+    // }
 
 
     @Test
@@ -383,17 +394,7 @@ void addUniqueProductsWithUniqueSuppliers() {
         //     System.out.println("----------------------------");
         // });
     }
-        
-        // Printing tasks to verify creation
-        // tasks.forEach(task -> {
-        //     System.out.println("Name: " + task.getName());
-        //     System.out.println("Description: " + task.getDescription());
-        //     System.out.println("Frequency: " + task.getFrequency());
-        //     System.out.println("Status: " + task.getStatus());
-        //     System.out.println("Creation Date: " + task.getCreationDate());
-        //     System.out.println("Completion Date: " + task.getCompletionDate());
-        //     System.out.println("----------------------------");
-        // });
+
     
 
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
