@@ -20,7 +20,7 @@ public class ProductDTO
     protected Integer packagingTypeQuantity;
     protected Integer unitsPerPackaging;
     protected String categoryName;
-    protected String supplierName, supplierCode;
+    protected String supplierName;
     protected Integer reorderPoint;
     protected String code;
 
