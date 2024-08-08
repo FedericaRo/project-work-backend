@@ -47,8 +47,6 @@ class ProgettoBaseApplicationTests
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private StoredTaskRepository stRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -234,17 +232,6 @@ class ProgettoBaseApplicationTests
         order.setDeliverDate(LocalDate.now().plusDays(i));
         orderRepository.save(order);
     }
-}
-
-    
-private String randomUnitType() {
-    String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
-    return unitTypes[new Random().nextInt(unitTypes.length)];
-}
-
-private String randomPackagingType() {
-    String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
-    return packagingTypes[new Random().nextInt(packagingTypes.length)];
 }
 
 @Test
