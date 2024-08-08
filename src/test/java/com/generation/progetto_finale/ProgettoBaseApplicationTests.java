@@ -370,7 +370,6 @@ private String randomPackagingType() {
                 Frequency.MENSILE,
                 Task.TaskStatus.DAFARSI
         ));
-
         taskRepo.saveAll(tasks);
         
         // Printing tasks to verify creation
@@ -397,6 +396,86 @@ private String randomPackagingType() {
         return task;
     }
 
+    @Test
+    public void addOldTasks() {
+        List<Task> oldTasks = new ArrayList<>();
+        
+        oldTasks.add(createOldTask(
+                "Verifica Sistema Settimanale",
+                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(2) // Data di creazione di 2 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Aggiornamento Documentazione Mensile",
+                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(1) // Data di creazione di 1 mese fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Controllo Backup Bisettimanale",
+                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(3) // Data di creazione di 3 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Pulizia Server Settimanale",
+                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(4) // Data di creazione di 4 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Rivedere Politiche di Sicurezza Mensile",
+                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(2) // Data di creazione di 2 mesi fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Verifica Licenze Software Bisettimanale",
+                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(5) // Data di creazione di 5 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Preparazione Report Settimanale",
+                "Preparare il report settimanale con le metriche e i risultati delle attività.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(6) // Data di creazione di 6 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Aggiornamento Elenco Contatti Mensile",
+                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(3) // Data di creazione di 3 mesi fa
+        ));
+
+        taskRepo.saveAll(oldTasks);
+    }
+
+    private static Task createOldTask(String name, String description, Frequency frequency, Task.TaskStatus status, LocalDate creationDate) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setFrequency(frequency);
+        task.setStatus(status);
+        task.setCreationDate(creationDate);
+        return task;
+    }
 
     @Autowired
     MailService mailService;
