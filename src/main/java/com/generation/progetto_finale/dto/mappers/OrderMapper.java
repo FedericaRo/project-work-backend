@@ -7,8 +7,9 @@ import org.mapstruct.factory.Mappers;
 import com.generation.progetto_finale.dto.OrderDTO;
 import com.generation.progetto_finale.modelEntity.Order;
 
+
 @Mapper
-public interface OrderMapper 
+public interface OrderMapper
 {
     public static final OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 

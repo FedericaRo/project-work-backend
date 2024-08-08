@@ -118,7 +118,7 @@ public class OrderController
         
 
         System.out.println("STATUS ARRIVATO DA CAMBIARE " + orderDTO.isArrived());
-        Optional<Order> orderToChange = orRepo.findById(orderId);
+        Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
             throw new EntityNotFoundException("L'ordine non esiste");
             
@@ -195,7 +195,7 @@ public class OrderController
         return product;
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editPackagingQuantity")
     public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
@@ -211,7 +211,7 @@ public class OrderController
         orderRepo.save(order);
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editUnitQuantity")
     public void editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
     {
@@ -233,7 +233,7 @@ public class OrderController
 
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero
+    // TO DO Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("{orderId}")
     public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
