@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.progetto_finale.dto.CategoryDTO;
-import com.generation.progetto_finale.dto.CategoryDTO;
 import com.generation.progetto_finale.dto.mappers.CategoryService;
 import com.generation.progetto_finale.modelEntity.Category;
 import com.generation.progetto_finale.repositories.CategoryRepository;
