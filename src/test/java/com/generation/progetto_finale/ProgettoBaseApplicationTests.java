@@ -48,7 +48,7 @@ class ProgettoBaseApplicationTests
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private TaskRepository tRepo;
+    private TaskRepository taskRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -58,8 +58,8 @@ class ProgettoBaseApplicationTests
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-
     private CommunicationRepository communicationRepository;
+    
 
 
     @Test
@@ -175,10 +175,8 @@ class ProgettoBaseApplicationTests
         communicationRepository.save(communication9);
     }
 
-    @Autowired
-    StoredTaskRepository stRepo;
-    @Autowired
-    TaskRepository taskRepo;
+    
+    
     
    
  
@@ -232,7 +230,7 @@ class ProgettoBaseApplicationTests
         order.setUnitOrderedQuantity(unitOrderedQuantity);
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
         order.setOrderDate(LocalDate.now());
-        order.setDeliverDate(LocalDate.now().plusDays(i));
+        // order.setDeliverDate(LocalDate.now().plusDays(i));
         orderRepository.save(order);
     }
 }
@@ -257,31 +255,59 @@ void addUniqueProductsWithUniqueSuppliers() {
         categoryRepository.save(category);
         categories.add(category);
     }
+
+    // Creare 30 prodotti unici con codici e fornitori distinti
+    for (int i = 1; i <= 30; i++) {
+        Product product = new Product();
+        product.setProductName("Product " + i);
+        product.setCode("PROD" + String.format("%03d", i)); // Codice univoco per ogni prodotto
+        product.setUnitPrice(5.0 + (random.nextDouble() * 95.0)); // Prezzo tra 5.0 e 100.0
+        product.setUnitType(randomUnitType());
+        product.setUnitTypeQuantity(50 + random.nextInt(451)); // Quantità tra 50 e 500
+        product.setPackagingType(randomPackagingType());
+        product.setPackagingTypeQuantity(5 + random.nextInt(96)); // Quantità tra 5 e 100
+        product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
+        product.setReorderPoint(2 + random.nextInt(10));
+        product.setSupplier(suppliers.get(i - 1)); // Fornitore distinto per ogni prodotto
+        product.setCategory(categories.get(random.nextInt(categories.size())));
+        productRepository.save(product);
+    }
+}
+
+private String randomUnitType() {
+    String[] unitTypes = {"PZ", "KG", "L", "M", "CM"};
+    return unitTypes[new Random().nextInt(unitTypes.length)];
+}
+
+private String randomPackagingType() {
+    String[] packagingTypes = {"CT", "CON", "BOX", "BAG", "PAL"};
+    return packagingTypes[new Random().nextInt(packagingTypes.length)];
 }
 
 
 
 
-    @Test
-    public void provaAutomazioneTask()
-    {
-        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
-        List<Task> realTasks = new ArrayList<>();
 
-        for (StoredTask st : tasks) 
-        {
-            Task task = new Task();
+    // @Test
+    // public void provaAutomazioneTask()
+    // {
+    //     List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+    //     List<Task> realTasks = new ArrayList<>();
 
-            task.setName(st.getName());
-            task.setDescription(st.getDescription());
-            task.setFrequency(st.getFrequency());
-            task.setStatus(TaskStatus.DAFARSI);
+    //     for (StoredTask st : tasks) 
+    //     {
+    //         Task task = new Task();
 
-            realTasks.add(task);
-        }
+    //         task.setName(st.getName());
+    //         task.setDescription(st.getDescription());
+    //         task.setFrequency(st.getFrequency());
+    //         task.setStatus(TaskStatus.DAFARSI);
 
-        taskRepo.saveAll(realTasks);
-    }
+    //         realTasks.add(task);
+    //     }
+
+    //     taskRepo.saveAll(realTasks);
+    // }
 
 
     @Test
