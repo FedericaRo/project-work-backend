@@ -241,17 +241,20 @@ void addUniqueProductsWithUniqueSuppliers() {
     List<Supplier> suppliers = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
 
-    // Creare fornitori e categorie iniziali
+    // Creare 5 categorie uniche
+    for (int i = 1; i <= 5; i++) {
+        Category category = new Category();
+        category.setName("Category " + i);
+        categoryRepository.save(category);
+        categories.add(category);
+    }
+
+    // Creare 30 fornitori unici
     for (int i = 1; i <= 30; i++) {
         Supplier supplier = new Supplier();
         supplier.setName("Supplier " + i);
         supplierRepository.save(supplier);
         suppliers.add(supplier);
-
-        Category category = new Category();
-        category.setName("Category " + (i % 5 + 1)); // Ciclo tra 5 categorie
-        categoryRepository.save(category);
-        categories.add(category);
     }
 
     // Creare 30 prodotti unici con codici e fornitori distinti
@@ -267,7 +270,7 @@ void addUniqueProductsWithUniqueSuppliers() {
         product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
         product.setReorderPoint(2 + random.nextInt(10));
         product.setSupplier(suppliers.get(i - 1)); // Fornitore distinto per ogni prodotto
-        product.setCategory(categories.get(random.nextInt(categories.size())));
+        product.setCategory(categories.get(random.nextInt(categories.size()))); // Seleziona una delle 5 categorie
         productRepository.save(product);
     }
 }
