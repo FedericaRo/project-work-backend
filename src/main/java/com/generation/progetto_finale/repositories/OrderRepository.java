@@ -10,4 +10,6 @@ import com.generation.progetto_finale.modelEntity.Order;
 public interface OrderRepository extends JpaRepository<Order,Integer> 
 {
     public List<Order> findAllByOrderDateBetween(LocalDate start, LocalDate end);
+
+    public List<Order> findAllByProductId(Integer productId);
 }

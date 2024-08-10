@@ -254,9 +254,29 @@ public class OrderController
     }
 
    
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    // public String getMethodName(@RequestParam String param) {
+    //     return new String();
+    // }
+    
+    // TODO Aggiungere controllo se non arriva un id valido come intero
+    @DeleteMapping("/deleteLast/{productName}")
+    public OrderDTO deleteLastOrder(@PathVariable String productName)
+    {
+        Product product = productRepo.findByProductName(productName);
+        
+        List<Order> orders = orderRepo.findAllByProductId(product.getId());
+
+        Order orderToDelete = orders.get(orders.size()-1);
+
+        if (orderToDelete == null) 
+            throw new EntityNotFoundException("L'ordine non esiste");
+
+        orderRepo.delete(orderToDelete);
+
+        return orderServ.toDTO(orderToDelete);
     }
+
+   
     
     @GetMapping("/sendOrders")
     public List<OrderDTO> sendMail() throws MessagingException
@@ -270,10 +290,12 @@ public class OrderController
         // model.put("campo2", "byee");
         model.put("orders", ordersDTO);
 
-        mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
-
+        mailService.sendHtmlMessage("santocaldarella@gmail.com", "mail prova", model);
+        // rocchetti.federica@gmail.com
         return ordersDTO;
     }
+
+
 
 
 
