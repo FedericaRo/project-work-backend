@@ -1,6 +1,7 @@
 package com.generation.progetto_finale.controller.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,4 +24,14 @@ public class ControllersExceptionHandler
     {
         return e.getMessage();
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public String httpMessageNotReadable(HttpMessageNotReadableException e)
+    {
+        // return e.getMessage();
+        return "Input non valido";
+    }
+
+
 }

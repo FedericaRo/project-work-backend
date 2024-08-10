@@ -65,11 +65,25 @@ public class OrderController
      public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody) 
      {         
     
-        Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
-        System.out.println(packagingOrderedQuantity);
+        // Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+        // System.out.println(packagingOrderedQuantity);
 
-        Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
-        System.out.println(unitOrderedQuantity);
+        // Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
+        // System.out.println(unitOrderedQuantity);
+
+         // Get values from the request body with default to 0 if null
+        Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
+        Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
+
+        // Validate that neither quantity is negative
+        if (packagingOrderedQuantity < 0 || unitOrderedQuantity < 0) {
+            throw new IllegalArgumentException("Le quantità dell'ordine non possono essere negative");
+        }
+
+        // Validate that at least one quantity is greater than 0
+        if (packagingOrderedQuantity == 0 && unitOrderedQuantity == 0) {
+            throw new IllegalArgumentException("Aggiungere almeno una quantità all'ordine");
+        }
 
         Optional<Product> productOptional = productRepo.findById(productId);
         if (productOptional.isEmpty())
