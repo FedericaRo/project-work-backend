@@ -1,7 +1,7 @@
 package com.generation.progetto_finale.controller;
 
 import java.time.LocalDate;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,9 +24,13 @@ import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.repositories.OrderRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
+import com.generation.progetto_finale.services.MailService;
 
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 /**
@@ -47,6 +51,9 @@ public class OrderController
 
     @Autowired 
     OrderService orderServ;
+
+    @Autowired
+    MailService mailService;
 
 
     /**
@@ -245,6 +252,50 @@ public class OrderController
 
         return orderServ.toDTO(orderToDelete.get());
     }
+
+   
+    // public String getMethodName(@RequestParam String param) {
+    //     return new String();
+    // }
+    
+    // TODO Aggiungere controllo se non arriva un id valido come intero
+    @DeleteMapping("/deleteLast/{productName}")
+    public OrderDTO deleteLastOrder(@PathVariable String productName)
+    {
+        Product product = productRepo.findByProductName(productName);
+        
+        List<Order> orders = orderRepo.findAllByProductId(product.getId());
+
+        Order orderToDelete = orders.get(orders.size()-1);
+
+        if (orderToDelete == null) 
+            throw new EntityNotFoundException("L'ordine non esiste");
+
+        orderRepo.delete(orderToDelete);
+
+        return orderServ.toDTO(orderToDelete);
+    }
+
+   
+    
+    @GetMapping("/sendOrders")
+    public List<OrderDTO> sendMail() throws MessagingException
+    {
+        LocalDate now = LocalDate.now();
+        LocalDate before = LocalDate.now().minusDays(1);
+        Map<String,Object> model = new HashMap<>();
+        List<OrderDTO> ordersDTO = orderServ.toDTO(orderRepo.findAllByOrderDateBetween(before, now));
+
+        // model.put("campo1", "ciaoo");
+        // model.put("campo2", "byee");
+        model.put("orders", ordersDTO);
+
+        mailService.sendHtmlMessage("santocaldarella@gmail.com", "mail prova", model);
+        // rocchetti.federica@gmail.com
+        return ordersDTO;
+    }
+
+
 
 
 

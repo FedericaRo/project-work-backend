@@ -40,7 +40,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.GET,"/api/orders").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}","/api/orders/deleteLast/{productName}").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
@@ -49,7 +49,7 @@ public class SecurityConfig {
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
 
-            .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks", "/api/categories", "/api/suppliers", "/api/prova").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks", "/api/categories", "/api/suppliers", "/api/prova", "/api/orders/sendOrders").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/tasks/newTask", "/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()

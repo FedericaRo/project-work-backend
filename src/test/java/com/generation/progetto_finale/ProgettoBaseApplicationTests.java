@@ -1,11 +1,15 @@
 package com.generation.progetto_finale;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import com.generation.progetto_finale.auth.model.Role;
 import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
 import com.generation.progetto_finale.auth.repository.UserRepository;
+import com.generation.progetto_finale.dto.mappers.OrderService;
 import com.generation.progetto_finale.modelEntity.Category;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
@@ -490,6 +495,36 @@ private String randomPackagingType() {
 
         mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
     }
+
+    @Test
+    public void printOrdersBetweenDates()
+    {
+        // LocalDate now = LocalDate.now();
+        // LocalDate before = LocalDate.now().minusDays(1);
+        // List<Order> orders = orderRepository.findAllByOrderDateBetween(before, now);
+        
+        // for (Order o : orders) 
+        // {
+        //     System.out.println(o);
+        // }
+
+        LocalDate now = LocalDate.now();
+        LocalDate before = LocalDate.now().minusDays(1);
+
+        // ID attesi (sostituisci con i tuoi dati di test)
+        List<Integer> expectedIds = Arrays.asList(5, 11);
+
+        List<Order> orders = orderRepository.findAllByOrderDateBetween(before, now);
+
+        // Estrai gli ID dagli ordini
+        List<Integer> actualIds = orders.stream()
+                                        .map(Order::getId)
+                                        .collect(Collectors.toList());
+
+        // Confronta gli ID attesi con quelli effettivi
+        assertEquals(expectedIds, actualIds);
+    }
+
 
 
 }
