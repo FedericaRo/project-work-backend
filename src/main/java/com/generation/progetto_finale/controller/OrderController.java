@@ -62,18 +62,31 @@ public class OrderController
 
 
      @PostMapping("{productId}/addOrder")
-     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody) 
+     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, String> requestBody) 
      {         
     
+        
         // Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
         // System.out.println(packagingOrderedQuantity);
 
         // Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
         // System.out.println(unitOrderedQuantity);
 
+
          // Get values from the request body with default to 0 if null
-        Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
-        Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
+        // Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
+        // Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
+        Integer unitOrderedQuantity;
+        if (requestBody.get("unitOrderedQuantity") == null)
+            unitOrderedQuantity = 0;
+        else
+            unitOrderedQuantity = Integer.parseInt(requestBody.get("unitOrderedQuantity"));
+
+        Integer packagingOrderedQuantity;
+        if (requestBody.get("packagingOrderedQuantity") == null)
+        packagingOrderedQuantity = 0;
+        else
+        packagingOrderedQuantity = Integer.parseInt(requestBody.get("packagingOrderedQuantity"));
 
         // Validate that neither quantity is negative
         if (packagingOrderedQuantity < 0 || unitOrderedQuantity < 0) {

@@ -25,9 +25,17 @@ public class ControllersExceptionHandler
         return e.getMessage();
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
+    // @ExceptionHandler(HttpMessageNotReadableException.class)
+    // @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    // public String httpMessageNotReadable(HttpMessageNotReadableException e)
+    // {
+    //     // return e.getMessage();
+    //     return "Input non valido";
+    // }
+
+    @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    public String httpMessageNotReadable(HttpMessageNotReadableException e)
+    public String numberFormat(NumberFormatException e)
     {
         // return e.getMessage();
         return "Input non valido";
