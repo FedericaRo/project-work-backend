@@ -69,14 +69,41 @@ public class OrderController
 
 
      @PostMapping("{productId}/addOrder")
-     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody) 
+     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, String> requestBody) 
      {         
     
-        Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
-        System.out.println(packagingOrderedQuantity);
+        
+        // Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+        // System.out.println(packagingOrderedQuantity);
 
-        Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
-        System.out.println(unitOrderedQuantity);
+        // Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
+        // System.out.println(unitOrderedQuantity);
+
+
+         // Get values from the request body with default to 0 if null
+        // Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
+        // Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
+        Integer unitOrderedQuantity;
+        if (requestBody.get("unitOrderedQuantity") == null)
+            unitOrderedQuantity = 0;
+        else
+            unitOrderedQuantity = Integer.parseInt(requestBody.get("unitOrderedQuantity"));
+
+        Integer packagingOrderedQuantity;
+        if (requestBody.get("packagingOrderedQuantity") == null)
+        packagingOrderedQuantity = 0;
+        else
+        packagingOrderedQuantity = Integer.parseInt(requestBody.get("packagingOrderedQuantity"));
+
+        // Validate that neither quantity is negative
+        if (packagingOrderedQuantity < 0 || unitOrderedQuantity < 0) {
+            throw new IllegalArgumentException("Le quantità dell'ordine non possono essere negative");
+        }
+
+        // Validate that at least one quantity is greater than 0
+        if (packagingOrderedQuantity == 0 && unitOrderedQuantity == 0) {
+            throw new IllegalArgumentException("Aggiungere almeno una quantità all'ordine");
+        }
 
         Optional<Product> productOptional = productRepo.findById(productId);
         if (productOptional.isEmpty())
