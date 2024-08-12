@@ -30,9 +30,9 @@ public class CommunicationController
     CommunicationService cServ;
 
     @GetMapping
-    public List<CommunicationDTO> getAll()
+    public List<Communication> getAll()
     {
-        return cServ.toDTO(cRepo.findAll());
+        return cRepo.findAll();
     }
 
     @PostMapping("/newCommunication")
