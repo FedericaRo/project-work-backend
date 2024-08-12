@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -39,6 +40,21 @@ public class ControllersExceptionHandler
     {
         // return e.getMessage();
         return "Input non valido";
+    }
+
+    @ExceptionHandler(ThisMailMakeNoSenseBroException.class)
+    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
+    public String noOrdersToSendFound(ThisMailMakeNoSenseBroException e)
+    {
+        return "Nessun ordine da inviare, assicurati di aver prima completato la lista dei tuoi ordini";
+    }
+
+
+    @ExceptionHandler(MessagingException.class)
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public String mailNotSended(MessagingException e)
+    {
+        return "Non è stato possibile inviare la mail a causa di problemi di connessione con il sever";
     }
 
 
