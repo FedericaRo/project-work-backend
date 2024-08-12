@@ -33,7 +33,7 @@ public class CategoryController
     public CategoryDTO addCategory(@RequestBody CategoryDTO category) {
         
         if (category.getName() != null && category.getName().isEmpty())
-            throw new IllegalArgumentException("La categoria non può essere vuoto");
+            throw new IllegalArgumentException("La categoria non può essere vuota");
         
         if (cRepo.findByName(category.getName()) != null)
             throw new IllegalArgumentException("La categoria è già presente");

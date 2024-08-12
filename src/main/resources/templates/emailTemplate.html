@@ -22,6 +22,24 @@
             background-color: #f0f0f0;
         }
     </style>
+    <!-- <link rel="stylesheet" href="emailStyle.css"> -->
+
+    <style>
+        table {
+            border: solid #585858 1px;
+            /* border-radius: 0.5rem; */
+            border-collapse: collapse;
+        }
+        th, td {
+            border: solid #585858 1px;
+            padding: 0.3rem;
+            text-align: center; /* Allinea il testo al centro delle celle */
+            color: black;
+        }
+        th{
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
 
@@ -62,6 +80,7 @@
         <li th:each="person : ${persons}">
             <span th:text="${person.firstName}">First Name</span> <span th:text="${person.lastName}">Last Name</span>
         </li>
+    </ul> -->
     </ul> -->
 
 </body>

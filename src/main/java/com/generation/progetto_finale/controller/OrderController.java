@@ -69,14 +69,41 @@ public class OrderController
 
 
      @PostMapping("{productId}/addOrder")
-     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody) 
+     public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, String> requestBody) 
      {         
     
-        Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
-        System.out.println(packagingOrderedQuantity);
+        
+        // Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+        // System.out.println(packagingOrderedQuantity);
 
-        Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
-        System.out.println(unitOrderedQuantity);
+        // Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
+        // System.out.println(unitOrderedQuantity);
+
+
+         // Get values from the request body with default to 0 if null
+        // Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
+        // Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
+        Integer unitOrderedQuantity;
+        if (requestBody.get("unitOrderedQuantity") == null)
+            unitOrderedQuantity = 0;
+        else
+            unitOrderedQuantity = Integer.parseInt(requestBody.get("unitOrderedQuantity"));
+
+        Integer packagingOrderedQuantity;
+        if (requestBody.get("packagingOrderedQuantity") == null)
+        packagingOrderedQuantity = 0;
+        else
+        packagingOrderedQuantity = Integer.parseInt(requestBody.get("packagingOrderedQuantity"));
+
+        // Validate that neither quantity is negative
+        if (packagingOrderedQuantity < 0 || unitOrderedQuantity < 0) {
+            throw new IllegalArgumentException("Le quantità dell'ordine non possono essere negative");
+        }
+
+        // Validate that at least one quantity is greater than 0
+        if (packagingOrderedQuantity == 0 && unitOrderedQuantity == 0) {
+            throw new IllegalArgumentException("Aggiungere almeno una quantità all'ordine");
+        }
 
         Optional<Product> productOptional = productRepo.findById(productId);
         if (productOptional.isEmpty())
@@ -124,7 +151,7 @@ public class OrderController
             throw new IllegalArgumentException("Order id not valid");
         
 
-        System.out.println("---- STATUS ARRIVATO DA CAMBIARE " + orderDTO.isArrived());
+        System.out.println("STATUS ARRIVATO DA CAMBIARE " + orderDTO.isArrived());
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
             throw new EntityNotFoundException("L'ordine non esiste");
@@ -202,7 +229,7 @@ public class OrderController
         return product;
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editPackagingQuantity")
     public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
@@ -218,7 +245,7 @@ public class OrderController
         orderRepo.save(order);
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editUnitQuantity")
     public void editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
     {
@@ -240,7 +267,7 @@ public class OrderController
 
     }
 
-    // TODO Aggiungere controllo se non arriva un id valido come intero
+    // TO DO Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("{orderId}")
     public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
