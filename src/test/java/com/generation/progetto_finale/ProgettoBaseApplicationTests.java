@@ -1,11 +1,15 @@
 package com.generation.progetto_finale;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import com.generation.progetto_finale.auth.model.Role;
 import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.RoleRepository;
 import com.generation.progetto_finale.auth.repository.UserRepository;
+import com.generation.progetto_finale.dto.mappers.OrderService;
 import com.generation.progetto_finale.modelEntity.Category;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Communication.CommunicationImportance;
@@ -48,7 +53,7 @@ class ProgettoBaseApplicationTests
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private TaskRepository tRepo;
+    private TaskRepository taskRepo;
 	@Autowired
 	private OrderRepository orderRepository;
     @Autowired
@@ -58,127 +63,125 @@ class ProgettoBaseApplicationTests
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-
     private CommunicationRepository communicationRepository;
+    
 
 
-    @Test
-    void addNewCommunication()
-    {
-        Communication communication1;
-        Communication communication2;
-        Communication communication3;
-        Communication communication4;
-        Communication communication5;
-        Communication communication6;
-        Communication communication7;
-        Communication communication8;
-        Communication communication9;
+    // @Test
+    // void addNewCommunication()
+    // {
+    //     Communication communication1;
+    //     Communication communication2;
+    //     Communication communication3;
+    //     Communication communication4;
+    //     Communication communication5;
+    //     Communication communication6;
+    //     Communication communication7;
+    //     Communication communication8;
+    //     Communication communication9;
 
-        // Prima comunicazione
-        communication1 = new Communication();
-        communication1.setFromPerson("Paola");
-        communication1.setToPerson("Massimo");
-        communication1.setType(CommunicationType.AMMINISTRATIVA);
-        communication1.setDescription("Circolare nuovi fornitori");
-        communication1.setCreationDate(LocalDate.of(2024, 7, 29));
-        communication1.setImportance(CommunicationImportance.ALTA);
-        communication1.setCommunicationName("Nuovi Fornitori");
-        communicationRepository.save(communication1);
+    //     // Prima comunicazione
+    //     communication1 = new Communication();
+    //     communication1.setFromPerson("Paola");
+    //     communication1.setToPerson("Massimo");
+    //     communication1.setType(CommunicationType.AMMINISTRATIVA);
+    //     communication1.setDescription("Circolare nuovi fornitori");
+    //     communication1.setCreationDate(LocalDate.of(2024, 7, 29));
+    //     communication1.setImportance(CommunicationImportance.ALTA);
+    //     communication1.setCommunicationName("Nuovi Fornitori");
+    //     communicationRepository.save(communication1);
 
-        // Seconda comunicazione
-        communication2 = new Communication();
-        communication2.setFromPerson("Cristiano Malgioglio");
-        communication2.setToPerson("Morgan");
-        communication2.setType(CommunicationType.ORGANIZZATIVA);
-        communication2.setDescription("Meeting oggi alle 16:00");
-        communication2.setCreationDate(LocalDate.of(2024, 7, 28));
-        communication2.setImportance(CommunicationImportance.MEDIA);
-        communication2.setCommunicationName("Meeting ore 16:00");
-        communicationRepository.save(communication2);
+    //     // Seconda comunicazione
+    //     communication2 = new Communication();
+    //     communication2.setFromPerson("Cristiano Malgioglio");
+    //     communication2.setToPerson("Morgan");
+    //     communication2.setType(CommunicationType.ORGANIZZATIVA);
+    //     communication2.setDescription("Meeting oggi alle 16:00");
+    //     communication2.setCreationDate(LocalDate.of(2024, 7, 28));
+    //     communication2.setImportance(CommunicationImportance.MEDIA);
+    //     communication2.setCommunicationName("Meeting ore 16:00");
+    //     communicationRepository.save(communication2);
 
-        // Terza comunicazione
-        communication3 = new Communication();
-        communication3.setFromPerson("Eva");
-        communication3.setToPerson("Tutti");
-        communication3.setType(CommunicationType.INFORMATIVA);
-        communication3.setDescription("Festa di compleanno di Mario");
-        communication3.setCreationDate(LocalDate.of(2024, 7, 27));
-        communication3.setImportance(CommunicationImportance.BASSA);
-        communication3.setCommunicationName("Compleanno Mario");
-        communicationRepository.save(communication3);
+    //     // Terza comunicazione
+    //     communication3 = new Communication();
+    //     communication3.setFromPerson("Eva");
+    //     communication3.setToPerson("Tutti");
+    //     communication3.setType(CommunicationType.INFORMATIVA);
+    //     communication3.setDescription("Festa di compleanno di Mario");
+    //     communication3.setCreationDate(LocalDate.of(2024, 7, 27));
+    //     communication3.setImportance(CommunicationImportance.BASSA);
+    //     communication3.setCommunicationName("Compleanno Mario");
+    //     communicationRepository.save(communication3);
 
-        // Quarta comunicazione
-        communication4 = new Communication();
-        communication4.setFromPerson("Gianluca");
-        communication4.setToPerson("Santo");
-        communication4.setType(CommunicationType.CAMBIOTURNO);
-        communication4.setDescription("AO dovemo cambià turno, io me butto sul divano");
-        communication4.setCreationDate(LocalDate.of(2024, 7, 28));
-        communication4.setImportance(CommunicationImportance.ALTA);
-        communication4.setCommunicationName("Cambio Turno");
-        communicationRepository.save(communication4);
+    //     // Quarta comunicazione
+    //     communication4 = new Communication();
+    //     communication4.setFromPerson("Gianluca");
+    //     communication4.setToPerson("Santo");
+    //     communication4.setType(CommunicationType.CAMBIOTURNO);
+    //     communication4.setDescription("AO dovemo cambià turno, io me butto sul divano");
+    //     communication4.setCreationDate(LocalDate.of(2024, 7, 28));
+    //     communication4.setImportance(CommunicationImportance.ALTA);
+    //     communication4.setCommunicationName("Cambio Turno");
+    //     communicationRepository.save(communication4);
 
-        // Quinta comunicazione
-        communication5 = new Communication();
-        communication5.setFromPerson("Giovanni");
-        communication5.setToPerson("Anna");
-        communication5.setType(CommunicationType.AMMINISTRATIVA);
-        communication5.setDescription("Modifica regolamenti aziendali");
-        communication5.setCreationDate(LocalDate.of(2024, 7, 26));
-        communication5.setImportance(CommunicationImportance.MEDIA);
-        communication5.setCommunicationName("Regolamenti Aziendali");
-        communicationRepository.save(communication5);
+    //     // Quinta comunicazione
+    //     communication5 = new Communication();
+    //     communication5.setFromPerson("Giovanni");
+    //     communication5.setToPerson("Anna");
+    //     communication5.setType(CommunicationType.AMMINISTRATIVA);
+    //     communication5.setDescription("Modifica regolamenti aziendali");
+    //     communication5.setCreationDate(LocalDate.of(2024, 7, 26));
+    //     communication5.setImportance(CommunicationImportance.MEDIA);
+    //     communication5.setCommunicationName("Regolamenti Aziendali");
+    //     communicationRepository.save(communication5);
 
-        // Sesta comunicazione
-        communication6 = new Communication();
-        communication6.setFromPerson("Laura");
-        communication6.setToPerson("Stefano");
-        communication6.setType(CommunicationType.INFORMATIVA);
-        communication6.setDescription("Modifica credenziali portale amministrativo");
-        communication6.setCreationDate(LocalDate.of(2024, 7, 30));
-        communication6.setImportance(CommunicationImportance.BASSA);
-        communication6.setCommunicationName("Credenziali portale amministrativo");
-        communicationRepository.save(communication6);
+    //     // Sesta comunicazione
+    //     communication6 = new Communication();
+    //     communication6.setFromPerson("Laura");
+    //     communication6.setToPerson("Stefano");
+    //     communication6.setType(CommunicationType.INFORMATIVA);
+    //     communication6.setDescription("Modifica credenziali portale amministrativo");
+    //     communication6.setCreationDate(LocalDate.of(2024, 7, 30));
+    //     communication6.setImportance(CommunicationImportance.BASSA);
+    //     communication6.setCommunicationName("Credenziali portale amministrativo");
+    //     communicationRepository.save(communication6);
 
-        // Settima comunicazione
-        communication7 = new Communication();
-        communication7.setFromPerson("Marco");
-        communication7.setToPerson("Elena");
-        communication7.setType(CommunicationType.ORGANIZZATIVA); // Puoi modificare il tipo se necessario
-        communication7.setDescription("Incontro urgente con il team di sviluppo");
-        communication7.setCreationDate(LocalDate.of(2024, 8, 1));
-        communication7.setImportance(CommunicationImportance.ALTA);
-        communication7.setCommunicationName("Incontro Team Sviluppo");
-        communicationRepository.save(communication7);
+    //     // Settima comunicazione
+    //     communication7 = new Communication();
+    //     communication7.setFromPerson("Marco");
+    //     communication7.setToPerson("Elena");
+    //     communication7.setType(CommunicationType.ORGANIZZATIVA); // Puoi modificare il tipo se necessario
+    //     communication7.setDescription("Incontro urgente con il team di sviluppo");
+    //     communication7.setCreationDate(LocalDate.of(2024, 8, 1));
+    //     communication7.setImportance(CommunicationImportance.ALTA);
+    //     communication7.setCommunicationName("Incontro Team Sviluppo");
+    //     communicationRepository.save(communication7);
 
-        // Ottava comunicazione
-        communication8 = new Communication();
-        communication8.setFromPerson("Maria");
-        communication8.setToPerson("Luca");
-        communication8.setType(CommunicationType.AMMINISTRATIVA);
-        communication8.setDescription("Aggiornamento policy aziendale");
-        communication8.setCreationDate(LocalDate.of(2024, 7, 31));
-        communication8.setImportance(CommunicationImportance.MEDIA);
-        communication8.setCommunicationName("Aggiornamento Policy");
-        communicationRepository.save(communication8);
+    //     // Ottava comunicazione
+    //     communication8 = new Communication();
+    //     communication8.setFromPerson("Maria");
+    //     communication8.setToPerson("Luca");
+    //     communication8.setType(CommunicationType.AMMINISTRATIVA);
+    //     communication8.setDescription("Aggiornamento policy aziendale");
+    //     communication8.setCreationDate(LocalDate.of(2024, 7, 31));
+    //     communication8.setImportance(CommunicationImportance.MEDIA);
+    //     communication8.setCommunicationName("Aggiornamento Policy");
+    //     communicationRepository.save(communication8);
 
-        // Nona comunicazione
-        communication9 = new Communication();
-        communication9.setFromPerson("Giuseppe");
-        communication9.setToPerson("Silvia");
-        communication9.setType(CommunicationType.INFORMATIVA);
-        communication9.setDescription("Lancio nuovo prodotto");
-        communication9.setCreationDate(LocalDate.of(2024, 8, 2));
-        communication9.setImportance(CommunicationImportance.ALTA);
-        communication9.setCommunicationName("Lancio Nuovo Prodotto");
-        communicationRepository.save(communication9);
-    }
+    //     // Nona comunicazione
+    //     communication9 = new Communication();
+    //     communication9.setFromPerson("Giuseppe");
+    //     communication9.setToPerson("Silvia");
+    //     communication9.setType(CommunicationType.INFORMATIVA);
+    //     communication9.setDescription("Lancio nuovo prodotto");
+    //     communication9.setCreationDate(LocalDate.of(2024, 8, 2));
+    //     communication9.setImportance(CommunicationImportance.ALTA);
+    //     communication9.setCommunicationName("Lancio Nuovo Prodotto");
+    //     communicationRepository.save(communication9);
+    // }
 
-    @Autowired
-    StoredTaskRepository stRepo;
-    @Autowired
-    TaskRepository taskRepo;
+    
+    
     
    
  
@@ -232,12 +235,10 @@ class ProgettoBaseApplicationTests
         order.setUnitOrderedQuantity(unitOrderedQuantity);
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
         order.setOrderDate(LocalDate.now());
-        order.setDeliverDate(LocalDate.now().plusDays(i));
+        // order.setDeliverDate(LocalDate.now().plusDays(i));
         orderRepository.save(order);
     }
 }
-
-
 
 @Test
 void addUniqueProductsWithUniqueSuppliers() {
@@ -245,17 +246,20 @@ void addUniqueProductsWithUniqueSuppliers() {
     List<Supplier> suppliers = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
 
-    // Creare fornitori e categorie iniziali
+    // Creare 5 categorie uniche
+    for (int i = 1; i <= 5; i++) {
+        Category category = new Category();
+        category.setName("Category " + i);
+        categoryRepository.save(category);
+        categories.add(category);
+    }
+
+    // Creare 30 fornitori unici
     for (int i = 1; i <= 30; i++) {
         Supplier supplier = new Supplier();
         supplier.setName("Supplier " + i);
         supplierRepository.save(supplier);
         suppliers.add(supplier);
-
-        Category category = new Category();
-        category.setName("Category " + (i % 5 + 1)); // Ciclo tra 5 categorie
-        categoryRepository.save(category);
-        categories.add(category);
     }
 
     // Creare 30 prodotti unici con codici e fornitori distinti
@@ -271,7 +275,7 @@ void addUniqueProductsWithUniqueSuppliers() {
         product.setUnitsPerPackaging(1 + random.nextInt(20)); // Unità per confezione tra 1 e 20
         product.setReorderPoint(2 + random.nextInt(10));
         product.setSupplier(suppliers.get(i - 1)); // Fornitore distinto per ogni prodotto
-        product.setCategory(categories.get(random.nextInt(categories.size())));
+        product.setCategory(categories.get(random.nextInt(categories.size()))); // Seleziona una delle 5 categorie
         productRepository.save(product);
     }
 }
@@ -287,26 +291,29 @@ private String randomPackagingType() {
 }
 
 
-    @Test
-    public void provaAutomazioneTask()
-    {
-        List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
-        List<Task> realTasks = new ArrayList<>();
 
-        for (StoredTask st : tasks) 
-        {
-            Task task = new Task();
 
-            task.setName(st.getName());
-            task.setDescription(st.getDescription());
-            task.setFrequency(st.getFrequency());
-            task.setStatus(TaskStatus.DAFARSI);
 
-            realTasks.add(task);
-        }
+    // @Test
+    // public void provaAutomazioneTask()
+    // {
+    //     List<StoredTask> tasks = stRepo.findAllByFrequency(Frequency.SETTIMANALE);
+    //     List<Task> realTasks = new ArrayList<>();
 
-        taskRepo.saveAll(realTasks);
-    }
+    //     for (StoredTask st : tasks) 
+    //     {
+    //         Task task = new Task();
+
+    //         task.setName(st.getName());
+    //         task.setDescription(st.getDescription());
+    //         task.setFrequency(st.getFrequency());
+    //         task.setStatus(TaskStatus.DAFARSI);
+
+    //         realTasks.add(task);
+    //     }
+
+    //     taskRepo.saveAll(realTasks);
+    // }
 
 
     @Test
@@ -369,7 +376,6 @@ private String randomPackagingType() {
                 Frequency.MENSILE,
                 Task.TaskStatus.DAFARSI
         ));
-
         taskRepo.saveAll(tasks);
         
         // Printing tasks to verify creation
@@ -384,6 +390,7 @@ private String randomPackagingType() {
         // });
     }
 
+
     private static Task createTask(String name, String description, Frequency frequency, Task.TaskStatus status) 
     {
         Task task = new Task();
@@ -395,6 +402,86 @@ private String randomPackagingType() {
         return task;
     }
 
+    @Test
+    public void addOldTasks() {
+        List<Task> oldTasks = new ArrayList<>();
+        
+        oldTasks.add(createOldTask(
+                "Verifica Sistema Settimanale",
+                "Eseguire una verifica completa del sistema ogni settimana per garantire che tutto funzioni correttamente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(2) // Data di creazione di 2 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Aggiornamento Documentazione Mensile",
+                "Aggiornare la documentazione aziendale e i manuali con le ultime informazioni disponibili ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(1) // Data di creazione di 1 mese fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Controllo Backup Bisettimanale",
+                "Controllare e assicurarsi che i backup siano stati effettuati correttamente ogni due settimane.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(3) // Data di creazione di 3 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Pulizia Server Settimanale",
+                "Eseguire una pulizia dei server per rimuovere file temporanei e ottimizzare le performance settimanalmente.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(4) // Data di creazione di 4 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Rivedere Politiche di Sicurezza Mensile",
+                "Rivedere e aggiornare le politiche di sicurezza aziendale per garantire che siano sempre aggiornate ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(2) // Data di creazione di 2 mesi fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Verifica Licenze Software Bisettimanale",
+                "Verificare la validità e lo stato delle licenze software ogni due settimane per evitare problemi di conformità.",
+                Frequency.BISETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(5) // Data di creazione di 5 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Preparazione Report Settimanale",
+                "Preparare il report settimanale con le metriche e i risultati delle attività.",
+                Frequency.SETTIMANALE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusWeeks(6) // Data di creazione di 6 settimane fa
+        ));
+        
+        oldTasks.add(createOldTask(
+                "Aggiornamento Elenco Contatti Mensile",
+                "Aggiornare l'elenco dei contatti aziendali per assicurarsi che tutte le informazioni siano corrette ogni mese.",
+                Frequency.MENSILE,
+                Task.TaskStatus.DAFARSI,
+                LocalDate.now().minusMonths(3) // Data di creazione di 3 mesi fa
+        ));
+
+        taskRepo.saveAll(oldTasks);
+    }
+
+    private static Task createOldTask(String name, String description, Frequency frequency, Task.TaskStatus status, LocalDate creationDate) {
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setFrequency(frequency);
+        task.setStatus(status);
+        task.setCreationDate(creationDate);
+        return task;
+    }
 
     @Autowired
     MailService mailService;
@@ -408,6 +495,36 @@ private String randomPackagingType() {
 
         mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
     }
+
+    @Test
+    public void printOrdersBetweenDates()
+    {
+        // LocalDate now = LocalDate.now();
+        // LocalDate before = LocalDate.now().minusDays(1);
+        // List<Order> orders = orderRepository.findAllByOrderDateBetween(before, now);
+        
+        // for (Order o : orders) 
+        // {
+        //     System.out.println(o);
+        // }
+
+        LocalDate now = LocalDate.now();
+        LocalDate before = LocalDate.now().minusDays(1);
+
+        // ID attesi (sostituisci con i tuoi dati di test)
+        List<Integer> expectedIds = Arrays.asList(5, 11);
+
+        List<Order> orders = orderRepository.findAllByOrderDateBetween(before, now);
+
+        // Estrai gli ID dagli ordini
+        List<Integer> actualIds = orders.stream()
+                                        .map(Order::getId)
+                                        .collect(Collectors.toList());
+
+        // Confronta gli ID attesi con quelli effettivi
+        assertEquals(expectedIds, actualIds);
+    }
+
 
 
 }

@@ -4,15 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="emailStyle.css"> -->
+
+    <style>
+        table {
+            border: solid #585858 1px;
+            /* border-radius: 0.5rem; */
+            border-collapse: collapse;
+        }
+        th, td {
+            border: solid #585858 1px;
+            padding: 0.3rem;
+            text-align: center; /* Allinea il testo al centro delle celle */
+            color: black;
+        }
+        th{
+            background-color: #f0f0f0;
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="emailStyle.css"> -->
+
+    <style>
+        table {
+            border: solid #585858 1px;
+            /* border-radius: 0.5rem; */
+            border-collapse: collapse;
+        }
+        th, td {
+            border: solid #585858 1px;
+            padding: 0.3rem;
+            text-align: center; /* Allinea il testo al centro delle celle */
+            color: black;
+        }
+        th{
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Ciao sono la mail di prova, campo 1 = <span th:text="${campo1}"></span></h1>
-    <h1>Ciao sono la mail di prova, campo 2 = <span th:text="${campo2}"></span></h1>
-    <ul>
-        <li th:each="person : ${persons}">
-            <span th:text="${person.firstName}">First Name</span> <span th:text="${person.lastName}">Last Name</span>
-        </li>
-    </ul>
+
+    <!-- Identificativo	Fornitore	Nome Prodotto	Data Ordine	Unità Ordinate	U.M.1	Confezioni Ordinate	U.M.2 -->
+    <table>
+        <tr>
+          <th>Identificativo</th>  
+          <th>Fornitore</th>
+          <th>Prodotto</th>
+          <th>Data<br />Ordine</th>
+          <th>Unità<br />Ordinate</th>
+          <th>U.M.1</th>
+          <th>Confezioni<br />Ordinate</th>
+          <th>U.M.2</th>
+        </tr>
+        <tr th:each="order : ${orders}">
+          <td th:text="${order.productCode}"></td>
+          <td th:text="${order.supplierName}"></td>
+          <td th:text="${order.productName}"></td>
+          <!-- * data settata in formato europeo con slash -->
+          <td th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy')}"></td> 
+          <td th:text="${order.unitOrderedQuantity}"></td>
+          <td th:text="${order.unitType}"></td>
+          <td th:text="${order.packagingOrderedQuantity}"></td>
+          <td th:text="${order.packagingType}"></td>
+        </tr>
+      </table>
+      <!-- ? temporals.format funge ma dates.format no... forse deprecato(?)-->
+      <!-- "${#dates.format(order.orderDate, 'dd/MM/yyyy')}" -->
+      <!-- th:text="${order.supplierName}" -->
+      <!-- th:text="${order.productName}" -->
 
 </body>
 </html>
