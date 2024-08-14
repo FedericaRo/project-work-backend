@@ -1,8 +1,9 @@
 package com.generation.progetto_finale.modelEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +32,8 @@ public class Communication
 
 
     @Column(nullable = false, updatable = false)
-    private LocalDate creationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime creationDate;
 
      /**
      * metodo chiamato al momento del salvataggio di una entità nel database
@@ -39,7 +41,7 @@ public class Communication
     @PrePersist
     public void onCreate()
     {
-        creationDate = LocalDate.now();    
+        creationDate = LocalDateTime.now();    
     }
 
 

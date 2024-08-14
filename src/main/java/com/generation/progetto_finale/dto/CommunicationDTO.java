@@ -23,4 +23,5 @@ public class CommunicationDTO
     // private LocalDate creationDate;
     private CommunicationImportance importance;
     private CommunicationType type;
+    // private String creationDate;
 }
