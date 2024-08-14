@@ -44,6 +44,12 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
+            .requestMatchers(HttpMethod.GET, "/profiles/test").permitAll()
+            .requestMatchers(HttpMethod.GET, "/profiles/testImage").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/orders/recent").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload").permitAll()
+            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/profiles/images/**").permitAll()
 
 
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
