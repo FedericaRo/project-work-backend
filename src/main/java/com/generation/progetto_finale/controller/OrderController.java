@@ -70,6 +70,20 @@ public class OrderController
         return orderServ.toDTO(orderRepo.findAll());
     }
 
+    /**
+     * Retrieves orders arrived in the last 3 months from the repository and converts them to DTOs.
+     *
+     * @return a list of {@link OrderDTO} objects representing all orders.
+     */
+    @GetMapping("/recent")
+    public List<OrderDTO> getRecentOrders()
+    {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(3);
+
+        return orderServ.toDTO(orderRepo.findAllByDeliverDateBetweenOrDeliverDateNull(startDate, endDate));
+    }
+
 
      @PostMapping("{productId}/addOrder")
      public OrderDTO addNewOrder(@PathVariable Integer productId, @RequestBody Map<String, String> requestBody) 
