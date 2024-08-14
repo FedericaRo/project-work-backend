@@ -229,7 +229,7 @@ public class OrderController
         return product;
     }
 
-    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    // TODOs Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editPackagingQuantity")
     public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
@@ -244,8 +244,8 @@ public class OrderController
         order.setPackagingOrderedQuantity(packagingOrderedQuantity);
         orderRepo.save(order);
     }
-
-    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
+    
+    // TODOs Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editUnitQuantity")
     public void editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
     {
@@ -267,7 +267,7 @@ public class OrderController
 
     }
 
-    // TO DO Aggiungere controllo se non arriva un id valido come intero
+    // TODOs Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("{orderId}")
     public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
@@ -285,7 +285,7 @@ public class OrderController
     //     return new String();
     // }
     
-    // TODO Aggiungere controllo se non arriva un id valido come intero
+    // TODOs Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("/deleteLast/{productName}")
     public OrderDTO deleteLastOrder(@PathVariable String productName)
     {
