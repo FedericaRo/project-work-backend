@@ -1,5 +1,6 @@
 package com.generation.progetto_finale.modelEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.progetto_finale.auth.model.UserEntity;
 
 import jakarta.persistence.CascadeType;
@@ -9,8 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -33,7 +32,7 @@ public class Profile
 
     // @Lob
     // private byte[] fileContent;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user;

@@ -2,12 +2,20 @@ package com.generation.progetto_finale.controller.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fasterxml.jackson.core.JsonParseException;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.ServletException;
 
 @RestControllerAdvice
 public class ControllersExceptionHandler 
@@ -56,6 +64,14 @@ public class ControllersExceptionHandler
     {
         return "Non è stato possibile inviare la mail a causa di problemi di connessione con il sever";
     }
+
+    // @ExceptionHandler(Exception.class)
+    // @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    // public String authenticationFailed(Exception e)
+    // {
+    //     return "Sessione scaduta, rifai il login.";
+    // }
+    
 
 
 }

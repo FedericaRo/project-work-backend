@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.generation.progetto_finale.auth.security.JWTGenerator;
 import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/profiles")
@@ -39,6 +41,27 @@ public class ProfileController
     {
         return pRepo.findAll();
     }
+
+
+    @GetMapping("/{username}")
+    public List<Profile> getAllByUser(@PathVariable String username)
+    {
+        return pRepo.findProfilesByUsername(username);
+    }
+
+    @PostMapping("/newProfile")
+    public Profile addProfile(@RequestBody Profile profile) 
+    {
+        return pRepo.save(profile);
+    }
+
+
+    @GetMapping("/profile")
+    public Profile getOne(@RequestParam String name, @RequestParam String surname) 
+    {
+        return pRepo.findByNameAndSurname(name, surname);
+    }
+    
 
     @PostMapping("/imgupload/{profileid}")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Integer profileid) 
