@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,15 +16,20 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.generation.progetto_finale.auth.security.JWTGenerator;
+import com.generation.progetto_finale.auth.model.UserEntity;
+import com.generation.progetto_finale.auth.repository.UserRepository;
+import com.generation.progetto_finale.dto.ProfileDTO;
+import com.generation.progetto_finale.dto.mappers.ProfileService;
 import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 @RestController
@@ -33,8 +39,14 @@ public class ProfileController
 
     @Autowired
     ProfileRepository pRepo;
+
     @Autowired
-    private JWTGenerator tokenGenerator;
+    UserRepository uRepo;
+
+    @Autowired
+    ProfileService pServ;
+
+
 
     @GetMapping
     public List<Profile> getAll()
@@ -44,15 +56,29 @@ public class ProfileController
 
 
     @GetMapping("/{username}")
-    public List<Profile> getAllByUser(@PathVariable String username)
+    public List<ProfileDTO> getAllByUser(@PathVariable String username)
     {
-        return pRepo.findProfilesByUsername(username);
+        return pServ.toDTO(pRepo.findProfilesByUsername(username));
     }
 
     @PostMapping("/newProfile")
-    public Profile addProfile(@RequestBody Profile profile) 
+    public ProfileDTO addProfile(@RequestBody ProfileDTO profile) 
     {
-        return pRepo.save(profile);
+        System.out.println("Adding new profile");
+
+        String username = profile.getUser();
+
+        Optional<UserEntity> userOptional = uRepo.findByUsername(username);
+
+        if (userOptional.isEmpty())
+            throw new EntityNotFoundException("Username non esiste");
+
+        UserEntity user = userOptional.get();
+
+        Profile p = pServ.toEntity(profile);
+        p.setUser(user);
+
+        return pServ.toDTO(pRepo.save(p));
     }
 
 
@@ -85,7 +111,8 @@ public class ProfileController
         // Mettiamo il percorso del file (cartella + nome del file)
         String uploadDir = userPath+"\\"+file.getOriginalFilename();
 
-        try {
+        try 
+        {
 
             File img = new File(uploadDir);
             if (img.length()/1000000 > 3)
