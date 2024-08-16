@@ -46,10 +46,10 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
             .requestMatchers(HttpMethod.GET, "/profiles/test").permitAll()
             .requestMatchers(HttpMethod.GET, "/profiles/testImage").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/orders/recent").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.GET,"/api/orders/recent").hasAnyRole( "DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/profiles/images/**").permitAll()
+            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**", "/api/profiles/newProfile").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username}").permitAll()
 
 
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
