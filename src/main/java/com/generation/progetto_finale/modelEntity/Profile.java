@@ -32,7 +32,7 @@ public class Profile
 
     // @Lob
     // private byte[] fileContent;
-    @JsonIgnore
+    // @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity user;
