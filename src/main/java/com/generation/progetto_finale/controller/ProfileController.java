@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.generation.progetto_finale.auth.security.JWTGenerator;
 import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
 
@@ -31,8 +30,6 @@ public class ProfileController
 
     @Autowired
     ProfileRepository pRepo;
-    @Autowired
-    private JWTGenerator tokenGenerator;
 
     @GetMapping
     public List<Profile> getAll()
@@ -62,7 +59,8 @@ public class ProfileController
         // Mettiamo il percorso del file (cartella + nome del file)
         String uploadDir = userPath+"\\"+file.getOriginalFilename();
 
-        try {
+        try 
+        {
 
             File img = new File(uploadDir);
             if (img.length()/1000000 > 3)
