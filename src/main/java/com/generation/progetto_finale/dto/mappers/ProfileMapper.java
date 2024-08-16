@@ -8,7 +8,7 @@ import com.generation.progetto_finale.dto.ProfileDTO;
 import com.generation.progetto_finale.modelEntity.Profile;
 
 @Mapper
-public interface ProfileMapper 
+public interface ProfileMapper
 {
 
     public static final ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
