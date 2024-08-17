@@ -33,7 +33,11 @@ public class Profile
     // @Lob
     // private byte[] fileContent;
     // @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    /**
+     * * Rimosso il cascade che stava bloccando l'eliminazione di un profilo, dato che stava
+     * * tentando di eliminare anche il suo User ahahah
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

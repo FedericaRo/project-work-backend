@@ -50,6 +50,14 @@ public class ControllersExceptionHandler
         return "Input non valido";
     }
 
+    @ExceptionHandler(DoYouWantAFootballTeamException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public String maxProfileNumberReached(DoYouWantAFootballTeamException e)
+    {
+        // return e.getMessage();
+        return "Hai già raggiunto il numero massimo di profili per questo utente.";
+    }
+
     @ExceptionHandler(ThisMailMakeNoSenseBroException.class)
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
     public String noOrdersToSendFound(ThisMailMakeNoSenseBroException e)

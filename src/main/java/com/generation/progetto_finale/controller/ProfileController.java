@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.UserRepository;
+import com.generation.progetto_finale.controller.exceptions.DoYouWantAFootballTeamException;
 import com.generation.progetto_finale.dto.ProfileDTO;
 import com.generation.progetto_finale.dto.mappers.ProfileService;
 import com.generation.progetto_finale.modelEntity.Profile;
@@ -64,21 +66,30 @@ public class ProfileController
     @PostMapping("/newProfile")
     public ProfileDTO addProfile(@RequestBody ProfileDTO profile) 
     {
-        System.out.println("Adding new profile");
+        List<Profile> profiles = pRepo.findProfilesByUsername(profile.getUser());
 
-        String username = profile.getUser();
-
-        Optional<UserEntity> userOptional = uRepo.findByUsername(username);
-
-        if (userOptional.isEmpty())
-            throw new EntityNotFoundException("Username non esiste");
-
-        UserEntity user = userOptional.get();
-
-        Profile p = pServ.toEntity(profile);
-        p.setUser(user);
-
-        return pServ.toDTO(pRepo.save(p));
+        if(profiles.size() >= 6)
+        {
+            throw new DoYouWantAFootballTeamException("hai già raggiunto il numero massimo di profili per questo utente");
+        }
+        else
+        {
+            System.out.println("Adding new profile");
+    
+            String username = profile.getUser();
+    
+            Optional<UserEntity> userOptional = uRepo.findByUsername(username);
+    
+            if (userOptional.isEmpty())
+                throw new EntityNotFoundException("Username non esiste");
+    
+            UserEntity user = userOptional.get();
+    
+            Profile p = pServ.toEntity(profile);
+            p.setUser(user);
+    
+            return pServ.toDTO(pRepo.save(p));
+        }
     }
 
 
@@ -86,6 +97,19 @@ public class ProfileController
     public Profile getOne(@RequestParam String name, @RequestParam String surname) 
     {
         return pRepo.findByNameAndSurname(name, surname);
+    }
+
+
+    @DeleteMapping("{profileId}")
+    public ProfileDTO deleteProfile(@PathVariable Integer profileId)
+    {
+        Optional<Profile> profileToDelete = pRepo.findById(profileId);
+        if (profileToDelete.isEmpty()) 
+            throw new EntityNotFoundException("profilo non trovato");
+        
+        pRepo.delete(profileToDelete.get());
+
+        return pServ.toDTO(profileToDelete.get());
     }
     
 
