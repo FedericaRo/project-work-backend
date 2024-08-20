@@ -57,12 +57,12 @@ public class SecurityConfig {
 
             .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks", "/api/categories", "/api/suppliers", "/api/prova", "/api/orders/sendOrders").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.POST,"/api/tasks/newTask", "/api/products/newProduct").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
+            .requestMatchers(HttpMethod.POST,"/api/tasks/newTask", "/api/products/newProduct", "/api/storedtasks").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/communications", "/api/storedtasks").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/communications/newCommunication").permitAll()
             .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
             .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask", "/api/newStoredTask" ).permitAll()
             .requestMatchers( "/websocket/**").permitAll()
 
 
