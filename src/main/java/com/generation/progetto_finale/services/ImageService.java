@@ -1,13 +1,8 @@
-// package com.generation.progetto_finale.services;
+package com.generation.progetto_finale.services;
 
-// import java.io.IOException;
-
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
-// import org.springframework.web.multipart.MultipartFile;
-
-// import com.generation.progetto_finale.modelEntity.Profile;
-// import com.generation.progetto_finale.repositories.ProfileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.generation.progetto_finale.repositories.ProfileRepository;
 
 // @Service
 // public class ImageService 
@@ -19,7 +14,7 @@
 //     public String uploadImage(MultipartFile imageFile, Profile profile) throws IOException {
 //         // Profile profile = new Profile();
 
-//         profile.setFileName(imageFile.getOriginalFilename());
+//         profile.setFileName(imageFile.getOriginalFilename());disco
 //         profile.setFileContent(imageFile.getBytes());
 
 //         pRepo.save(profile);

@@ -1,13 +1,16 @@
 package com.generation.progetto_finale.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.generation.progetto_finale.auth.security.JWTGenerator;
+import com.generation.progetto_finale.controller.exceptions.ThisMailMakeNoSenseBroException;
 import com.generation.progetto_finale.dto.OrderDTO;
 import com.generation.progetto_finale.dto.mappers.OrderService;
 import com.generation.progetto_finale.modelEntity.Order;
@@ -325,7 +330,10 @@ public class OrderController
         LocalDate now = LocalDate.now();
         LocalDate before = LocalDate.now().minusDays(1);
         Map<String,Object> model = new HashMap<>();
-        List<OrderDTO> ordersDTO = orderServ.toDTO(orderRepo.findAllByOrderDateBetween(before, now));
+        List<OrderDTO> ordersDTO = orderServ.toDTO(orderRepo.findAllByOrderDateBetween(before, now)).stream().filter(o -> o.isArrived() == false).toList();
+
+        if (ordersDTO.size() == 0)
+            throw new ThisMailMakeNoSenseBroException("Non c'è alcun ordine da inviare");
 
         // model.put("campo1", "ciaoo");
         // model.put("campo2", "byee");

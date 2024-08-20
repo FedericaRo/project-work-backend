@@ -12,4 +12,7 @@ public interface ProfileRepository extends JpaRepository<Profile,Integer>
 {
     @Query("SELECT p FROM Profile p WHERE p.user.username = :username")
     List<Profile> findProfilesByUsername(@Param("username") String username);
+
+
+    Profile findByNameAndSurname(String name, String surname);
 }

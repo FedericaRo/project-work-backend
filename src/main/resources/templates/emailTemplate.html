@@ -59,29 +59,18 @@
           <td th:text="${order.productCode}"></td>
           <td th:text="${order.supplierName}"></td>
           <td th:text="${order.productName}"></td>
-          <td th:text="${order.orderDate}"></td>
+          <!-- * data settata in formato europeo con slash -->
+          <td th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy')}"></td> 
           <td th:text="${order.unitOrderedQuantity}"></td>
           <td th:text="${order.unitType}"></td>
           <td th:text="${order.packagingOrderedQuantity}"></td>
           <td th:text="${order.packagingType}"></td>
         </tr>
       </table>
+      <!-- ? temporals.format funge ma dates.format no... forse deprecato(?)-->
+      <!-- "${#dates.format(order.orderDate, 'dd/MM/yyyy')}" -->
       <!-- th:text="${order.supplierName}" -->
       <!-- th:text="${order.productName}" -->
-
-
-
-
-
-
-    <!-- <h1>Ciao sono la mail di prova, campo 1 = <span th:text="${campo1}"></span></h1>
-    <h1>Ciao sono la mail di prova, campo 2 = <span th:text="${campo2}"></span></h1>
-    <ul>
-        <li th:each="person : ${persons}">
-            <span th:text="${person.firstName}">First Name</span> <span th:text="${person.lastName}">Last Name</span>
-        </li>
-    </ul> -->
-    </ul> -->
 
 </body>
 </html>
