@@ -38,8 +38,8 @@ public class SecurityConfig {
                     // .requestMatchers(HttpMethod.GET, "/api/products").hasRole("DIPENDENTE")
             .requestMatchers(HttpMethod.POST,"/api/products/newProduct").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.GET,"/api/orders").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").hasAnyRole("ADMIN", "DIPENDENTE")
+            .requestMatchers(HttpMethod.GET,"/api/orders").permitAll()
+            .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").permitAll()
             .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}","/api/orders/deleteLast/{productName}").permitAll()
             .requestMatchers(HttpMethod.DELETE,"/api/profiles/{id}").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
@@ -47,9 +47,10 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
             .requestMatchers(HttpMethod.GET, "/profiles/test").permitAll()
             .requestMatchers(HttpMethod.GET, "/profiles/testImage").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/orders/recent").hasAnyRole( "DIPENDENTE")
+            .requestMatchers(HttpMethod.GET,"/api/orders/recent").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**", "/api/profiles/newProfile").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/profiles/images/{profileid}").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username}").permitAll()
 
 
