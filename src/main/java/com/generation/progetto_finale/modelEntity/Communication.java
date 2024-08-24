@@ -68,4 +68,8 @@ public class Communication
         INFORMATIVA,    //informazione di carattere generico (compleanni, mezzi pubblici, tutto ciò che non riguarda il resto)
         CAMBIOTURNO
     }
+
+
+    // percorso del file pdf
+    private String pdfFilePath;
 }
