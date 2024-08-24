@@ -114,7 +114,8 @@ public class CommunicationController
         {
 
             File pdf = new File(uploadDir);
-            if (pdf.length()/1000000 > 3)
+            System.out.println("pdf length " + pdf.length());
+            if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
                 throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
             // Salva il file nella cartella specificata
             file.transferTo(pdf);
@@ -145,8 +146,21 @@ public class CommunicationController
     @GetMapping("/pdf/{communicationid}")
     public ResponseEntity<byte[]> getPdf(@PathVariable Integer communicationid) throws IOException {
 
+
+        Optional<Communication> communicationOptional = cRepo.findById(communicationid);
+
+        if (communicationOptional.isEmpty())
+            throw new EntityNotFoundException("La comunicazione non esiste");
+        
+        
         // Prende il percorso dell'immagine salvato nel database
-        String pdfpath = cRepo.findById(communicationid).get().getPdfFilePath();
+        String pdfpath = communicationOptional.get().getPdfFilePath();
+
+        // Check if the image path is null or empty
+        if (pdfpath == null || pdfpath.isEmpty()) {
+            // Return a 204 No Content status if no image is found
+                return ResponseEntity.noContent().build();
+            }
 
         System.out.println(pdfpath);
         // Legge l'immagine e la trasforma in un array di bytes

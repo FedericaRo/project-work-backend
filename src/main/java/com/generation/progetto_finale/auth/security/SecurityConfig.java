@@ -49,12 +49,12 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/profiles/testImage").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/orders/recent").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/communications//pdfupload/{communicationid}").permitAll()
+            .requestMatchers(HttpMethod.POST,"/api/communications/pdfupload/{communicationid}").permitAll()
             .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**", "/api/profiles/newProfile").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/profiles/images/{profileid}").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username}", "api/profiles/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username} ").permitAll()
-            .requestMatchers(HttpMethod.GET,"api/communications/pdf/{communicationid} ").permitAll()
+            .requestMatchers(HttpMethod.GET,"api/communications/pdf/{communicationid}").permitAll()
 
 
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
