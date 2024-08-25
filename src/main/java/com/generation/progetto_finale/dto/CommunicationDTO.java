@@ -23,5 +23,7 @@ public class CommunicationDTO
     private LocalDate creationDate;
     private CommunicationImportance importance;
     private CommunicationType type;
+    private String pdfFilePath; // percorso del PDF
+
     // private String creationDate;
 }
