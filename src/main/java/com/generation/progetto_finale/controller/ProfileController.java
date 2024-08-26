@@ -172,6 +172,12 @@ public class ProfileController
         // Prende il percorso dell'immagine salvato nel database
         String imgpath = pRepo.findById(profileid).get().getImagePath();
 
+        // Check if the image path is null or empty
+        if (imgpath == null || imgpath.isEmpty()) {
+            // Return a 204 No Content status if no image is found
+                return ResponseEntity.noContent().build();
+            }
+
         System.out.println(imgpath);
         // Legge l'immagine e la trasforma in un array di bytes
         File imgFile = new File(imgpath);
