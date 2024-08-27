@@ -2,9 +2,12 @@ package com.generation.progetto_finale.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +22,7 @@ import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.persistence.EntityNotFoundException;
 
 
 @RestController
@@ -59,6 +61,18 @@ public class ProductController
         product = pRepo.save(product);
 
         return pServ.toDTO(product);
+    }
+
+    @DeleteMapping("{productId}")
+    public ProductDTO deleteProduct(@PathVariable Integer productId)
+    {
+        Optional<Product> productToDelete = pRepo.findById(productId);
+        if (productToDelete.isEmpty()) 
+            throw new EntityNotFoundException("Il prodotto non esiste");
+
+        pRepo.delete(productToDelete.get());
+
+        return pServ.toDTO(productToDelete.get());
     }
     
 }

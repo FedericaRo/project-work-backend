@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,17 +13,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.generation.progetto_finale.auth.security.JWTGenerator;
+import com.generation.progetto_finale.auth.model.UserEntity;
+import com.generation.progetto_finale.auth.repository.UserRepository;
+import com.generation.progetto_finale.controller.exceptions.DoYouWantAFootballTeamException;
+import com.generation.progetto_finale.dto.ProfileDTO;
+import com.generation.progetto_finale.dto.mappers.ProfileService;
 import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 
 @RestController
 @RequestMapping("/profiles")
@@ -31,14 +41,77 @@ public class ProfileController
 
     @Autowired
     ProfileRepository pRepo;
+
     @Autowired
-    private JWTGenerator tokenGenerator;
+    UserRepository uRepo;
+
+    @Autowired
+    ProfileService pServ;
+
+
 
     @GetMapping
     public List<Profile> getAll()
     {
         return pRepo.findAll();
     }
+
+
+    @GetMapping("/{username}")
+    public List<ProfileDTO> getAllByUser(@PathVariable String username)
+    {
+        return pServ.toDTO(pRepo.findProfilesByUsername(username));
+    }
+
+    @PostMapping("/newProfile")
+    public ProfileDTO addProfile(@RequestBody ProfileDTO profile) 
+    {
+        List<Profile> profiles = pRepo.findProfilesByUsername(profile.getUser());
+
+        if(profiles.size() >= 6)
+        {
+            throw new DoYouWantAFootballTeamException("hai già raggiunto il numero massimo di profili per questo utente");
+        }
+        else
+        {
+            System.out.println("Adding new profile");
+    
+            String username = profile.getUser();
+    
+            Optional<UserEntity> userOptional = uRepo.findByUsername(username);
+    
+            if (userOptional.isEmpty())
+                throw new EntityNotFoundException("Username non esiste");
+    
+            UserEntity user = userOptional.get();
+    
+            Profile p = pServ.toEntity(profile);
+            p.setUser(user);
+    
+            return pServ.toDTO(pRepo.save(p));
+        }
+    }
+
+
+    @GetMapping("/profile")
+    public Profile getOne(@RequestParam String name, @RequestParam String surname) 
+    {
+        return pRepo.findByNameAndSurname(name, surname);
+    }
+
+
+    @DeleteMapping("{profileId}")
+    public ProfileDTO deleteProfile(@PathVariable Integer profileId)
+    {
+        Optional<Profile> profileToDelete = pRepo.findById(profileId);
+        if (profileToDelete.isEmpty()) 
+            throw new EntityNotFoundException("profilo non trovato");
+        
+        pRepo.delete(profileToDelete.get());
+
+        return pServ.toDTO(profileToDelete.get());
+    }
+    
 
     @PostMapping("/imgupload/{profileid}")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Integer profileid) 
@@ -62,7 +135,8 @@ public class ProfileController
         // Mettiamo il percorso del file (cartella + nome del file)
         String uploadDir = userPath+"\\"+file.getOriginalFilename();
 
-        try {
+        try 
+        {
 
             File img = new File(uploadDir);
             if (img.length()/1000000 > 3)
@@ -98,6 +172,12 @@ public class ProfileController
         // Prende il percorso dell'immagine salvato nel database
         String imgpath = pRepo.findById(profileid).get().getImagePath();
 
+        // Check if the image path is null or empty
+        if (imgpath == null || imgpath.isEmpty()) {
+        // Return a 204 No Content status if no image is found
+            return ResponseEntity.noContent().build();
+        }
+        
         System.out.println(imgpath);
         // Legge l'immagine e la trasforma in un array di bytes
         File imgFile = new File(imgpath);
