@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
+
 @RestController
 @RequestMapping("/products")
 public class ProductController 
@@ -70,7 +71,8 @@ public class ProductController
         return pServ.toDTO(product);
     }
 
-     @DeleteMapping("{productId}")
+
+    @DeleteMapping("{productId}")
     public ProductDTO deleteProduct(@PathVariable Integer productId)
     {
         Optional<Product> productToDelete = pRepo.findById(productId);
@@ -81,6 +83,7 @@ public class ProductController
 
         return pServ.toDTO(productToDelete.get());
     }
+
 
     @PutMapping("{productId}/updateRemainingUnitsQuantity")
     public void editUnitTypeQuantity(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody)
@@ -118,5 +121,6 @@ public class ProductController
         
 
     }
+
     
 }
