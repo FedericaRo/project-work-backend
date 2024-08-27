@@ -35,42 +35,53 @@ public class SecurityConfig {
             authorize -> 
             authorize
             .requestMatchers("/api/auth/**","/swagger-ui/**","/api/v3/api-docs/**").permitAll()
-                    // .requestMatchers(HttpMethod.GET, "/api/products").hasRole("DIPENDENTE")
-            .requestMatchers(HttpMethod.POST,"/api/products/newProduct").permitAll()
-            // .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.GET,"/api/products").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/orders").permitAll()
-            .requestMatchers(HttpMethod.PUT,"/api/orders/{id}/updateOrderArrivalDetails").permitAll()
-            .requestMatchers(HttpMethod.DELETE,"/api/orders/{id}","/api/orders/deleteLast/{productName}").permitAll()
-            .requestMatchers(HttpMethod.DELETE,"/api/profiles/{id}").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/products/newProduct").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").permitAll()
-            .requestMatchers(HttpMethod.GET, "/profiles/test").permitAll()
-            .requestMatchers(HttpMethod.GET, "/profiles/testImage").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/orders/recent").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/communications/pdfupload/{communicationid}").permitAll()
-            .requestMatchers(HttpMethod.POST,"/api/profiles/imgupload/**", "/api/profiles/newProfile").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/profiles/images/{profileid}").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username}", "api/profiles/**").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/profiles/images/**", "/api/profiles/{username} ").permitAll()
-            .requestMatchers(HttpMethod.GET,"api/communications/pdf/{communicationid}").permitAll()
-
-
-            // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
-            // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
-
-            // .requestMatchers(HttpMethod.GET,"/api/products", "/api/tasks", "/api/categories", "/api/suppliers", "/api/prova", "/api/orders/sendOrders").permitAll()
-            // .requestMatchers(HttpMethod.GET,"/api/products").hasAnyRole("ADMIN", "DIPENDENTE")
-            .requestMatchers(HttpMethod.POST,"/api/tasks/newTask", "/api/products/newProduct").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/communications").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/communications/newCommunication").permitAll()
-            .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").permitAll()
-            .requestMatchers(HttpMethod.PUT,"/api/tasks/{id}").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").permitAll()
-            .requestMatchers( "/websocket/**").permitAll()
-
+            // * Autenticazione
+            .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+            // * Utenti
+            // ! Creare metodi getAll, Delete, Put per gli Utenti
+            /**
+             *  ? GetAll per leggerli tutti e avere un quadro della situa
+             *  ? Delete per farli eliminare quando necessario agli admin
+             *  ? Put per modificare il loro ruolo (solo per admin) o altro se vogliamo
+             */
+            // * Profili
+            .requestMatchers(HttpMethod.GET, "/api/profiles","/api/profiles/profile","/api/profiles/{username}","/api/profiles/images/{profileid}").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/profiles/newProfile","/api/profiles/imgupload/{profileid}").authenticated()
+            .requestMatchers(HttpMethod.PUT, "/api/products/").authenticated()
+            .requestMatchers(HttpMethod.DELETE, "/api/profiles/{profileId}").authenticated()
+            // * Prodotti 
+            .requestMatchers(HttpMethod.GET, "/api/products").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/products/newProduct").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/products/{productId}/updateRemainingUnitsQuantity","/api/products/{productId}/updateRemainingPackagesQuantity").authenticated()
+            .requestMatchers(HttpMethod.DELETE, "/api/products/{productId}").hasRole("ADMIN")
+            // * Ordini
+            .requestMatchers(HttpMethod.GET, "/api/orders","/api/orders/recent", "/api/orders/sendOrders").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/orders/{productId}/addOrder").authenticated()
+            .requestMatchers(HttpMethod.PUT, "/api/orders/{id}/updateOrderArrivalDetails", "/api/orders/{orderId}/editPackagingQuantity", "/api/orders/{orderId}/editUnitQuantity").authenticated()
+            .requestMatchers(HttpMethod.DELETE, "/api/orders/{orderId}","/api/orders/deleteLast/{productName}").authenticated()
+            // * Task
+            .requestMatchers(HttpMethod.GET, "/api/tasks").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/tasks/newTask").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/tasks/{id}").authenticated()
+            // * StoredTask
+            .requestMatchers(HttpMethod.GET, "/api/storedTasks").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/storedTasks/newStoredTask").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/storedTasks/{id}").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/storedTasks/{id}").hasRole("ADMIN")
+            // * Comunicazioni
+            .requestMatchers(HttpMethod.GET, "/api/communications","/api/communications/pdf/{communicationid}").authenticated()
+            .requestMatchers(HttpMethod.POST, "/api/communications/newCommunication","/api/communications/pdfupload/{communicationid}").authenticated()
+            .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").authenticated()
+            // * Categorie
+            .requestMatchers(HttpMethod.GET, "/api/categories").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/categories/addCategory").hasRole("ADMIN")
+            // ! Aggiungere metodo di delete
+            .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+            // * Fornitori
+            .requestMatchers(HttpMethod.GET, "/api/suppliers").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").hasRole("ADMIN")
+            // ! Aggiungere metodo di delete
+            .requestMatchers(HttpMethod.DELETE, "/api/suppliers/**").hasRole("ADMIN")
 
             .anyRequest().authenticated()
         )
