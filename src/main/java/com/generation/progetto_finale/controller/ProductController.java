@@ -36,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/products")
 public class ProductController 
 {
+
+    //SOLID DESIGN PATTERN= dependency inversion
+
     @Autowired
     ProductRepository pRepo;
     @Autowired
