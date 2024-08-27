@@ -72,3 +72,4 @@ public class Communication
     // percorso del file pdf
     private String pdfFilePath;
 }
+

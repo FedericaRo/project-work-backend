@@ -82,6 +82,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").hasRole("ADMIN")
             // ! Aggiungere metodo di delete
             .requestMatchers(HttpMethod.DELETE, "/api/suppliers/**").hasRole("ADMIN")
+
             .anyRequest().authenticated()
         )
         .httpBasic(withDefaults());

@@ -20,7 +20,6 @@ public interface CommunicationMapper
     @Mapping(target = "importance")
     @Mapping(target = "type")
     // @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd")
-
     Communication toEntity(CommunicationDTO dto);
     
 }

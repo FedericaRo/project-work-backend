@@ -15,15 +15,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.generation.progetto_finale.controller.exceptions.EntityNotFoundException;
+
+import com.generation.progetto_finale.dto.OrderDTO;
+
 import com.generation.progetto_finale.dto.ProductDTO;
 import com.generation.progetto_finale.dto.mappers.ProductService;
 import com.generation.progetto_finale.modelEntity.Category;
+import com.generation.progetto_finale.modelEntity.Order;
 import com.generation.progetto_finale.modelEntity.Product;
 import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.repositories.CategoryRepository;
 import com.generation.progetto_finale.repositories.ProductRepository;
 import com.generation.progetto_finale.repositories.SupplierRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -64,6 +74,7 @@ public class ProductController
         return pServ.toDTO(product);
     }
 
+
     @DeleteMapping("{productId}")
     public ProductDTO deleteProduct(@PathVariable Integer productId)
     {
@@ -75,6 +86,7 @@ public class ProductController
 
         return pServ.toDTO(productToDelete.get());
     }
+
 
     @PutMapping("{productId}/updateRemainingUnitsQuantity")
     public void editUnitTypeQuantity(@PathVariable Integer productId, @RequestBody Map<String, Integer> requestBody)
@@ -101,9 +113,11 @@ public class ProductController
         //     throw new DataNotVa
         // }
 
+
         Optional<Product> productToChange = pRepo.findById(productId);
         if (productToChange.isEmpty())
             throw new EntityNotFoundException("il prodotto non esiste");
+
 
         Product product = productToChange.get();
         product.setPackagingTypeQuantity(packagingTypeQuantity);
@@ -111,6 +125,12 @@ public class ProductController
 
 
 
+
+
+        
+
     }
+
+
     
 }

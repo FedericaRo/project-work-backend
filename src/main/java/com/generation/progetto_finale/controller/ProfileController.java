@@ -178,6 +178,7 @@ public class ProfileController
                 return ResponseEntity.noContent().build();
             }
 
+
         System.out.println(imgpath);
         // Legge l'immagine e la trasforma in un array di bytes
         File imgFile = new File(imgpath);
