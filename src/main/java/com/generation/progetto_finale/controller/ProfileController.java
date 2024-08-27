@@ -174,10 +174,11 @@ public class ProfileController
 
         // Check if the image path is null or empty
         if (imgpath == null || imgpath.isEmpty()) {
-        // Return a 204 No Content status if no image is found
-            return ResponseEntity.noContent().build();
-        }
-        
+            // Return a 204 No Content status if no image is found
+                return ResponseEntity.noContent().build();
+            }
+
+
         System.out.println(imgpath);
         // Legge l'immagine e la trasforma in un array di bytes
         File imgFile = new File(imgpath);

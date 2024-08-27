@@ -103,6 +103,7 @@ public class OrderController
         // Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
         // Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
         Integer unitOrderedQuantity;
+
         if (requestBody.get("unitOrderedQuantity") == null || requestBody.get("unitOrderedQuantity").isBlank() )
             unitOrderedQuantity = 0;
         else
