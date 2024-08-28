@@ -2,6 +2,7 @@ package com.generation.progetto_finale.modelEntity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -72,13 +73,13 @@ public class Product
     // private Integer availability;
 
     @ManyToOne(fetch = FetchType.EAGER) //eager=appena carica categoria, carica anche i figli
-    @JoinColumn(name = "category_id") //name= nome della colonna del db che fungerà da chiave esterna--> product_id
+    @JoinColumn(name = "category_id", nullable = true) //name= nome della colonna del db che fungerà da chiave esterna--> product_id
     private Category category;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = "supplier_id", nullable = true)
     private Supplier supplier;
 
-    @OneToMany(mappedBy= "product")
+    @OneToMany(mappedBy= "product", cascade = CascadeType.ALL)
     private List<Order> orders;
 }
