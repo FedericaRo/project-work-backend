@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -23,13 +24,15 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthEntryPoint authEntryPoint;
 
+    @Autowired
+    private AccessDeniedHandler accessDenied;
+
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
         http
         .csrf(csrf -> csrf.disable())
-        .exceptionHandling(handling -> handling.authenticationEntryPoint(authEntryPoint))
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             authorize -> 
@@ -73,18 +76,25 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/communications/newCommunication","/api/communications/pdfupload/{communicationid}").authenticated()
             .requestMatchers(HttpMethod.DELETE, "/api/communications/{id}").authenticated()
             // * Categorie
-            .requestMatchers(HttpMethod.GET, "/api/categories").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/categories").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/categories/addCategory").hasRole("ADMIN")
             // ! Aggiungere metodo di delete
             .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
             // * Fornitori
-            .requestMatchers(HttpMethod.GET, "/api/suppliers").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/api/suppliers").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").hasRole("ADMIN")
             // ! Aggiungere metodo di delete
             .requestMatchers(HttpMethod.DELETE, "/api/suppliers/**").hasRole("ADMIN")
 
+            // * altri test
+            .requestMatchers(HttpMethod.DELETE, "/pdf/{communicationid}").permitAll()
+
+            
             .anyRequest().authenticated()
+            
         )
+        .exceptionHandling(handling -> handling.accessDeniedHandler(accessDenied).authenticationEntryPoint(authEntryPoint))
+
         .httpBasic(withDefaults());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

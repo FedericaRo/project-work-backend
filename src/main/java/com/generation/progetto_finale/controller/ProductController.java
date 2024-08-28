@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import com.generation.progetto_finale.controller.exceptions.EntityNotFoundException;
+// import com.generation.progetto_finale.controller.exceptions.EntityNotFoundException;
 
 import com.generation.progetto_finale.dto.OrderDTO;
 
@@ -58,11 +58,19 @@ public class ProductController
     @PostMapping("/newProduct")
     public ProductDTO addNewProduct(@RequestBody ProductDTO dto) {
         
+        validateProductDTO(dto);
+
         System.out.println(dto);
         Product product = pServ.toEntity(dto);
-        
         Supplier supplier = sRepo.findByName(dto.getSupplierName());
+        if (supplier == null)
+            throw new EntityNotFoundException("Il fornitore non esiste");
+
+
         Category category = cRepo.findByName(dto.getCategoryName());
+        if (category == null)
+            throw new EntityNotFoundException("La categoria non esiste");
+
         double roundedValue = Math.round(dto.getUnitPrice() * 100.0) / 100.0;
 
         product.setUnitPrice(roundedValue);
@@ -124,11 +132,42 @@ public class ProductController
         pRepo.save(product);
 
 
+    }
 
-
-
-        
-
+    private void validateProductDTO(ProductDTO dto) {
+        if (dto.getProductName() == null || dto.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Il nome del prodotto non può essere nullo o vuoto");
+        }
+        if (dto.getUnitPrice() == null || dto.getUnitPrice() < 0 ) {
+            throw new IllegalArgumentException("Il prezzo unitario deve essere maggiore di zero");
+        }
+        if (dto.getUnitType() == null || dto.getUnitType().isEmpty()) {
+            throw new IllegalArgumentException("Il tipo di unità non può essere nullo o vuoto");
+        }
+        if (dto.getUnitTypeQuantity() == null || dto.getUnitTypeQuantity() < 0) {
+            throw new IllegalArgumentException("La quantità dell'unità deve essere almeno 0");
+        }
+        if (dto.getPackagingType() == null || dto.getPackagingType().isEmpty()) {
+            throw new IllegalArgumentException("Il tipo di imballaggio non può essere nullo o vuoto");
+        }
+        if (dto.getPackagingTypeQuantity() == null || dto.getPackagingTypeQuantity() < 0) {
+            throw new IllegalArgumentException("La quantità del tipo di imballaggio deve essere almeno 0");
+        }
+        if (dto.getUnitsPerPackaging() == null || dto.getUnitsPerPackaging() < 1) {
+            throw new IllegalArgumentException("Le unità per imballaggio devono essere almeno 1");
+        }
+        if (dto.getCategoryName() == null || dto.getCategoryName().isEmpty()) {
+            throw new IllegalArgumentException("Il nome della categoria non può essere nullo o vuoto");
+        }
+        if (dto.getSupplierName() == null || dto.getSupplierName().isEmpty()) {
+            throw new IllegalArgumentException("Il nome del fornitore non può essere nullo o vuoto");
+        }
+        if (dto.getReorderPoint() == null || dto.getReorderPoint() < 0) {
+            throw new IllegalArgumentException("Il punto di riordino non può essere negativo");
+        }
+        if (dto.getCode() == null || dto.getCode().isEmpty()) {
+            throw new IllegalArgumentException("Il codice non può essere nullo o vuoto");
+        }
     }
 
 
