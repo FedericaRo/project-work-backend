@@ -51,7 +51,7 @@ public class CategoryController
     }
 
     @DeleteMapping("{categoryId}")
-    public CategoryDTO deleteCategory(@PathVariable Integer categoryId)
+    public Integer deleteCategory(@PathVariable Integer categoryId)
     {
         System.out.println(categoryId);
         Optional<Category> categoryToDelete = cRepo.findById(categoryId);
@@ -60,7 +60,7 @@ public class CategoryController
 
         cRepo.delete(categoryToDelete.get());
 
-        return cServ.toDTO(categoryToDelete.get());
+        return categoryId;
     }
 
 }

@@ -23,7 +23,7 @@ public class Category
 
     private String name;
 
-    @OneToMany(mappedBy= "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL) 
+    @OneToMany(mappedBy= "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true) 
     //todo NON SAPPIAMO SE METTERE CascadeType.ALL, eager vediamo se tenerlo
     private List<Product> products;
 }

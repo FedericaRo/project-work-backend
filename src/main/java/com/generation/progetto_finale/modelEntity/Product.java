@@ -80,6 +80,6 @@ public class Product
     @JoinColumn(name = "supplier_id", nullable = true)
     private Supplier supplier;
 
-    @OneToMany(mappedBy= "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy= "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 }
