@@ -119,6 +119,11 @@ public class ProfileController
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Integer profileid) 
     {
         // Controlliamo che il file sia un immagine
+
+        // if (file.isEmpty())
+        // {
+
+        // }
         if (!file.getOriginalFilename().endsWith("jpg") && !file.getOriginalFilename().endsWith("jpeg") && !file.getOriginalFilename().endsWith("png"))
             throw new RuntimeException("Formato non valido");
 

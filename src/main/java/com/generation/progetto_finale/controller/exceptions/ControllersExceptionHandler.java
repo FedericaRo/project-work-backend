@@ -30,7 +30,7 @@ public class ControllersExceptionHandler
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
     public String illegalArgument(IllegalArgumentException e)
     {
         return e.getMessage();
@@ -53,7 +53,7 @@ public class ControllersExceptionHandler
     // }
 
     @ExceptionHandler(NumberFormatException.class)
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
     public String numberFormat(NumberFormatException e)
     {
         // return e.getMessage();
@@ -61,7 +61,7 @@ public class ControllersExceptionHandler
     }
 
     @ExceptionHandler(DoYouWantAFootballTeamException.class)
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
     public String maxProfileNumberReached(DoYouWantAFootballTeamException e)
     {
         // return e.getMessage();
@@ -81,14 +81,6 @@ public class ControllersExceptionHandler
     public String mailNotSent(MessagingException e)
     {
         return "Non è stato possibile inviare la mail a causa di problemi di connessione con il sever";
-    }
-
-
-    @ExceptionHandler(FileTooFatException.class)
-    @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
-    public String fileTooLarge(FileTooFatException e)
-    {
-        return "File troppo grande, limite consentito: 5MB.";
     }
 
 
@@ -113,6 +105,13 @@ public class ControllersExceptionHandler
     // {
     //     System.out.println("file max 5mb");
     //     return "Massimo file 5mb";
+    // }
+
+    // @ExceptionHandler(FileTooFatException.class)
+    // @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
+    // public String fileTooLarge(FileTooFatException e)
+    // {
+    //     return "File troppo grande, limite consentito: 5MB.";
     // }
 
 
