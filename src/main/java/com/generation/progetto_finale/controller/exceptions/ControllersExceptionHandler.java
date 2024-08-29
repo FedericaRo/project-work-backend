@@ -34,6 +34,14 @@ public class ControllersExceptionHandler
         return e.getMessage();
     }
 
+
+    @ExceptionHandler(IndexOutOfBoundsException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public String notInRange(IndexOutOfBoundsException e)
+    {
+        return e.getMessage();
+    }
+
     // @ExceptionHandler(HttpMessageNotReadableException.class)
     // @ResponseStatus(code = HttpStatus.FORBIDDEN)
     // public String httpMessageNotReadable(HttpMessageNotReadableException e)
@@ -72,6 +80,15 @@ public class ControllersExceptionHandler
     {
         return "Non è stato possibile inviare la mail a causa di problemi di connessione con il sever";
     }
+
+
+    @ExceptionHandler(FileTooFatException.class)
+    @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
+    public String fileTooLarge(FileTooFatException e)
+    {
+        return "File troppo grande, limite consentito: 5MB.";
+    }
+
 
     // @ExceptionHandler(Exception.class)
     // @ResponseStatus(code = HttpStatus.FORBIDDEN)
