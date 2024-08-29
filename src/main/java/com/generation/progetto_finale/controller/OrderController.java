@@ -253,6 +253,11 @@ public class OrderController
     public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
         Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+
+        if (packagingOrderedQuantity == null)
+        {
+                throw new IllegalArgumentException("La quantità ordinata non può essere nulla");
+        }
         System.out.println(packagingOrderedQuantity);
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
@@ -274,7 +279,10 @@ public class OrderController
         // } catch (Exception e) {
         //     throw new DataNotVa
         // }
-        
+        if (unitOrderedQuantity == null)
+        {
+                throw new IllegalArgumentException("La quantità ordinata non può essere nulla");
+        }
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty()) 
             throw new EntityNotFoundException("L'ordine non esiste");
