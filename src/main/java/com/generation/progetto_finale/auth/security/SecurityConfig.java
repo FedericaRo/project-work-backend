@@ -41,7 +41,7 @@ public class SecurityConfig {
             // * Autenticazione
             .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
             // * Utenti
-            // ! Creare metodi getAll, Delete, Put per gli Utenti
+            // ! Creare metodi getAll, Delete, Put per gli Utenti 
             /**
              *  ? GetAll per leggerli tutti e avere un quadro della situa
              *  ? Delete per farli eliminare quando necessario agli admin
