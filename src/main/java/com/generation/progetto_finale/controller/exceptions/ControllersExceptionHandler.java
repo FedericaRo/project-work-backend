@@ -108,12 +108,12 @@ public class ControllersExceptionHandler
     // }
 
 
-    @ExceptionHandler(FileTooFatException.class)
-    @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
-    public String fileTooLarge(FileTooFatException e)
-    {
-        return "File troppo grande, limite consentito: 5MB.";
-    }
+    // @ExceptionHandler(FileTooFatException.class)
+    // @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
+    // public String fileTooLarge(FileTooFatException e)
+    // {
+    //     return "File troppo grande, limite consentito: 5MB.";
+    // }
 
 
 }
