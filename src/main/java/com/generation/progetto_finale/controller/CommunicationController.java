@@ -12,23 +12,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.generation.progetto_finale.controller.exceptions.FileTooFatException;
 import com.generation.progetto_finale.dto.CommunicationDTO;
 import com.generation.progetto_finale.dto.mappers.CommunicationService;
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
+import com.generation.progetto_finale.services.CommunicationDeleteService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -40,6 +40,10 @@ public class CommunicationController
     CommunicationRepository cRepo;
     @Autowired
     CommunicationService cServ;
+    @Autowired
+    CommunicationDeleteService pdfServ;
+
+
 
     @GetMapping
     public List<Communication> getAll() 
@@ -73,14 +77,7 @@ public class CommunicationController
     @DeleteMapping("/{id}")
     public Communication deleteCommunication(@PathVariable Integer id)
     {
-        Optional<Communication> c = cRepo.findById(id);
-
-        if (c.isEmpty())
-            throw new EntityNotFoundException("Comunicazione non esistente");
-
-        cRepo.deleteById(id); 
-        
-        return c.get();
+        return pdfServ.deleteCommunication(id);
     }
 
 
@@ -90,6 +87,12 @@ public class CommunicationController
         // Controlliamo che il file sia un pdf
         if (!file.getOriginalFilename().endsWith("pdf"))
             throw new RuntimeException("Formato non valido");
+
+        System.out.println(file.getSize() / (1024.0 * 1024.0));
+
+        
+        if (file.getSize() / (1024.0 * 1024.0) > 5) 
+            throw new FileTooFatException("File troppo grande, il massimo è 5MB!");
         
         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
 
@@ -114,9 +117,10 @@ public class CommunicationController
         {
 
             File pdf = new File(uploadDir);
-            System.out.println("pdf length " + pdf.length());
-            if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
-                throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
+
+            // System.out.println("pdf length " + pdf.length());
+            // if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
+            //     throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
             // Salva il file nella cartella specificata
             file.transferTo(pdf);
             communication.setPdfFilePath(uploadDir);
@@ -140,6 +144,7 @@ public class CommunicationController
                 }
             }
         }
+        System.out.println("directoryy " + directory);
         return directory.delete(); 
     }
 
@@ -192,6 +197,58 @@ public class CommunicationController
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
+//     @DeleteMapping("/pdf/{communicationid}")
+//     public String getPdfToDelete(@PathVariable Integer communicationid) throws IOException 
+//     {
+//         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
+
+//         if (communicationOptional.isEmpty())
+//             throw new EntityNotFoundException("La comunicazione non esiste");
+        
+        
+//         // Prende il percorso dell'immagine salvato nel database
+//         Communication communication = communicationOptional.get();
+
+//         String pdfpath = communication.getPdfFilePath();
+
+//         // Check if the image path is null or empty
+//         if (pdfpath == null || pdfpath.isEmpty()) {
+//             // Return a 204 No Content status if no image is found
+//                 throw new EntityNotFoundException("Nessun pdf da cancellare");
+//             }
+
+//         System.out.println(pdfpath);
+//         deletepfd(pdfpath);
+
+//         communication.setPdfFilePath(null);
+//         cRepo.save(communication);
+        
+
+//         // Ritorna l'immagine come ResponseEntity
+//         return pdfpath;
+//     }
+
+//     public void deletepfd(String userPath) { 
+//     File fileOrDirectory = new File(userPath);
+//     if (fileOrDirectory.exists()) {
+//         if (fileOrDirectory.isDirectory()) {
+//             deleteDirectory(fileOrDirectory);
+//         } else if (fileOrDirectory.isFile()) {
+//             fileOrDirectory.delete(); // Elimina il file
+//             File parentDirectory = fileOrDirectory.getParentFile();
+//             if (parentDirectory != null && parentDirectory.list().length == 0) {
+//                 parentDirectory.delete(); // Elimina la directory se vuota
+//             }
+//         }
+//     }
+// } 
+
+
+    
+
+
+
     
 
 }
+

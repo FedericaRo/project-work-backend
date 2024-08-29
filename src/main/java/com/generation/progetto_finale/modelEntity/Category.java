@@ -2,6 +2,7 @@ package com.generation.progetto_finale.modelEntity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Category
 
     private String name;
 
-    @OneToMany(mappedBy= "category", fetch = FetchType.EAGER) 
+    @OneToMany(mappedBy= "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true) 
     //todo NON SAPPIAMO SE METTERE CascadeType.ALL, eager vediamo se tenerlo
     private List<Product> products;
 }

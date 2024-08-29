@@ -14,7 +14,7 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-@Service
+@Service //spirng sa che deve iniettare questo servizio
 public class MailService 
 {
 

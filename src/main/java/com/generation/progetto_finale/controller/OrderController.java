@@ -103,6 +103,7 @@ public class OrderController
         // Integer packagingOrderedQuantity = Optional.ofNullable(requestBody.get("packagingOrderedQuantity")).orElse(0);
         // Integer unitOrderedQuantity = Optional.ofNullable(requestBody.get("unitOrderedQuantity")).orElse(0);
         Integer unitOrderedQuantity;
+
         if (requestBody.get("unitOrderedQuantity") == null || requestBody.get("unitOrderedQuantity").isBlank() )
             unitOrderedQuantity = 0;
         else
@@ -196,7 +197,6 @@ public class OrderController
         return orderServ.toDTO(updatedOrder);
 
 
-
        
     }
 
@@ -253,6 +253,11 @@ public class OrderController
     public void editPackagingQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody)
     {
         Integer packagingOrderedQuantity = requestBody.get("packagingOrderedQuantity");
+
+        if (packagingOrderedQuantity == null)
+        {
+                throw new IllegalArgumentException("La quantità ordinata non può essere nulla");
+        }
         System.out.println(packagingOrderedQuantity);
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty())
@@ -274,7 +279,10 @@ public class OrderController
         // } catch (Exception e) {
         //     throw new DataNotVa
         // }
-        
+        if (unitOrderedQuantity == null)
+        {
+                throw new IllegalArgumentException("La quantità ordinata non può essere nulla");
+        }
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty()) 
             throw new EntityNotFoundException("L'ordine non esiste");
@@ -308,18 +316,23 @@ public class OrderController
     @DeleteMapping("/deleteLast/{productName}")
     public OrderDTO deleteLastOrder(@PathVariable String productName)
     {
-        Product product = productRepo.findByProductName(productName);
-        
-        List<Order> orders = orderRepo.findAllByProductId(product.getId());
 
-        Order orderToDelete = orders.get(orders.size()-1);
-
-        if (orderToDelete == null) 
-            throw new EntityNotFoundException("L'ordine non esiste");
-
-        orderRepo.delete(orderToDelete);
-
-        return orderServ.toDTO(orderToDelete);
+            Product product = productRepo.findByProductName(productName);
+            
+            List<Order> orders = orderRepo.findAllByProductId(product.getId());
+    
+            if (orders.size() - 1 < 0)
+                throw new IndexOutOfBoundsException("Nessun ordine da poter eliminare");
+                
+            Order orderToDelete = orders.get(orders.size()-1);
+    
+            if (orderToDelete == null) 
+                throw new EntityNotFoundException("L'ordine non esiste");
+    
+            orderRepo.delete(orderToDelete);
+    
+            return orderServ.toDTO(orderToDelete);
+            
     }
 
    

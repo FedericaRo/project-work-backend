@@ -32,6 +32,8 @@ import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -117,6 +119,11 @@ public class ProfileController
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable Integer profileid) 
     {
         // Controlliamo che il file sia un immagine
+
+        // if (file.isEmpty())
+        // {
+
+        // }
         if (!file.getOriginalFilename().endsWith("jpg") && !file.getOriginalFilename().endsWith("jpeg") && !file.getOriginalFilename().endsWith("png"))
             throw new RuntimeException("Formato non valido");
 
@@ -174,10 +181,11 @@ public class ProfileController
 
         // Check if the image path is null or empty
         if (imgpath == null || imgpath.isEmpty()) {
-        // Return a 204 No Content status if no image is found
-            return ResponseEntity.noContent().build();
-        }
-        
+            // Return a 204 No Content status if no image is found
+                return ResponseEntity.noContent().build();
+            }
+
+
         System.out.println(imgpath);
         // Legge l'immagine e la trasforma in un array di bytes
         File imgFile = new File(imgpath);
@@ -208,6 +216,20 @@ public class ProfileController
 
         // Ritorna l'immagine come ResponseEntity
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ProfileDTO putMethodName(@PathVariable Integer id, @RequestBody ProfileDTO entity) 
+    {
+        
+        Profile profile = pRepo.findById(id).get();
+
+        profile.setName(entity.getName());
+        profile.setSurname(entity.getSurname());
+
+        entity = pServ.toDTO(pRepo.save(profile));
+
+        return entity;
     }
 
 

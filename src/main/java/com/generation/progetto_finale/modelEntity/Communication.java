@@ -1,6 +1,5 @@
 package com.generation.progetto_finale.modelEntity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -73,3 +72,4 @@ public class Communication
     // percorso del file pdf
     private String pdfFilePath;
 }
+

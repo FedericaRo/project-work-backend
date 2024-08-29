@@ -1,29 +1,44 @@
 package com.generation.progetto_finale;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.modelEntity.Frequency;
 import com.generation.progetto_finale.modelEntity.StoredTask;
 import com.generation.progetto_finale.modelEntity.Task;
 import com.generation.progetto_finale.modelEntity.Task.TaskStatus;
+import com.generation.progetto_finale.repositories.CommunicationRepository;
 import com.generation.progetto_finale.repositories.StoredTaskRepository;
 import com.generation.progetto_finale.repositories.TaskRepository;
+import com.generation.progetto_finale.services.CommunicationDeleteService;
+
 
 @Component
 public class ScheduledJobs 
 {
     @Autowired
     StoredTaskRepository stRepo;
+
     @Autowired
     TaskRepository tRepo;
+
+    @Autowired
+    CommunicationRepository cRepo;
+
+    @Autowired
+    CommunicationDeleteService comDeleteService;
+
+    
 
     //secondi, minuti, ore, giorno del mese, numero del mese, giorno della settimana
     @Scheduled(cron = "0 0 1 ? * MON")
@@ -58,6 +73,83 @@ public class ScheduledJobs
 
         createTasks(stt);
     }
+
+        //secondi, minuti, ore, giorno del mese, numero del mese, giorno della settimana
+
+    @Scheduled(cron = "0 0 1 ? * MON")
+    public void deleteOlderCommunications() 
+    {
+        System.out.println("Metodo eseguito ogni minuto: " + System.currentTimeMillis());
+
+
+        LocalDateTime deletionDate = LocalDateTime.now().minusMonths(6);
+
+        List<Communication> communicationsToDelete = cRepo.findByCreationDateBefore(deletionDate);
+
+
+        for (Communication communication : communicationsToDelete)
+        {
+            System.out.println(communication.getId());
+            comDeleteService.deleteCommunication(communication.getId());
+        }
+
+
+
+    }
+
+    // @DeleteMapping("/pdf/{communicationid}")
+    // public String getPdf(@PathVariable Integer communicationid) throws IOException 
+    // {
+    //     Optional<Communication> communicationOptional = cRepo.findById(communicationid);
+
+    //     if (communicationOptional.isEmpty())
+    //         throw new EntityNotFoundException("La comunicazione non esiste");
+        
+        
+    //     // Prende il percorso dell'immagine salvato nel database
+    //     String pdfpath = communicationOptional.get().getPdfFilePath();
+
+    //     // Check if the image path is null or empty
+    //     if (pdfpath == null || pdfpath.isEmpty()) {
+    //         // Return a 204 No Content status if no image is found
+    //             throw new EntityNotFoundException("Nessuna immagine da cancellare");
+    //         }
+
+    //     System.out.println(pdfpath);
+    //     deletepfd(pdfpath);
+
+    //     // Ritorna l'immagine come ResponseEntity
+    //     return pdfpath;
+    // }
+
+    // public void deletepfd(String userPath) 
+    // { 
+    //      // Distruggiamo e ricreiamo la cartella per svuotarla
+    //     File directory = new File(userPath);
+    //     deleteDirectory(directory);
+    // }
+
+    // private static boolean deleteDirectory(File directory) {
+    //     if (directory.isDirectory()) {
+    //         File[] files = directory.listFiles();
+    //         if (files != null) {
+    //             for (File file : files) {
+    //                 // Ricorsione
+    //                 deleteDirectory(file);
+    //             }
+    //         }
+    //     }
+    //     return directory.delete(); 
+    // }
+
+
+    // public void deleteOldCommunications() 
+    // {
+        
+    //     cRepo.deleteAll()
+
+
+    // }
 
 
     // @Scheduled(cron = "30 * * * * *")
