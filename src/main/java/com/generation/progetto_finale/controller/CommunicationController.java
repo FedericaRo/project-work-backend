@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.generation.progetto_finale.controller.exceptions.FileTooFatException;
 import com.generation.progetto_finale.dto.CommunicationDTO;
 import com.generation.progetto_finale.dto.mappers.CommunicationService;
 import com.generation.progetto_finale.modelEntity.Communication;
@@ -88,6 +89,11 @@ public class CommunicationController
         // Controlliamo che il file sia un pdf
         if (!file.getOriginalFilename().endsWith("pdf"))
             throw new RuntimeException("Formato non valido");
+
+        System.out.println(file.getSize() / (1024.0 * 1024.0));
+        
+        if (file.getSize() / (1024.0 * 1024.0) > 5) 
+            throw new FileTooFatException("File troppo grande, il massimo è 5MB!");
         
         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
 
@@ -112,9 +118,9 @@ public class CommunicationController
         {
 
             File pdf = new File(uploadDir);
-            System.out.println("pdf length " + pdf.length());
-            if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
-                throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
+            // System.out.println("pdf length " + pdf.length());
+            // if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
+            //     throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
             // Salva il file nella cartella specificata
             file.transferTo(pdf);
             communication.setPdfFilePath(uploadDir);

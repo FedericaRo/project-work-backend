@@ -32,6 +32,8 @@ import com.generation.progetto_finale.modelEntity.Profile;
 import com.generation.progetto_finale.repositories.ProfileRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -209,6 +211,20 @@ public class ProfileController
 
         // Ritorna l'immagine come ResponseEntity
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ProfileDTO putMethodName(@PathVariable Integer id, @RequestBody ProfileDTO entity) 
+    {
+        
+        Profile profile = pRepo.findById(id).get();
+
+        profile.setName(entity.getName());
+        profile.setSurname(entity.getSurname());
+
+        entity = pServ.toDTO(pRepo.save(profile));
+
+        return entity;
     }
 
 
