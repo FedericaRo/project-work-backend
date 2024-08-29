@@ -308,18 +308,23 @@ public class OrderController
     @DeleteMapping("/deleteLast/{productName}")
     public OrderDTO deleteLastOrder(@PathVariable String productName)
     {
-        Product product = productRepo.findByProductName(productName);
-        
-        List<Order> orders = orderRepo.findAllByProductId(product.getId());
 
-        Order orderToDelete = orders.get(orders.size()-1);
-
-        if (orderToDelete == null) 
-            throw new EntityNotFoundException("L'ordine non esiste");
-
-        orderRepo.delete(orderToDelete);
-
-        return orderServ.toDTO(orderToDelete);
+            Product product = productRepo.findByProductName(productName);
+            
+            List<Order> orders = orderRepo.findAllByProductId(product.getId());
+    
+            if (orders.size() - 1 < 0)
+                throw new IndexOutOfBoundsException("Nessun ordine da poter eliminare");
+                
+            Order orderToDelete = orders.get(orders.size()-1);
+    
+            if (orderToDelete == null) 
+                throw new EntityNotFoundException("L'ordine non esiste");
+    
+            orderRepo.delete(orderToDelete);
+    
+            return orderServ.toDTO(orderToDelete);
+            
     }
 
    

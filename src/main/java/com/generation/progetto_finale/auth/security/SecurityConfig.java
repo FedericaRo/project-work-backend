@@ -50,7 +50,7 @@ public class SecurityConfig {
             // * Profili
             .requestMatchers(HttpMethod.GET, "/api/profiles","/api/profiles/profile","/api/profiles/{username}","/api/profiles/images/{profileid}").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/profiles/newProfile","/api/profiles/imgupload/{profileid}").authenticated()
-            .requestMatchers(HttpMethod.PUT, "/api/products/").authenticated()
+            .requestMatchers(HttpMethod.PUT, "/api/profiles/{id}").authenticated()
             .requestMatchers(HttpMethod.DELETE, "/api/profiles/{profileId}").authenticated()
             // * Prodotti 
             .requestMatchers(HttpMethod.GET, "/api/products").authenticated()
@@ -78,13 +78,11 @@ public class SecurityConfig {
             // * Categorie
             .requestMatchers(HttpMethod.GET, "/api/categories").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/categories/addCategory").hasRole("ADMIN")
-            // ! Aggiungere metodo di delete
-            .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/categories/{id}").hasRole("ADMIN")
             // * Fornitori
             .requestMatchers(HttpMethod.GET, "/api/suppliers").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").hasRole("ADMIN")
-            // ! Aggiungere metodo di delete
-            .requestMatchers(HttpMethod.DELETE, "/api/suppliers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/suppliers/{id}").hasRole("ADMIN")
 
             // * altri test
             .requestMatchers(HttpMethod.DELETE, "/pdf/{communicationid}").permitAll()

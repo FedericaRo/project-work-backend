@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/products")
 public class ProductController 
 {
+
+    //SOLID DESIGN PATTERN= dependency inversion
+
     @Autowired
     ProductRepository pRepo;
     @Autowired
@@ -84,15 +87,18 @@ public class ProductController
 
 
     @DeleteMapping("{productId}")
-    public ProductDTO deleteProduct(@PathVariable Integer productId)
+    public Integer deleteProduct(@PathVariable Integer productId)
     {
         Optional<Product> productToDelete = pRepo.findById(productId);
         if (productToDelete.isEmpty()) 
             throw new EntityNotFoundException("Il prodotto non esiste");
 
-        pRepo.delete(productToDelete.get());
+        Supplier s = productToDelete.get().getSupplier();
+        s.getProducts().removeIf(p -> p.getId().equals(productId));
 
-        return pServ.toDTO(productToDelete.get());
+        sRepo.save(s);
+    
+        return productId;
     }
 
 
@@ -132,6 +138,7 @@ public class ProductController
         pRepo.save(product);
 
 
+
     }
 
     private void validateProductDTO(ProductDTO dto) {
@@ -168,6 +175,7 @@ public class ProductController
         if (dto.getCode() == null || dto.getCode().isEmpty()) {
             throw new IllegalArgumentException("Il codice non può essere nullo o vuoto");
         }
+
     }
 
 

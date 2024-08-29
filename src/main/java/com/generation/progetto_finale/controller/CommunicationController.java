@@ -90,8 +90,9 @@ public class CommunicationController
 
         System.out.println(file.getSize() / (1024.0 * 1024.0));
 
+        
         if (file.getSize() / (1024.0 * 1024.0) > 5) 
-            throw new FileTooFatException("File troppo grande");
+            throw new FileTooFatException("File troppo grande, il massimo è 5MB!");
         
         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
 
@@ -116,8 +117,8 @@ public class CommunicationController
         {
 
             File pdf = new File(uploadDir);
-            System.out.println("pdf length " + pdf.length());
-       
+
+            // System.out.println("pdf length " + pdf.length());
             // if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
             //     throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
             // Salva il file nella cartella specificata
