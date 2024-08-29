@@ -75,13 +75,11 @@ public class SecurityConfig {
             // * Categorie
             .requestMatchers(HttpMethod.GET, "/api/categories").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/categories/addCategory").hasRole("ADMIN")
-            // ! Aggiungere metodo di delete
-            .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/categories/{id}").hasRole("ADMIN")
             // * Fornitori
             .requestMatchers(HttpMethod.GET, "/api/suppliers").authenticated()
             .requestMatchers(HttpMethod.POST, "/api/suppliers/addSupplier").hasRole("ADMIN")
-            // ! Aggiungere metodo di delete
-            .requestMatchers(HttpMethod.DELETE, "/api/suppliers/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/suppliers/{id}").hasRole("ADMIN")
 
             .anyRequest().authenticated()
         )
