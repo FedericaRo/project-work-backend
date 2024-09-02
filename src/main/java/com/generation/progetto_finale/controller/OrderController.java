@@ -352,8 +352,8 @@ public class OrderController
         // model.put("campo2", "byee");
         model.put("orders", ordersDTO);
 
-        mailService.sendHtmlMessage("santocaldarella@gmail.com", "mail prova", model);
-        // rocchetti.federica@gmail.com
+        mailService.sendHtmlMessage("rocchetti.federica@gmail.com", "mail prova", model);
+        // santocaldarella@gmail.com
         return ordersDTO;
     }
 

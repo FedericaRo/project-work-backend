@@ -55,7 +55,7 @@ public class StoredTaskController
 
 
     @DeleteMapping("/{id}") 
-    public StoredTask update(@PathVariable int id) 
+    public StoredTask delete(@PathVariable int id) 
     {
         Optional<StoredTask> opt = stRepo.findById(id); 
 
