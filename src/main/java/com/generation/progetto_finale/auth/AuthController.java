@@ -94,10 +94,6 @@ public class AuthController
 
         userRepository.save(user);
 
-        
-        // CredentialsDto loginDto = registerDto;
-        // login(registerDto);
-
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 }

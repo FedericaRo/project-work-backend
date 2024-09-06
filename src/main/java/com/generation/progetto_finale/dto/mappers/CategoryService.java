@@ -6,9 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.generation.progetto_finale.dto.CategoryDTO;
-import com.generation.progetto_finale.dto.SupplierDTO;
 import com.generation.progetto_finale.modelEntity.Category;
-import com.generation.progetto_finale.modelEntity.Supplier;
 
 @Service
 public class CategoryService 

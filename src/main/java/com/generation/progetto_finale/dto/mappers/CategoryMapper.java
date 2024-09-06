@@ -12,7 +12,6 @@ public interface CategoryMapper
 {
     public static final CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
-    
     CategoryDTO toDTO(Category c);
 
     @Mapping(target = "products"  , ignore = true)

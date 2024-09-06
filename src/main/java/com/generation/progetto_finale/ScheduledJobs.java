@@ -93,71 +93,8 @@ public class ScheduledJobs
             comDeleteService.deleteCommunication(communication.getId());
         }
 
-
-
     }
 
-    // @DeleteMapping("/pdf/{communicationid}")
-    // public String getPdf(@PathVariable Integer communicationid) throws IOException 
-    // {
-    //     Optional<Communication> communicationOptional = cRepo.findById(communicationid);
-
-    //     if (communicationOptional.isEmpty())
-    //         throw new EntityNotFoundException("La comunicazione non esiste");
-        
-        
-    //     // Prende il percorso dell'immagine salvato nel database
-    //     String pdfpath = communicationOptional.get().getPdfFilePath();
-
-    //     // Check if the image path is null or empty
-    //     if (pdfpath == null || pdfpath.isEmpty()) {
-    //         // Return a 204 No Content status if no image is found
-    //             throw new EntityNotFoundException("Nessuna immagine da cancellare");
-    //         }
-
-    //     System.out.println(pdfpath);
-    //     deletepfd(pdfpath);
-
-    //     // Ritorna l'immagine come ResponseEntity
-    //     return pdfpath;
-    // }
-
-    // public void deletepfd(String userPath) 
-    // { 
-    //      // Distruggiamo e ricreiamo la cartella per svuotarla
-    //     File directory = new File(userPath);
-    //     deleteDirectory(directory);
-    // }
-
-    // private static boolean deleteDirectory(File directory) {
-    //     if (directory.isDirectory()) {
-    //         File[] files = directory.listFiles();
-    //         if (files != null) {
-    //             for (File file : files) {
-    //                 // Ricorsione
-    //                 deleteDirectory(file);
-    //             }
-    //         }
-    //     }
-    //     return directory.delete(); 
-    // }
-
-
-    // public void deleteOldCommunications() 
-    // {
-        
-    //     cRepo.deleteAll()
-
-
-    // }
-
-
-    // @Scheduled(cron = "30 * * * * *")
-    // public void metodoDiProva() 
-    // {
-    //     System.out.println("Qualsiasi cosa");
-    //     newWeeklyTasks();
-    // }
 
 
     private void createTasks(List<StoredTask> tasks)

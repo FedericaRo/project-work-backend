@@ -44,17 +44,18 @@ public class CommunicationController
     CommunicationDeleteService pdfServ;
 
 
-
     @GetMapping
     public List<Communication> getAll() 
     {
         return cRepo.findAll();
     }
 
+
     @PostMapping("/newCommunication")
     public CommunicationDTO addNewCommunication(@RequestBody CommunicationDTO dto)
     {
         System.out.println(dto);
+
         /**
          * Da ReqBody ottengo un DTO e tramite il service lo trasformo in entità
          */
@@ -118,15 +119,14 @@ public class CommunicationController
 
             File pdf = new File(uploadDir);
 
-            // System.out.println("pdf length " + pdf.length());
-            // if (pdf.length()/1000000 > 5) //! Non funziona la length è sempre 0
-            //     throw new RuntimeException("File pdf troppo grande"); //TODO lanciare eccezione personalizzata NON CON NOMI DI SANTO
             // Salva il file nella cartella specificata
             file.transferTo(pdf);
             communication.setPdfFilePath(uploadDir);
             cRepo.save(communication);
             return uploadDir;
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
             return "File upload failed";
         }
@@ -134,23 +134,28 @@ public class CommunicationController
 
     }
 
-    private static boolean deleteDirectory(File directory) {
-        if (directory.isDirectory()) {
+    private static boolean deleteDirectory(File directory) 
+    {
+        if (directory.isDirectory()) 
+        {
             File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
+            if (files != null) 
+            {
+                for (File file : files) 
+                {
                     // Ricorsione
                     deleteDirectory(file);
                 }
             }
         }
+
         System.out.println("directoryy " + directory);
         return directory.delete(); 
     }
 
     @GetMapping("/pdf/{communicationid}")
-    public ResponseEntity<byte[]> getPdf(@PathVariable Integer communicationid) throws IOException {
-
+    public ResponseEntity<byte[]> getPdf(@PathVariable Integer communicationid) throws IOException 
+    {
 
         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
 
@@ -161,27 +166,24 @@ public class CommunicationController
         // Prende il percorso dell'immagine salvato nel database
         String pdfpath = communicationOptional.get().getPdfFilePath();
 
-        // Check if the image path is null or empty
-        if (pdfpath == null || pdfpath.isEmpty()) {
-            // Return a 204 No Content status if no image is found
-                return ResponseEntity.noContent().build();
-            }
+        if (pdfpath == null || pdfpath.isEmpty()) 
+        {
+            return ResponseEntity.noContent().build();
+        }
 
         System.out.println(pdfpath);
-        // Legge l'immagine e la trasforma in un array di bytes
+
+        // Legge il PDF e lo trasforma in un array di bytes
         File pdfFile = new File(pdfpath);
         InputStream in = new FileInputStream(pdfFile);
         byte[] pdfBytes = StreamUtils.copyToByteArray(in);
         in.close();
 
-
-
-        // Impostiamo l'header della response per dire che tipo di immagine è e quanto è grande
         HttpHeaders headers = new HttpHeaders();
-        //facciamo uno switch
 
         MediaType format;
-        switch (pdfpath.split("\\.")[1]) {
+        switch (pdfpath.split("\\.")[1]) 
+        {
             case "pdf":
                 format = MediaType.APPLICATION_PDF;
                 break;
@@ -193,62 +195,8 @@ public class CommunicationController
         headers.setContentType(format); 
         headers.setContentLength(pdfBytes.length);
 
-        // Ritorna l'immagine come ResponseEntity
+        // Ritorna il PDF come ResponseEntity
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
-
-//     @DeleteMapping("/pdf/{communicationid}")
-//     public String getPdfToDelete(@PathVariable Integer communicationid) throws IOException 
-//     {
-//         Optional<Communication> communicationOptional = cRepo.findById(communicationid);
-
-//         if (communicationOptional.isEmpty())
-//             throw new EntityNotFoundException("La comunicazione non esiste");
-        
-        
-//         // Prende il percorso dell'immagine salvato nel database
-//         Communication communication = communicationOptional.get();
-
-//         String pdfpath = communication.getPdfFilePath();
-
-//         // Check if the image path is null or empty
-//         if (pdfpath == null || pdfpath.isEmpty()) {
-//             // Return a 204 No Content status if no image is found
-//                 throw new EntityNotFoundException("Nessun pdf da cancellare");
-//             }
-
-//         System.out.println(pdfpath);
-//         deletepfd(pdfpath);
-
-//         communication.setPdfFilePath(null);
-//         cRepo.save(communication);
-        
-
-//         // Ritorna l'immagine come ResponseEntity
-//         return pdfpath;
-//     }
-
-//     public void deletepfd(String userPath) { 
-//     File fileOrDirectory = new File(userPath);
-//     if (fileOrDirectory.exists()) {
-//         if (fileOrDirectory.isDirectory()) {
-//             deleteDirectory(fileOrDirectory);
-//         } else if (fileOrDirectory.isFile()) {
-//             fileOrDirectory.delete(); // Elimina il file
-//             File parentDirectory = fileOrDirectory.getParentFile();
-//             if (parentDirectory != null && parentDirectory.list().length == 0) {
-//                 parentDirectory.delete(); // Elimina la directory se vuota
-//             }
-//         }
-//     }
-// } 
-
-
-    
-
-
-
-    
-
 }
 

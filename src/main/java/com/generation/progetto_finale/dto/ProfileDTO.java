@@ -9,7 +9,6 @@ import lombok.ToString;
 @ToString
 public class ProfileDTO 
 {
-
     private Integer id;
     private String name;
     private String surname;

@@ -29,9 +29,6 @@ public class StoredTask
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
 
-
-   
-
 }
 
 

@@ -1,23 +1,13 @@
 package com.generation.progetto_finale.controller.exceptions;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.ServletException;
 
 @RestControllerAdvice
 public class ControllersExceptionHandler 
@@ -44,13 +34,6 @@ public class ControllersExceptionHandler
         return e.getMessage();
     }
 
-    // @ExceptionHandler(HttpMessageNotReadableException.class)
-    // @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    // public String httpMessageNotReadable(HttpMessageNotReadableException e)
-    // {
-    //     // return e.getMessage();
-    //     return "Input non valido";
-    // }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
@@ -64,7 +47,6 @@ public class ControllersExceptionHandler
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
     public String maxProfileNumberReached(DoYouWantAFootballTeamException e)
     {
-        // return e.getMessage();
         return "Hai già raggiunto il numero massimo di profili per questo utente.";
     }
 
@@ -84,13 +66,6 @@ public class ControllersExceptionHandler
     }
 
 
-    // @ExceptionHandler(Exception.class)
-    // @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    // public String authenticationFailed(Exception e)
-    // {
-    //     return "Sessione scaduta, rifai il login.";
-    // }
-    
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public String badCredentials(BadCredentialsException e)
@@ -98,22 +73,6 @@ public class ControllersExceptionHandler
         System.out.println("exception authentication");
         return "Username o password non valido";
     }
-
-    // @ExceptionHandler(MaxUploadSizeExceededException.class)
-    // @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
-    // public String maxFile(MaxUploadSizeExceededException e)
-    // {
-    //     System.out.println("file max 5mb");
-    //     return "Massimo file 5mb";
-    // }
-
-    // @ExceptionHandler(FileTooFatException.class)
-    // @ResponseStatus(code = HttpStatus.PAYLOAD_TOO_LARGE)
-    // public String fileTooLarge(FileTooFatException e)
-    // {
-    //     return "File troppo grande, limite consentito: 5MB.";
-    // }
-
 
 
 }

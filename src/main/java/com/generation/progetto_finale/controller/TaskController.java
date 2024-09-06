@@ -20,7 +20,6 @@ import com.generation.progetto_finale.repositories.TaskRepository;
 
 
 
-
 @RestController
 @RequestMapping("/tasks")
 public class TaskController 
@@ -58,6 +57,7 @@ public class TaskController
         return tServ.toDTO(t);
     }
 
+
     @PutMapping("/{id}")
     public TaskDTO updateTask(@PathVariable Integer id, @RequestBody CompletionTaskDTO dto) 
     {
@@ -76,6 +76,4 @@ public class TaskController
         return tServ.toDTO(task);
     }
 
-
-    
 }

@@ -25,5 +25,4 @@ public class CommunicationDTO
     private CommunicationType type;
     private String pdfFilePath; // percorso del PDF
 
-    // private String creationDate;
 }

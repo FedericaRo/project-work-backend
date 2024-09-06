@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.generation.progetto_finale.modelEntity.Communication;
 import com.generation.progetto_finale.repositories.CommunicationRepository;
@@ -57,21 +55,30 @@ public class CommunicationDeleteService
         return pdfpath;
     }
 
-    private void deletepfd(String userPath) { 
-    File fileOrDirectory = new File(userPath);
-    if (fileOrDirectory.exists()) {
-        if (fileOrDirectory.isDirectory()) {
-            deleteDirectory(fileOrDirectory);
-        } else if (fileOrDirectory.isFile()) {
-            fileOrDirectory.delete(); // Elimina il file
-            File parentDirectory = fileOrDirectory.getParentFile();
-            if (parentDirectory != null && parentDirectory.list().length == 0) {
-                parentDirectory.delete(); // Elimina la directory se vuota
+
+    private void deletepfd(String userPath) 
+    {
+        File fileOrDirectory = new File(userPath);
+        if (fileOrDirectory.exists()) 
+        {
+            if (fileOrDirectory.isDirectory()) 
+            {
+                deleteDirectory(fileOrDirectory);
+            } else if (fileOrDirectory.isFile()) 
+            {
+                fileOrDirectory.delete(); // Elimina il file
+                File parentDirectory = fileOrDirectory.getParentFile();
+                if (parentDirectory != null && parentDirectory.list().length == 0) 
+                {
+                    parentDirectory.delete(); // Elimina la directory se vuota
+                }
             }
         }
     }
-} 
-    private static boolean deleteDirectory(File directory) {
+
+
+    private static boolean deleteDirectory(File directory) 
+    {
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files != null) {
@@ -81,6 +88,7 @@ public class CommunicationDeleteService
                 }
             }
         }
+        
         System.out.println("directoryy " + directory);
         return directory.delete(); 
     }

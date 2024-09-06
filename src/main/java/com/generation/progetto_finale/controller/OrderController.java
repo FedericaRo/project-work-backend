@@ -269,20 +269,17 @@ public class OrderController
         orderRepo.save(order);
     }
 
-    // TO DO Aggiungere controllo se non arriva un id valido come intero o un intero nella mappa
     @PutMapping("{orderId}/editUnitQuantity")
     public void editUnitQuantity(@PathVariable Integer orderId, @RequestBody Map<String, Integer> requestBody) 
     {
 
-        // try {
-            Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
-        // } catch (Exception e) {
-        //     throw new DataNotVa
-        // }
+        Integer unitOrderedQuantity = requestBody.get("unitOrderedQuantity");
+
         if (unitOrderedQuantity == null)
         {
                 throw new IllegalArgumentException("La quantità ordinata non può essere nulla");
         }
+
         Optional<Order> orderToChange = orderRepo.findById(orderId);
         if (orderToChange.isEmpty()) 
             throw new EntityNotFoundException("L'ordine non esiste");
@@ -294,7 +291,6 @@ public class OrderController
 
     }
 
-    // TO DO Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("{orderId}")
     public OrderDTO deleteOrder(@PathVariable Integer orderId)
     {
@@ -307,12 +303,7 @@ public class OrderController
         return orderServ.toDTO(orderToDelete.get());
     }
 
-   
-    // public String getMethodName(@RequestParam String param) {
-    //     return new String();
-    // }
     
-    // TODO Aggiungere controllo se non arriva un id valido come intero
     @DeleteMapping("/deleteLast/{productName}")
     public OrderDTO deleteLastOrder(@PathVariable String productName)
     {
@@ -348,12 +339,10 @@ public class OrderController
         if (ordersDTO.size() == 0)
             throw new ThisMailMakeNoSenseBroException("Non c'è alcun ordine da inviare");
 
-        // model.put("campo1", "ciaoo");
-        // model.put("campo2", "byee");
         model.put("orders", ordersDTO);
 
-        mailService.sendHtmlMessage("santocaldarella@gmail.com", "mail prova", model);
-        // rocchetti.federica@gmail.com
+        mailService.sendHtmlMessage("recipient@email.com", "mail prova", model);
+
         return ordersDTO;
     }
 

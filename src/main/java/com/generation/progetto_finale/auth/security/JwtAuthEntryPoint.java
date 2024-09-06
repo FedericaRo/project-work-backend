@@ -1,13 +1,11 @@
 package com.generation.progetto_finale.auth.security;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,5 +37,4 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
         }
         return null;
     }
-    // Full authentication is required to access this resource
 }

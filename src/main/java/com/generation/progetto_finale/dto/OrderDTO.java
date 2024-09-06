@@ -12,11 +12,9 @@ import lombok.ToString;
 public class OrderDTO
 {
     private Integer id;
-    // private Integer supplier_id;
     private String supplierName;
     private String productCode;
     
-    // private Integer product_id;
     private String productName;
 
     private LocalDate orderDate;
@@ -28,20 +26,5 @@ public class OrderDTO
     private Integer packagingOrderedQuantity;
     private String packagingType;
     private boolean arrived;
-
-
-    // private Integer unitDeliveredQuantity;
-    // private Integer packagingDeliveredQuantity;
-
-
-
-
-    // private LocalDate deliverDate;
-
-
-    // private Integer category_id, supplier_id;
-
-    // private String categoryName;
-    // private String supplierName, supplierCode;
 
 }

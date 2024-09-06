@@ -10,6 +10,5 @@ import lombok.ToString;
 public class SupplierDTO 
 {
     private Integer id;
-    // private Integer supplier_id;
     private String name;
 }

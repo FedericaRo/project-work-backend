@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.generation.progetto_finale.dto.CategoryDTO;
 import com.generation.progetto_finale.dto.SupplierDTO;
 import com.generation.progetto_finale.dto.mappers.SupplierService;
-import com.generation.progetto_finale.modelEntity.Category;
 import com.generation.progetto_finale.modelEntity.Supplier;
 import com.generation.progetto_finale.repositories.SupplierRepository;
 
@@ -39,7 +37,8 @@ public class SupplierController
     }
 
     @PostMapping("/addSupplier")
-    public SupplierDTO addSupplier(@RequestBody SupplierDTO supplier) {
+    public SupplierDTO addSupplier(@RequestBody SupplierDTO supplier) 
+    {
         
         if (supplier.getName() != null && supplier.getName().isEmpty())
             throw new IllegalArgumentException("Il nome del fornitore non può essere vuoto");
@@ -57,6 +56,7 @@ public class SupplierController
     public Integer deleteSupplier(@PathVariable Integer supplierId)
     {
         System.out.println(supplierId);
+
         Optional<Supplier> supplierToDelete = sRepo.findById(supplierId);
         if (supplierToDelete.isEmpty()) 
             throw new EntityNotFoundException("Il fornitore non esiste");
@@ -66,6 +66,4 @@ public class SupplierController
         return supplierId;
     }
 
-    
-    
 }

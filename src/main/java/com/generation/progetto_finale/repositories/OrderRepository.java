@@ -15,6 +15,4 @@ public interface OrderRepository extends JpaRepository<Order,Integer>
 
     public List<Order> findAllByDeliverDateBetweenOrDeliverDateNull(LocalDate start, LocalDate end);
 
-
-
 }

@@ -10,7 +10,6 @@ import lombok.ToString;
 public class ProductDTO
 {
 
-    // , category_id, supplier_id; //! Non siamo sicuri se abbia senso averceli sia qui che nel front
     protected Integer id;
     protected String productName;
     protected Double unitPrice;

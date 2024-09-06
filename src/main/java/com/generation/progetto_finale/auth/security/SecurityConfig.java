@@ -43,7 +43,7 @@ public class SecurityConfig {
             // * Utenti
             // ! Creare metodi getAll, Delete, Put per gli Utenti 
             /**
-             *  ? GetAll per leggerli tutti e avere un quadro della situa
+             *  ? GetAll per leggerli tutti e avere un quadro della situazione
              *  ? Delete per farli eliminare quando necessario agli admin
              *  ? Put per modificare il loro ruolo (solo per admin) o altro se vogliamo
              */

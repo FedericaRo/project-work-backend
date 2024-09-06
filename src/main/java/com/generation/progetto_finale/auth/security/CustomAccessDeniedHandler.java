@@ -1,12 +1,9 @@
 package com.generation.progetto_finale.auth.security;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
-
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,5 +18,4 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler{
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         
             }
-
 }

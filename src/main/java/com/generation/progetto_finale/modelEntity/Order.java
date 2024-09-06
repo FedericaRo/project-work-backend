@@ -46,13 +46,5 @@ public class Order
         arrived           = false;
 
     }
-    
-    // @PreUpdate
-    // public void onUpdate()
-    // {
-    //     deliverDate    = LocalDate.now();
-    // }
-
    
-
 }
