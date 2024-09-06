@@ -352,13 +352,13 @@ public class OrderController
         // model.put("campo2", "byee");
         model.put("orders", ordersDTO);
 
-        mailService.sendHtmlMessage("santocaldarella@gmail.com", "mail prova", model);
+        mailService.sendHtmlMessage("perusotanto@gmail.com", "Ordini della settimana", model);
         // rocchetti.federica@gmail.com
         return ordersDTO;
     }
 
 
-
+    
 
 
 

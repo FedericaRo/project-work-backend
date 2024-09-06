@@ -46,7 +46,7 @@ public class Task
     /**
      * firma di chi ha eseguito la task
      */
-    private String signature;
+    private String signature = "nessuna";
 
     /**
      * metodo chiamato al momento del salvataggio di una entità nel database
