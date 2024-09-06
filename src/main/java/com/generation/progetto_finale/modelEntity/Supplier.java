@@ -2,6 +2,7 @@ package com.generation.progetto_finale.modelEntity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,9 +21,6 @@ public class Supplier
 
     private String name;
 
-    //identificativo fornitore che parla con l'azienda
-    private String code;
-
-    @OneToMany(mappedBy= "supplier")
+    @OneToMany(mappedBy= "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }

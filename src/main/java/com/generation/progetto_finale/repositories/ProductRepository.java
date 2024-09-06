@@ -6,5 +6,5 @@ import com.generation.progetto_finale.modelEntity.Product;
 
 public interface ProductRepository extends JpaRepository<Product,Integer> 
 {
-    
+    public Product findByProductName(String name);
 }

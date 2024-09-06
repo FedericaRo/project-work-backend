@@ -16,5 +16,4 @@ public class CompletionTaskDTO
     private TaskStatus status;
     private String signature;
     
-
 }
