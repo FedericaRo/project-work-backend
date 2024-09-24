@@ -4,7 +4,6 @@ package com.generation.progetto_finale.auth.security;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,21 +12,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.generation.progetto_finale.auth.model.Role;
 import com.generation.progetto_finale.auth.model.UserEntity;
 import com.generation.progetto_finale.auth.repository.UserRepository;
-
-//@Component -> prendi questa classe, istanziala, metti il suo oggetto nell'Application Context
-//tutte le altre sono SPECIALIZZAZIONI di @Component
 
 @Service
 public class CustomUserDetailsService  implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-
-    
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -21,7 +21,6 @@ public interface TaskMapper
         TaskDTO toDTO(Task t);
 
 
-
         @Mapping(target = "frequency")
         @Mapping(target = "status")
         @Mapping(source = "creationDate", target = "creationDate", dateFormat = "yyyy-MM-dd")

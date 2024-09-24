@@ -21,7 +21,7 @@ import io.jsonwebtoken.security.Keys;
 public class JWTGenerator 
 {
 	private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-	
+
 	@Value("${jwtduration}")
 	private long JWT_DURATION;
 	
@@ -74,6 +74,7 @@ public class JWTGenerator
 		} catch (Exception ex) {
 			throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
 		}
+		
 	}
 
 }

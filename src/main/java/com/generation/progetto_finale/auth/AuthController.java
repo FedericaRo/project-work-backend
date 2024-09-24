@@ -52,6 +52,7 @@ public class AuthController
             loginDto.getPassword()));
 
         String token = jwtGenerator.generateToken(user);
+        String username = jwtGenerator.getUsernameFromJWT(token);
         // metto oltre al token il ruolo 
         Optional<String> role =   jwtGenerator.getRolesFromJWT(token)
                         .stream()
@@ -59,9 +60,9 @@ public class AuthController
                         .findFirst();
 
         if(role.isPresent())
-            return new AuthResponseDto(token, role.get().replace("ROLE_", ""));
+            return new AuthResponseDto(token, role.get().replace("ROLE_", ""), username);
         else
-            return new AuthResponseDto(token, "");
+            return new AuthResponseDto(token, "", username);
     }
 
   @PostMapping("register")
@@ -92,10 +93,6 @@ public class AuthController
         user.setRoles(roles);
 
         userRepository.save(user);
-
-        
-        // CredentialsDto loginDto = registerDto;
-        // login(registerDto);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }

@@ -6,5 +6,5 @@ import com.generation.progetto_finale.modelEntity.Category;
 
 public interface CategoryRepository extends JpaRepository<Category,Integer>
 {
-
+    public Category findByName(String name);
 }
