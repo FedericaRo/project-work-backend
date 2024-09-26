@@ -1,14 +1,14 @@
-# Gestionale Mensa
+# Gestionale Reparto Mensa residenza Universitaria Privata
 ## Generation Italy Graduation Project - <i>Junior Java Developer</i>
 
 ## Introduzione
 Questo progetto è un gestionale web completo per la gestione di una mensa, sviluppato con l'obiettivo di ottimizzare le attività quotidiane e fornire una panoramica chiara dello stato dell'inventario, degli ordini e delle risorse umane.
 
 ## Tecnologie Utilizzate
-* **Frontend:** Angular (versione 18), Angular Material, TypeScript
-* **Backend:** Spring Boot, Spring Data JPA, Spring Security, Java 17, Lombok
+* **Frontend:** Angular (versione 18), Angular Material, Tailwind, TypeScript
+* **Backend:** Spring Boot, Spring Data JPA, Spring Security, Java 17, Lombok, Postman
 * **Database:** MySQL
-* **API:** REST API sviluppate con Spring MVC
+* **API:** REST API sviluppate con Spring Boot -> Spring MVC
 * **Testing:** JUnit
 
 ## Architettura
@@ -41,8 +41,8 @@ Il sistema è strutturato in tre livelli:
         * Task da completare.
         * Comunicazioni recenti.
         * Cambi turno.
-        * Riepilogo delle attività.
-        * Statistiche sugli ordini in arrivo.
+        * Riepilogo delle attività recenti.
+        * Cambio Profili
 
 ## Flusso di Lavoro
 
@@ -58,19 +58,7 @@ Il sistema è strutturato in tre livelli:
 * **Autorizzazione:** Gestione dei ruoli e dei permessi per limitare l'accesso alle funzionalità.
 * **Crittografia:** Utilizzo di algoritmi di crittografia per proteggere i dati sensibili.
 
-## Futuro
-* **Integrazione con un sistema contabile.**
-* **Sviluppo di un'app mobile.**
-* **Introduzione di funzionalità di analisi dei dati per ottimizzare gli acquisti.**
-
-## Contributi
-[Spiega come contribuire al progetto, ad esempio creando nuove funzionalità, correggendo bug, ecc.]
-
 ## Licenza
-[Indica la licenza sotto cui è rilasciato il progetto]
+Copyright: OhMannaggina:8080
+Licenza: Work in Progress
 
-## Contributi
-[Spiega come contribuire al progetto, ad esempio creando nuove funzionalità, correggendo bug, ecc.]
-
-## Licenza
-[Indica la licenza sotto cui è rilasciato il progetto]
